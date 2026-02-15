@@ -1,0 +1,21 @@
+{
+  "name": "turboblocks-web",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@builder.io/qwik": "^1.19.0",
+    "@qwikdev/astro": "^0.8.3",
+    "@unocss/astro": "^66.6.0",
+    "astro": "^5.17.1",
+    "unocss": "^66.6.0"
+  },
+  "devDependencies": {
+    "@unocss/preset-typography": "^66.6.0"
+  }
+}

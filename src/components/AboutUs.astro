@@ -1,0 +1,38 @@
+---
+import { TeamSection } from './TeamSection';
+
+const socials = [
+    { name: 'Discord', icon: '👾', href: '#', color: 'hover:text-[#5865F2] hover:shadow-[0_0_15px_#5865F2]' },
+    { name: 'YouTube', icon: '📺', href: '#', color: 'hover:text-[#FF0000] hover:shadow-[0_0_15px_#FF0000]' },
+    { name: 'Twitter', icon: '🐦', href: '#', color: 'hover:text-[#1DA1F2] hover:shadow-[0_0_15px_#1DA1F2]' },
+    { name: 'Bluesky', icon: '🦋', href: '#', color: 'hover:text-[#0285FF] hover:shadow-[0_0_15px_#0285FF]' },
+    { name: 'Instagram', icon: '📸', href: '#', color: 'hover:text-[#E4405F] hover:shadow-[0_0_15px_#E4405F]' },
+    { name: 'Reddit', icon: '🤖', href: '#', color: 'hover:text-[#FF4500] hover:shadow-[0_0_15px_#FF4500]' },
+];
+---
+
+<section class="max-w-7xl mx-auto px-8 py-24 relative">
+    <div class="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/10 blur-[120px] -z-10"></div>
+    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-500/10 blur-[120px] -z-10"></div>
+
+    <div class="mb-12 flex flex-col items-center md:items-start">
+        <h2 class="text-[10px] font-black uppercase tracking-[0.8em] text-cyan-400 mb-2">Color Clash Season</h2>
+        <h3 class="text-6xl font-black italic text-white uppercase tracking-tighter">Meet the <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Creators</span></h3>
+    </div>
+
+    <TeamSection client:visible />
+
+    <div class="mt-12 flex flex-wrap justify-center items-center gap-4">
+        {socials.map(social => (
+                <a
+                        href={social.href}
+                        class={`flex items-center gap-3 px-6 py-3 bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-md transition-all duration-300 group ${social.color} hover:bg-white/[0.08] hover:border-white/30`}
+                >
+                    <span class="text-xl group-hover:scale-125 transition-transform duration-300">{social.icon}</span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-white/40 group-hover:text-white">
+                    {social.name}
+                </span>
+                </a>
+        ))}
+    </div>
+</section>

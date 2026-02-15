@@ -1,0 +1,143 @@
+<div class="fixed top-4 right-[2.5%] z-[9999] flex flex-col items-end gap-3">
+
+    <button
+            id="wallet-btn"
+            onclick="toggleCart()"
+            class="group flex items-center gap-6 bg-white/[0.02] backdrop-blur-2xl border border-white/10 p-2 pl-8 rounded-[2rem] hover:bg-white transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:shadow-[0_0_25px_rgba(236,72,153,0.4)] border-t-white/20 h-20 min-w-[200px] z-[10000]"
+    >
+        <div class="flex flex-col items-end text-right justify-center">
+            <span class="text-[10px] font-[1000] italic text-white/40 uppercase tracking-[0.2em] group-hover:text-black/40 leading-none mb-1">Twój Portfel</span>
+            <span id="hud-balance" class="text-xl font-[1000] italic text-green-400 tracking-tight group-hover:text-black leading-none">5000 TC</span>
+        </div>
+
+        <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-[1.2rem] flex items-center justify-center text-sm text-white shadow-[0_5px_15px_rgba(236,72,153,0.5)] group-hover:scale-110 transition-all relative">
+            🛒
+            <span id="cart-count" class="absolute -top-1 -right-1 w-5 h-5 bg-white text-pink-600 text-[10px] font-[1000] rounded-full flex items-center justify-center opacity-0 transition-opacity shadow-lg border-2 border-pink-500/20">0</span>
+        </div>
+    </button>
+
+    <div
+            id="cart-drawer"
+            class="w-[380px] bg-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col opacity-0 translate-y-[-20px] pointer-events-none transition-all duration-500 ease-out border-t-white/20 overflow-hidden"
+    >
+        <div class="p-8 pb-4 flex justify-between items-center border-b border-white/5">
+            <div>
+                <h2 class="text-xl font-[1000] italic text-white uppercase tracking-tighter leading-none">
+                    MANIFEST <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500">ZAKUPÓW</span>
+                </h2>
+                <p class="text-[7px] font-black text-white/30 uppercase tracking-[0.2em] mt-2 font-mono">ID: VV-4402</p>
+            </div>
+
+            <button
+                    onclick="toggleCart(false)"
+                    class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-red-500 font-black text-sm hover:bg-red-500/20 hover:border-red-500/50 hover:scale-110 transition-all duration-300 group/close shadow-lg"
+            >
+                <span class="group-hover/close:rotate-90 transition-transform duration-300">✕</span>
+            </button>
+        </div>
+
+        <div id="cart-list" class="flex-grow overflow-y-auto px-6 py-4 flex flex-col gap-2 max-h-[350px] custom-scrollbar min-h-[80px]">
+            <p class="text-white/10 italic text-center py-10 uppercase text-[9px] font-black tracking-widest">Manifest pusty...</p>
+        </div>
+
+        <div class="p-4 pt-0">
+            <div class="bg-white/[0.03] border border-white/10 rounded-[2rem] p-6 m-2 mb-4 backdrop-blur-md">
+                <div class="flex justify-between items-end mb-6">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[8px] font-black text-white/40 uppercase tracking-[0.2em]">Suma końcowa</span>
+                        <span id="cart-total" class="text-2xl font-[1000] italic text-white tracking-tighter">0 TC</span>
+                    </div>
+                </div>
+
+                <button id="checkout-btn" class="w-full py-4 rounded-[2rem] bg-gradient-to-r from-pink-500 to-purple-600 text-white font-black uppercase tracking-[0.2em] text-[10px] shadow-[0_10px_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-all active:scale-95 flex items-center justify-center gap-3 group/btn">
+                    <span>ZATWIERDŹ TRANSFER</span>
+                    <span class="group-hover/btn:translate-x-1 transition-transform">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    // Inicjalizacja zmiennych globalnych
+    if (window.playerBalance === undefined) window.playerBalance = 5000;
+    if (window.cart === undefined) window.cart = [];
+
+    // Zmienna stanu widoczności - KLUCZOWA
+    let isCartExpanded = false;
+
+    window.toggleCart = (forceState = null) => {
+        const drawer = document.getElementById('cart-drawer');
+        if (!drawer) return;
+
+        // Jeśli forceState jest booleanem, użyj go, w przeciwnym razie przełącz stan
+        isCartExpanded = (typeof forceState === 'boolean') ? forceState : !isCartExpanded;
+
+        if (isCartExpanded) {
+            // POKAZYWANIE
+            drawer.classList.remove('opacity-0', 'translate-y-[-20px]', 'pointer-events-none');
+            drawer.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+        } else {
+            // UKRYWANIE
+            drawer.classList.add('opacity-0', 'translate-y-[-20px]', 'pointer-events-none');
+            drawer.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+        }
+    };
+
+    window.addToCart = (item) => {
+        if (!window.cart) window.cart = [];
+        window.cart.push(item);
+        updateCartUI();
+        window.toggleCart(true);
+    };
+
+    // Funkcja usuwania
+    window.removeFromCart = (index) => {
+        window.cart.splice(index, 1);
+        updateCartUI();
+    };
+
+    // Funkcja aktualizacji UI
+    function updateCartUI() {
+        const list = document.querySelector('#cart-list');
+        const totalDisplay = document.querySelector('#cart-total');
+        const checkoutBtn = document.querySelector('#checkout-btn');
+        const countBadge = document.querySelector('#cart-count');
+
+        if (!list || !totalDisplay || !checkoutBtn || !countBadge) return;
+
+        list.innerHTML = window.cart.length ? '' : '<p class="text-white/10 italic text-center py-10 uppercase text-[9px] font-black tracking-widest">Manifest pusty...</p>';
+
+        let total = 0;
+        window.cart.forEach((item, index) => {
+            total += parseInt(String(item.price).replace(/[^0-9]/g, '')) || 0;
+            const itemEl = document.createElement('div');
+            itemEl.className = "flex items-center gap-4 bg-white/[0.05] border border-white/5 p-4 rounded-[1.5rem] backdrop-blur-sm transition-all hover:bg-white/[0.08]";
+            itemEl.innerHTML = `
+                <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-xl">${item.icon}</div>
+                <div class="flex-grow text-left">
+                    <p class="text-[10px] font-black text-white uppercase italic tracking-tighter leading-none">${item.name}</p>
+                    <p class="text-[8px] font-bold text-pink-400 uppercase mt-1 tracking-widest">${item.price}</p>
+                </div>
+                <button onclick="removeFromCart(${index})" class="text-white/20 hover:text-red-500 transition-colors p-2 font-black text-[10px]">✕</button>
+            `;
+            list.appendChild(itemEl);
+        });
+
+        countBadge.innerText = window.cart.length;
+        countBadge.style.opacity = window.cart.length > 0 ? "1" : "0";
+        totalDisplay.innerText = `${total} TC`;
+
+        if (total > window.playerBalance) {
+            totalDisplay.className = "text-2xl font-[1000] italic text-red-500 tracking-tighter";
+            checkoutBtn.className = "w-full py-4 rounded-[2rem] bg-red-600/10 text-red-500 border border-red-500/20 font-black uppercase text-[9px] cursor-not-allowed";
+            checkoutBtn.innerText = "BRAK ŚRODKÓW";
+            checkoutBtn.disabled = true;
+        } else {
+            totalDisplay.className = "text-2xl font-[1000] italic text-white tracking-tighter shadow-pink-500/20";
+            checkoutBtn.className = "w-full py-4 rounded-[2rem] bg-gradient-to-r from-pink-500 to-purple-600 text-white font-black uppercase tracking-[0.2em] text-[9px] shadow-[0_10px_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] hover:scale-[1.02] transition-all transform active:scale-95";
+            checkoutBtn.innerText = "ZATWIERDŹ TRANSFER";
+            checkoutBtn.disabled = window.cart.length === 0;
+        }
+    }
+</script>

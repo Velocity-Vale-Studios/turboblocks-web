@@ -1,0 +1,91 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CartOverlay from '../../components/CartOverlay.astro';
+
+// Dane te same co wcześniej, tylko w gridzie 6-kolumnowym
+const allFullCollections = {
+    winter: {
+        name: "Winter Festive", accent: "text-blue-400",
+        items: [
+            { name: "Santa Hat", type: "Headgear", price: "Free", icon: "🎅", rarity: "Common" },
+            { name: "Frost Goggles", type: "Accessories", price: "300 TC", icon: "🥽", rarity: "Common" },
+            { name: "Winter Scarf", type: "Accessories", price: "250 TC", icon: "🧣", rarity: "Common" },
+            { name: "Snow Backpack", type: "Backpack", price: "450 TC", icon: "🎒", rarity: "Rare" },
+            { name: "Icy Sweep Roller", type: "Weapon Skin", price: "550 TC", icon: "🚜", rarity: "Rare" },
+            { name: "Step Freeze Boots", type: "Boots", price: "500 TC", icon: "👟", rarity: "Rare" },
+            { name: "Snow Burst Grenade", type: "Gadget", price: "400 TC", icon: "❄️", rarity: "Common" },
+            { name: "Snow Drift Trail", type: "Player Trail", price: "350 TC", icon: "💨", rarity: "Common" },
+            { name: "Candy Glow Trail", type: "Player Trail", price: "400 TC", icon: "🍬", rarity: "Common" },
+            { name: "Winter Gloves", type: "Accessories", price: "150 TC", icon: "🧤", rarity: "Common" }
+        ]
+    },
+    solar: {
+        name: "Solar Flare", accent: "text-orange-500",
+        items: [
+            { name: "Solar Trail", type: "Player Trail", price: "300 TC", icon: "☄️", rarity: "Rare" },
+            { name: "Flare Steps", type: "Boots", price: "400 TC", icon: "👟", rarity: "Rare" },
+            { name: "Blaze Bomb", type: "Gadget", price: "450 TC", icon: "💣", rarity: "Epic" },
+            { name: "Solar Gloves", type: "Accessories", price: "150 TC", icon: "🧤", rarity: "Common" },
+            { name: "Sunshot Cannon", type: "Weapon Skin", price: "600 TC", icon: "🔫", rarity: "Epic" },
+            { name: "Solar Sweep", type: "Weapon Skin", price: "500 TC", icon: "🚜", rarity: "Rare" }
+        ]
+    }
+};
+---
+
+<Layout title="Katalog - Velocity Vale">
+    <CartOverlay />
+    <main class="max-w-7xl mx-auto px-8 pt-[140px] pb-24 text-left">
+        <header class="mb-20">
+            <a href="/shop" class="text-white/20 text-[10px] font-black uppercase tracking-widest hover:text-white mb-4 inline-block italic">← Terminal Główny</a>
+            <h1 class="text-5xl md:text-7xl font-[1000] italic text-white uppercase tracking-tighter">PEŁNE <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-500">ZESTAWY</span></h1>
+        </header>
+
+        {Object.values(allFullCollections).map(col => (
+                <section class="mb-32">
+                    <div class="flex items-center gap-4 mb-12">
+                        <h2 class={`text-3xl font-[1000] italic uppercase tracking-tighter ${col.accent}`}>{col.name}</h2>
+                        <div class="h-[1px] flex-grow bg-white/5"></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 text-left">
+                        {col.items.map(item => {
+                            const rarityStyles = {
+                                Common: "border-white/10",
+                                Rare: "border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.15)]",
+                                Epic: "border-purple-500/40 shadow-[0_0_25px_rgba(168,85,247,0.2)]",
+                                Legendary: "border-orange-500/50 shadow-[0_0_35px_rgba(249,115,22,0.3)] text-yellow-400"
+                            }[item.rarity] || "border-white/10";
+
+                            const badgeStyles = {
+                                Common: "text-white/40 border-white/10",
+                                Rare: "text-blue-400 border-blue-500/30",
+                                Epic: "text-purple-400 border-purple-500/30",
+                                Legendary: "text-yellow-400 border-orange-500/40 animate-pulse"
+                            }[item.rarity] || "text-white/40 border-white/10";
+
+                            return (
+                                <div class={`group relative p-[1px] rounded-[2.2rem] bg-[#050505] transition-all duration-500 hover:scale-[1.05] border ${rarityStyles}`}>
+                                    <div class="p-6 h-full flex flex-col bg-[#050505] rounded-[2.1rem]">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <span class="text-3xl">{item.icon}</span>
+                                            <span class={`text-[7px] font-black uppercase tracking-widest px-2 py-1 rounded-lg border ${badgeStyles}`}>{item.rarity}</span>
+                                        </div>
+                                        <span class="text-[7px] font-black text-white/10 uppercase mb-1">{item.type}</span>
+                                        <h3 class="text-[10px] font-black text-white uppercase mb-4 leading-tight min-h-[2.5em]">{item.name}</h3>
+                                        <div class="mt-auto flex justify-between items-center pt-4 border-t border-white/5">
+                                            <span class={`font-[1000] italic text-xs ${col.accent}`}>{item.price}</span>
+                                            <button
+                                                    onclick={`addToCart({name: "${item.name}", price: "${item.price}", icon: "${item.icon}"})`}
+                                                    class="w-8 h-8 flex items-center justify-center bg-white/5 rounded-full text-white text-[10px] hover:bg-white hover:text-black transition-all"
+                                            >+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </section>
+        ))}
+    </main>
+</Layout>
