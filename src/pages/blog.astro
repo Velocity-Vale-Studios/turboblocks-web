@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// Dane wpisów - możesz je potem przenieść do Content Collections
 const posts = [
     {
         title: 'WIELKA AKTUALIZACJA 2.0 JUŻ DOSTĘPNA!',
@@ -65,8 +64,6 @@ const posts = [
                                 </a>
                             </div>
                         </div>
-
-                        {/* Dekoracyjne światło w tle karty */}
                         <div class={`absolute -bottom-20 -right-20 w-64 h-64 bg-gradient-to-br ${post.gradient} blur-[100px] opacity-0 group-hover:opacity-20 transition-opacity`}></div>
                     </article>
             ))}

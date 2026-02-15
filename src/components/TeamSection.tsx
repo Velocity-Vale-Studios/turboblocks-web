@@ -6,16 +6,35 @@ export const TeamSection = component$(() => {
     const team = [
         {
             name: 'k8bus',
-            role: 'Main Director',
+            role: 'Director',
             img: '/image/k8busSFIRST.png',
-            theme: 'from-pink-500/40 via-purple-500/40 to-cyan-500/40'
+            theme: 'from-pink-500/40 via-purple-500/40 to-cyan-500/40' // Originalish
+        },
+        {
+            name: 'm4t3k33',
+            role: 'Lead Engineer',
+            img: '/image/image-13.jpg',
+            theme: 'from-blue-600/40 via-indigo-500/40 to-cyan-400/40' // Deep Blue Tech
         },
         {
             name: 'nejt12475',
-            role: 'Web Developer',
+            role: 'Engineer',
             img: '/image/image-13.jpg',
-            theme: 'from-cyan-500/40 via-green-400/40 to-yellow-300/40'
+            theme: 'from-emerald-500/40 via-teal-500/40 to-lime-400/40' // Green Matrix
+        },
+        {
+            name: 'MALYMATI2007',
+            role: 'Engineer',
+            img: '/image/image-13.jpg',
+            theme: 'from-orange-500/40 via-red-500/40 to-yellow-400/40' // Fiery
+        },
+        {
+            name: 'Ayame',
+            role: 'Pixel Artist',
+            img: '/image/image-13.jpg',
+            theme: 'from-violet-500/40 via-fuchsia-500/40 to-rose-400/40' // Artistic Purple
         }
+
     ];
 
     const next = $(() => (currentIndex.value = (currentIndex.value + 1) % team.length));
@@ -45,8 +64,12 @@ export const TeamSection = component$(() => {
                 {/* Kontroler Slidera */}
                 <div class="bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-8 relative overflow-hidden group/item">
                     <div class="flex items-center gap-6">
-                        <div class={`w-20 h-20 bg-gradient-to-br ${active.theme} rounded-3xl flex items-center justify-center text-4xl shadow-lg border border-white/20`}>
-                            {currentIndex.value === 0 ? '🎨' : '⚡'}
+                        <div class="w-20 h-20 flex-shrink-0 perspective-500">
+                            <img
+                                src={`https://mc-heads.net/avatar/${active.name}/100`}
+                                alt={active.name}
+                                class="w-full h-full object-contain drop-shadow-lg rounded-xl"
+                            />
                         </div>
                         <div>
                             <h5 class="text-3xl font-black text-white uppercase italic tracking-tighter">{active.name}</h5>
@@ -67,9 +90,9 @@ export const TeamSection = component$(() => {
                 {/* Render Postaci */}
                 <div class="absolute inset-0 flex items-center justify-center p-10">
                     <img
-                        src={active.img}
+                        src={`https://mc-heads.net/body/${active.name}/400`}
                         alt={active.name}
-                        class="h-[110%] w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-700 group-hover:scale-105"
+                        class="h-[90%] w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-700 group-hover:scale-105 scale-x-[-1]"
                     />
                 </div>
 
