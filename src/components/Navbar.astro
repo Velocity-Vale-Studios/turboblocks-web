@@ -55,12 +55,17 @@ const cartItems = 3;
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
         </svg>
         STORE
-        {cartItems > 0 && (
-            <div class="absolute -top-2 -right-2 w-6 h-6 bg-white text-pink-500 rounded-full flex items-center justify-center text-[10px] font-black shadow-xl border-2 border-pink-500/20">
-              {cartItems}
-            </div>
-        )}
       </a>
+
+      <button
+          onclick="toggleCart()"
+          class="relative flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:scale-105 transition-all duration-500 shadow-[0_10px_20px_rgba(236,72,153,0.3)] ml-2 group"
+      >
+        <div class="relative">
+          🛒
+          <span id="navbar-cart-count" class="absolute -top-2 -right-2 w-4 h-4 bg-white text-pink-600 text-[10px] font-black rounded-full flex items-center justify-center opacity-0 transition-opacity shadow-sm">0</span>
+        </div>
+      </button>
     </nav>
 
     <button id="menuBtn" class="lg:hidden p-3 bg-white/5 rounded-xl text-white">
