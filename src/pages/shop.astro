@@ -1,101 +1,396 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const allFullCollections = {
-    winter: {
-        name: "Winter Festive", status: "LIMITED EVENT", accent: "text-blue-400",
-        items: [
-            { name: "Krampus Horns", type: "Headgear", price: "2500 TC", icon: "😈", rarity: "Legendary", desc: "Najrzadszy artefakt wydarzenia.", featured: true },
-            { name: "Snow Frost Brush", type: "Weapon Skin", price: "600 TC", icon: "🖌️", rarity: "Epic", desc: "Malowanie w stylu szronu.", featured: true },
-            { name: "Candy Burst", type: "Death Anim", price: "850 TC", icon: "🍭", rarity: "Rare", desc: "Słodka eksplozja.", featured: true },
-            { name: "Frost Reform", type: "Respawn Anim", price: "750 TC", icon: "❄️", rarity: "Epic", desc: "Animacja odrodzenia.", featured: true }
-        ]
-    },
-    solar: {
-        name: "Solar Flare", status: "CLASSIC SELECTION", accent: "text-orange-500",
-        items: [
-            { name: "Sun Backpack", type: "Backpack", price: "1800 TC", icon: "☀️", rarity: "Legendary", desc: "Plecak słoneczny.", featured: true },
-            { name: "Flare Stroke", type: "Weapon Skin", price: "650 TC", icon: "🔥", rarity: "Epic", desc: "Ognista smuga.", featured: true },
-            { name: "Solar Reform", type: "Respawn Anim", price: "700 TC", icon: "✨", rarity: "Rare", desc: "Złocisty efekt.", featured: true },
-            { name: "Sun Visor", type: "Headgear", price: "200 TC", icon: "🕶️", rarity: "Common", desc: "Klasyczne gogle.", featured: true }
-        ]
+const featuredCollection = {
+    name: "Winter Festive",
+    status: "LIMITED EVENT",
+    desc: "Zimowy zestaw przedmiotów dostępny tylko przez ograniczony czas. Zdobądź legendarne rogi Krampusa i mroźne efekty.",
+    gradient: "from-blue-600 via-indigo-500 to-cyan-400",
+    borderColorClass: "border-blue-500/30",
+    glowClass: "shadow-[0_0_60px_rgba(59,130,246,0.25)] hover:shadow-[0_0_100px_rgba(59,130,246,0.4)]",
+    accent: "text-blue-400",
+    items: [
+        { name: "Krampus Horns", type: "Headgear", price: "2500 TC", icon: "😈", rarity: "Legendary", desc: "Najrzadszy artefakt wydarzenia.", theme: "blue" },
+        { name: "Snow Frost Brush", type: "Weapon Skin", price: "600 TC", icon: "🖌️", rarity: "Epic", desc: "Malowanie w stylu szronu.", theme: "cyan" },
+        { name: "Candy Burst", type: "Death Anim", price: "850 TC", icon: "🍭", rarity: "Rare", desc: "Słodka eksplozja.", theme: "pink" },
+        { name: "Frost Reform", type: "Respawn Anim", price: "750 TC", icon: "❄️", rarity: "Epic", desc: "Animacja odrodzenia.", theme: "white" },
+        // Items migrated from Catalog
+        { name: "Santa Hat", type: "Headgear", price: "Free", icon: "🎅", rarity: "Common", desc: "Klasyczna czapka Mikołaja.", theme: "red" },
+        { name: "Frost Goggles", type: "Accessories", price: "300 TC", icon: "🥽", rarity: "Common", desc: "Gogle odporne na zamrażanie.", theme: "cyan" },
+        { name: "Winter Scarf", type: "Accessories", price: "250 TC", icon: "🧣", rarity: "Common", desc: "Ciepły szalik na zimne dni.", theme: "blue" },
+        { name: "Snow Backpack", type: "Backpack", price: "450 TC", icon: "🎒", rarity: "Rare", desc: "Plecak wypełniony śniegiem.", theme: "white" },
+        { name: "Icy Sweep Roller", type: "Weapon Skin", price: "550 TC", icon: "🚜", rarity: "Rare", desc: "Wałek zostawiający lód.", theme: "cyan" },
+        { name: "Step Freeze Boots", type: "Boots", price: "500 TC", icon: "👟", rarity: "Rare", desc: "Buty zamrażające podłoże.", theme: "blue" },
+        { name: "Snow Burst Grenade", type: "Gadget", price: "400 TC", icon: "❄️", rarity: "Common", desc: "Granat śnieżny.", theme: "white" },
+        { name: "Snow Drift Trail", type: "Player Trail", price: "350 TC", icon: "💨", rarity: "Common", desc: "Ślad śnieżny za graczem.", theme: "white" },
+        { name: "Candy Glow Trail", type: "Player Trail", price: "400 TC", icon: "🍬", rarity: "Common", desc: "Słodka ścieżka świetlna.", theme: "pink" },
+        { name: "Winter Gloves", type: "Accessories", price: "150 TC", icon: "🧤", rarity: "Common", desc: "Rękawice zimowe.", theme: "blue" }
+    ]
+};
+
+const classicCollection = {
+    name: "Solar Flare",
+    status: "CLASSIC SELECTION",
+    gradient: "from-orange-500 via-red-500 to-yellow-500",
+    accent: "text-orange-500",
+    items: [
+        { name: "Sun Backpack", type: "Backpack", price: "1800 TC", icon: "☀️", rarity: "Legendary", desc: "Plecak słoneczny.", theme: "orange" },
+        { name: "Flare Stroke", type: "Weapon Skin", price: "650 TC", icon: "🔥", rarity: "Epic", desc: "Ognista smuga.", theme: "red" },
+        { name: "Solar Reform", type: "Respawn Anim", price: "700 TC", icon: "✨", rarity: "Rare", desc: "Złocisty efekt.", theme: "yellow" },
+        { name: "Sun Visor", type: "Headgear", price: "200 TC", icon: "🕶️", rarity: "Common", desc: "Klasyczne gogle.", theme: "orange" },
+        // Items migrated from Catalog
+        { name: "Solar Trail", type: "Player Trail", price: "300 TC", icon: "☄️", rarity: "Rare", desc: "Ognisty ślad komety.", theme: "orange" },
+        { name: "Flare Steps", type: "Boots", price: "400 TC", icon: "👟", rarity: "Rare", desc: "Buty zostawiające żar.", theme: "red" },
+        { name: "Blaze Bomb", type: "Gadget", price: "450 TC", icon: "💣", rarity: "Epic", desc: "Bomba zapalająca.", theme: "orange" },
+        { name: "Solar Gloves", type: "Accessories", price: "150 TC", icon: "🧤", rarity: "Common", desc: "Rękawice odporne na żar.", theme: "orange" },
+        { name: "Sunshot Cannon", type: "Weapon Skin", price: "600 TC", icon: "🔫", rarity: "Epic", desc: "Działo słoneczne.", theme: "yellow" },
+        { name: "Solar Sweep", type: "Weapon Skin", price: "500 TC", icon: "🚜", rarity: "Rare", desc: "Pojazd solarny.", theme: "orange" }
+    ]
+};
+
+// Helper to get rarity styles
+const getRarityStyles = (rarity) => {
+    switch(rarity) {
+        case 'Legendary': return 'border-yellow-500/50 shadow-[0_0_30px_rgba(234,179,8,0.2)] text-yellow-400';
+        case 'Epic': return 'border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.15)] text-purple-400';
+        case 'Rare': return 'border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.1)] text-blue-400';
+        default: return 'border-white/10 text-white/60';
     }
 };
+
+// Helper for chunking items into slides of 4
+const chunkItems = (items) => {
+    return items.reduce((resultArray, item, index) => {
+        const chunkIndex = Math.floor(index / 4);
+        if(!resultArray[chunkIndex]) { resultArray[chunkIndex] = [] }
+        resultArray[chunkIndex].push(item);
+        return resultArray;
+    }, []);
+};
+
+const featuredChunks = chunkItems(featuredCollection.items);
+const classicChunks = chunkItems(classicCollection.items);
 ---
 
 <Layout title="TurboShop - Terminal">
-    <main class="max-w-7xl mx-auto px-8 pt-[140px] pb-24">
-        <header class="mb-32">
-            <h1 class="text-7xl md:text-9xl font-[1000] italic text-white uppercase tracking-tighter leading-none mb-8">
-                TURBO<span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-cyan-400">SHOP</span>
-            </h1>
-        </header>
+    <main class="max-w-7xl mx-auto px-8 py-32">
 
-        {Object.values(allFullCollections).map((col, index) => (
-                <section class="mb-48 text-left">
-                    <div class="flex items-end justify-between mb-16 border-b border-white/5 pb-8">
+        {/* HEADER */}
+        <div class="mb-24 flex flex-col items-center md:items-start text-center md:text-left relative">
+            <div class="absolute -top-20 -left-20 w-96 h-96 bg-pink-500/20 blur-[150px] -z-10"></div>
+            <h2 class="text-[10px] font-black uppercase tracking-[0.8em] text-cyan-400 mb-4">Store Access</h2>
+            <h1 class="text-7xl md:text-9xl font-black italic text-white uppercase tracking-tighter leading-none md:pr-12">
+                TURBO <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 pr-4">SHOP</span>
+            </h1>
+        </div>
+
+        {/* HERO SECTION: FEATURED COLLECTION */}
+        <section class="mb-32">
+            <div class={`relative rounded-[3.5rem] p-12 overflow-hidden bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${featuredCollection.borderColorClass} ${featuredCollection.glowClass} group`}>
+
+                {/* Dynamic Background Glow */}
+                <div class={`absolute inset-0 bg-gradient-to-br ${featuredCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700`}></div>
+
+                <div class="relative z-10">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
                         <div>
-                        <span class={`flex items-center gap-2 text-[11px] font-[1000] uppercase tracking-[0.5em] ${col.accent}`}>
-                            {index === 0 && <span class="w-2 h-2 bg-current rounded-full animate-ping"></span>}
-                            {col.status || "COLLECTION"}
-                        </span>
-                            <h2 class="text-6xl font-[1000] italic text-white uppercase tracking-tighter mt-2">{col.name}</h2>
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="px-4 py-1.5 bg-blue-500/20 border border-blue-500/30 rounded-xl text-blue-400 text-xs font-black uppercase tracking-widest shadow-[0_0_15px_rgba(59,130,246,0.3)] animate-pulse">
+                                    {featuredCollection.status}
+                                </span>
+                            </div>
+                            <h2 class="text-5xl md:text-7xl font-black italic text-white uppercase tracking-tighter mb-4">{featuredCollection.name}</h2>
+                            <p class="text-white/50 max-w-xl text-lg font-medium">{featuredCollection.desc}</p>
+                        </div>
+                        <div class="text-right hidden md:block">
+                            <span class="text-[10px] font-black text-white/20 uppercase tracking-[0.5em] block mb-2">Czas do końca</span>
+                            <span class="text-3xl font-black italic text-white tracking-widest">12D : 04H</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
-                        {col.items.map(item => {
-                            const rarityStyles = {
-                                Common: "border-white/10",
-                                Rare: "border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.15)]",
-                                Epic: "border-purple-500/40 shadow-[0_0_25px_rgba(168,85,247,0.2)]",
-                                Legendary: "border-orange-500/50 shadow-[0_0_35px_rgba(249,115,22,0.3)] text-yellow-400"
-                            }[item.rarity];
+                    {/* HERO ITEMS CAROUSEL */}
+                    <div class="relative group/slider-featured">
+                        {/* LEFT ARROW */}
+                        <button onclick="changeSlideFeatured(-1)" class="absolute -left-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center text-blue-400 hover:text-white hover:scale-125 transition-all duration-300 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
 
-                            const badgeStyles = {
-                                Common: "text-white/40 border-white/10",
-                                Rare: "text-blue-400 border-blue-500/30",
-                                Epic: "text-purple-400 border-purple-500/30",
-                                Legendary: "text-yellow-400 border-orange-500/40 animate-pulse"
-                            }[item.rarity];
+                        {/* RIGHT ARROW */}
+                        <button onclick="changeSlideFeatured(1)" class="absolute -right-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center text-blue-400 hover:text-white hover:scale-125 transition-all duration-300 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
 
-                            return (
-                                    <div class={`group relative p-[1px] rounded-[2.8rem] transition-all duration-700 hover:scale-[1.03] bg-[#050505] border ${rarityStyles}`}>
-                                        <div class="p-9 h-full flex flex-col relative overflow-hidden bg-[#050505] rounded-[2.7rem]">
-                                            <div class="flex justify-between items-start mb-8 text-6xl">
-                                                {item.icon}
-                                                <span class={`text-[9px] font-[1000] uppercase tracking-[0.2em] px-2.5 py-1.5 rounded-xl border ${badgeStyles}`}>
-                                            {item.rarity}
-                                        </span>
-                                            </div>
-                                            <span class="text-[8px] font-black text-white/20 uppercase tracking-[0.3em] mb-2">{item.type}</span>
-                                            <h3 class="text-2xl font-[1000] text-white uppercase italic tracking-tighter mb-3 leading-none">{item.name}</h3>
-                                            <p class="text-white/30 text-[11px] italic mb-10 leading-relaxed">{item.desc}</p>
-                                            <div class="mt-auto pt-8 border-t border-white/5 flex justify-between items-center">
-                                                <div class="flex flex-col">
-                                                    <span class="text-[8px] font-black text-white/20 uppercase mb-1 leading-none">Cena</span>
-                                                    <span class={`font-[1000] italic text-2xl ${col.accent}`}>{item.price}</span>
+                        <div id="featured-carousel-mask-container" class="relative overflow-hidden py-12 -my-12 -mx-8 w-[calc(100%+4rem)] left-[0rem] transition-[mask-image] duration-300">
+                            <div id="featured-track" class="flex w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform" style="backface-visibility: hidden; perspective: 1000px;">
+                                {featuredChunks.map((chunk, slideIndex) => (
+                                    <div class="w-full flex-shrink-0 px-8 grid grid-cols-4 gap-6 transform-gpu">
+                                        {chunk.map(item => (
+                                            <div class={`group/item relative bg-black/40 border backdrop-blur-md rounded-[2.5rem] p-8 hover:-translate-y-2 transition-all duration-500 ${getRarityStyles(item.rarity)} hover:bg-white/5`}>
+                                                <div class="flex justify-between items-start mb-6">
+                                                    <div class="text-5xl filter drop-shadow-lg group-hover/item:scale-110 transition-transform duration-300">{item.icon}</div>
+                                                    <span class={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border bg-black/50 ${getRarityStyles(item.rarity)}`}>{item.rarity}</span>
                                                 </div>
-                                                <button
+                                                <h3 class="text-xl font-black italic text-white uppercase tracking-tighter mb-2 leading-none">{item.name}</h3>
+                                                <p class="text-white/30 text-xs font-medium mb-6 line-clamp-2">{item.desc}</p>
+                                                <div class="mt-auto flex justify-between items-center pt-6 border-t border-white/5">
+                                                    <span class="font-black text-white">{item.price}</span>
+                                                    <button
                                                         onclick={`addToCart({name: "${item.name}", price: "${item.price}", icon: "${item.icon}"})`}
-                                                        class="px-6 py-3 bg-white text-black rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-cyan-400 transition-all active:scale-95"
-                                                >
-                                                    NABYWAJ
-                                                </button>
+                                                        class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-blue-400 hover:text-white transition-all shadow-lg hover:scale-105"
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        ))}
                                     </div>
-                            );
-                        })}
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex justify-center">
-                        <a href="/shop/catalog" class="group flex items-center gap-6 px-10 py-5 bg-white/[0.02] border border-white/5 rounded-3xl hover:bg-white hover:text-black transition-all">
-                            <span class="text-[10px] font-black uppercase tracking-[0.3em]">PRZEGLĄDAJ KATALOG ELEMENTÓW</span>
-                            <span class={`text-xl group-hover:translate-x-2 transition-transform ${col.accent}`}>→</span>
-                        </a>
+                    {/* PAGINATION DOTS */}
+                    <div class="flex justify-center items-center gap-2 mt-8" id="slider-dots-featured">
+                        {featuredChunks.map((_, index) => (
+                            <button
+                                class={`w-3 h-3 rounded-full transition-all duration-300 ${index === 0 ? "bg-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.5)]" : "bg-white/10 hover:bg-white/30"}`}
+                                onclick={`scrollToSlideFeatured(${index})`}
+                            ></button>
+                        ))}
                     </div>
-                </section>
-        ))}
+                </div>
+            </div>
+        </section>
+
+        {/* CLASSIC COLLECTION: SOLAR FLARE */}
+        <section class="mb-32">
+            <div class={`relative rounded-[3.5rem] p-12 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-orange-500/20 shadow-[0_0_60px_rgba(249,115,22,0.1)] group transition-all duration-700 hover:border-orange-500/40`}>
+
+                {/* Background Mask - Separate div for clipping the background effects/glows specifically */}
+                <div class="absolute inset-0 rounded-[3.5rem] overflow-hidden pointer-events-none">
+                    {/* Dynamic Background Glow */}
+                    <div class="absolute -top-1/2 -left-1/4 w-[150%] h-[150%] bg-gradient-to-br from-orange-500/10 via-red-500/5 to-transparent blur-[100px] rounded-full group-hover:opacity-100 opacity-60 transition-opacity duration-1000"></div>
+                </div>
+
+                <div class="relative z-10">
+                    <div class="flex flex-col lg:flex-row justify-between items-end mb-16 pb-8 border-b border-white/5">
+                        <div>
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="px-4 py-1.5 bg-orange-500/10 border border-orange-500/30 rounded-xl text-orange-400 text-xs font-black uppercase tracking-widest shadow-[0_0_15px_rgba(249,115,22,0.2)]">
+                                    {classicCollection.status}
+                                </span>
+                            </div>
+                            <h2 class="text-5xl md:text-6xl font-black italic text-white uppercase tracking-tighter mb-2">{classicCollection.name}</h2>
+                            <p class="text-white/40 text-lg font-medium">Klasyczne przedmioty, które nigdy nie wychodzą z mody.</p>
+                        </div>
+                    </div>
+
+                    {/* HORIZONTAL SCROLL CAROUSEL WITH ARROWS */}
+                    <div class="relative group/slider">
+
+                        {/* LEFT ARROW */}
+                        <button onclick="changeSlide(-1)" class="absolute -left-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center text-orange-400 hover:text-white hover:scale-125 transition-all duration-300 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+
+                        {/* RIGHT ARROW */}
+                        <button onclick="changeSlide(1)" class="absolute -right-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center text-orange-400 hover:text-white hover:scale-125 transition-all duration-300 drop-shadow-[0_0_10px_rgba(249,115,22,0.5)]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-8 h-8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
+
+                        {/* CAROUSEL TRACK */}
+                        {/* Expanded bounding box (-mx-8, w-110%) to allow effects, but PX-12 on slides to keep cards original size */}
+                        {/* ID added for dynamic masking in JS */}
+                        <div id="carousel-mask-container" class="relative overflow-hidden py-12 -my-12 -mx-8 w-[calc(100%+4rem)] left-[0rem] transition-[mask-image] duration-300">
+                            <div id="classic-track" class="flex w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform" style="backface-visibility: hidden; perspective: 1000px;">
+                                {classicChunks.map((chunk, slideIndex) => (
+                                    <div class="w-full flex-shrink-0 px-8 grid grid-cols-4 gap-8 transform-gpu">
+                                        {chunk.map(item => (
+                                            <div class={`group/item relative h-full flex flex-col p-8 rounded-[2.5rem] bg-black/40 border backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:bg-white/5 ${getRarityStyles(item.rarity)}`}>
+
+                                                <div class="flex justify-between items-start mb-6">
+                                                    <div class="text-5xl filter drop-shadow-lg group-hover/item:scale-110 transition-transform duration-300">
+                                                        {item.icon}
+                                                    </div>
+                                                    <span class={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border bg-black/50 ${getRarityStyles(item.rarity)}`}>
+                                                        {item.rarity}
+                                                    </span>
+                                                </div>
+
+                                                <h3 class="text-xl font-black italic text-white uppercase tracking-tighter mb-2 leading-none group-hover/item:text-orange-300 transition-colors">
+                                                    {item.name}
+                                                </h3>
+
+                                                <p class="text-white/30 text-xs font-medium mb-6 line-clamp-2 leading-relaxed">
+                                                    {item.desc}
+                                                </p>
+
+                                                <div class="mt-auto flex justify-between items-center pt-6 border-t border-white/5">
+                                                    <span class="font-black text-white">{item.price}</span>
+                                                    <button
+                                                        onclick={`addToCart({name: "${item.name}", price: "${item.price}", icon: "${item.icon}"})`}
+                                                        class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-all shadow-lg hover:scale-105"
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* PAGINATION DOTS */}
+                    <div class="flex justify-center items-center gap-2 mt-8" id="slider-dots">
+                        {classicChunks.map((_, index) => (
+                            <button
+                                class={`w-3 h-3 rounded-full transition-all duration-300 ${index === 0 ? "bg-orange-500 shadow-[0_0_10px_orange]" : "bg-white/10 hover:bg-white/30"}`}
+                                onclick={`scrollToSlide(${index})`}
+                            ></button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
     </main>
+
+    <script is:inline>
+        // --- CLASSIC CAROUSEL LOGIC ---
+        let currentSlide = 0;
+        // Count actual slides rendered in DOM to be safe
+        const getSlideCount = () => document.getElementById('classic-track')?.children.length || 0;
+
+        // Arrow Logic
+        window.changeSlide = (direction) => {
+            const total = getSlideCount();
+            currentSlide = (currentSlide + direction + total) % total;
+            updateCarousel();
+        };
+
+        // Dot Logic
+        window.scrollToSlide = (index) => {
+            currentSlide = index;
+            updateCarousel();
+        };
+
+        function updateCarousel(isInitial = false) {
+            const track = document.getElementById('classic-track');
+            const dots = document.getElementById('slider-dots')?.children;
+            const container = document.getElementById('carousel-mask-container');
+
+            if (track) {
+                if (isInitial) {
+                    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                } else {
+                    // Apply Soft Edge Mask during animation
+                    if(container) {
+                        const mask = "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)";
+                        container.style.maskImage = mask;
+                        container.style.webkitMaskImage = mask;
+                    }
+
+                    setTimeout(() => {
+                        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+                        // Remove mask after transition
+                        setTimeout(() => {
+                            if(container) {
+                                container.style.maskImage = "none";
+                                container.style.webkitMaskImage = "none";
+                            }
+                        }, 400);
+                    }, 10);
+                }
+            }
+
+            if (dots) {
+                Array.from(dots).forEach((dot, i) => {
+                    if (i === currentSlide) {
+                        dot.className = "w-3 h-3 rounded-full bg-orange-500 shadow-[0_0_10px_orange] transition-all duration-300 scale-125";
+                    } else {
+                        dot.className = "w-3 h-3 rounded-full bg-white/10 hover:bg-white/30 transition-all duration-300";
+                    }
+                });
+            }
+        }
+
+        // --- FEATURED CAROUSEL LOGIC ---
+        let currentSlideFeatured = 0;
+        const getSlideCountFeatured = () => document.getElementById('featured-track')?.children.length || 0;
+
+        window.changeSlideFeatured = (direction) => {
+            const total = getSlideCountFeatured();
+            currentSlideFeatured = (currentSlideFeatured + direction + total) % total;
+            updateCarouselFeatured();
+        };
+
+        window.scrollToSlideFeatured = (index) => {
+            currentSlideFeatured = index;
+            updateCarouselFeatured();
+        };
+
+        function updateCarouselFeatured(isInitial = false) {
+            const track = document.getElementById('featured-track');
+            const dots = document.getElementById('slider-dots-featured')?.children;
+            const container = document.getElementById('featured-carousel-mask-container');
+
+            if (track) {
+                if (isInitial) {
+                    track.style.transform = `translateX(-${currentSlideFeatured * 100}%)`;
+                } else {
+                    // Apply Soft Edge Mask during animation
+                    if(container) {
+                        const mask = "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)";
+                        container.style.maskImage = mask;
+                        container.style.webkitMaskImage = mask;
+                    }
+
+                    setTimeout(() => {
+                        track.style.transform = `translateX(-${currentSlideFeatured * 100}%)`;
+
+                        // Remove mask after transition
+                        setTimeout(() => {
+                            if(container) {
+                                container.style.maskImage = "none";
+                                container.style.webkitMaskImage = "none";
+                            }
+                        }, 400);
+                    }, 10);
+                }
+            }
+
+            if (dots) {
+                Array.from(dots).forEach((dot, i) => {
+                    if (i === currentSlideFeatured) {
+                        dot.className = "w-3 h-3 rounded-full bg-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-300 scale-125";
+                    } else {
+                        dot.className = "w-3 h-3 rounded-full bg-white/10 hover:bg-white/30 transition-all duration-300";
+                    }
+                });
+            }
+        }
+
+        // Cart Logic
+        window.addToCart = (item) => {
+            const event = new CustomEvent('shop:add', { detail: item });
+            window.dispatchEvent(event);
+        };
+
+        // Init
+        updateCarousel(true);
+        updateCarouselFeatured(true);
+    </script>
 </Layout>
+
