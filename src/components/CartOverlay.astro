@@ -1,25 +1,25 @@
-<div id="cart-drawer" class="fixed top-32 right-12 z-[9000] flex flex-col items-stretch gap-6 pointer-events-none opacity-0 translate-x-[50px] transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] w-[400px] h-[calc(100vh-250px)]">
+<div id="cart-drawer" class="fixed top-32 right-4 md:right-8 z-[9000] flex flex-col items-stretch gap-3 pointer-events-none opacity-0 transition-opacity duration-300 w-[calc(100%-2rem)] md:w-[420px] max-h-[calc(100vh-150px)]">
 
     {/* BUBBLE 1: HEADER */}
-    <div class="w-full p-6 bg-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.3)] flex justify-between items-center shrink-0">
+    <div class="w-full px-4 md:px-6 py-5 md:py-6 bg-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex justify-between items-center shrink-0">
         <div>
-            <h2 class="text-lg font-black italic text-white uppercase tracking-tighter leading-none">
+            <h2 class="text-base md:text-lg font-black italic text-white uppercase tracking-tighter leading-none">
                 MANAGE <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500">CART</span>
             </h2>
-            <p class="text-[8px] font-bold text-white/30 uppercase tracking-[0.3em] mt-1 pl-0.5">Terminal ID: T-800</p>
+            <p class="text-[7px] md:text-[8px] font-bold text-white/30 uppercase tracking-[0.3em] mt-1 pl-0.5">Terminal ID: T-800</p>
         </div>
 
         <button
                 onclick="toggleCart(false)"
-                class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 hover:rotate-90 transition-all duration-300 group shadow-lg"
+                class="w-9 md:w-10 h-9 md:h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 hover:rotate-90 transition-all duration-300 group shadow-lg shrink-0"
         >
             ✕
         </button>
     </div>
 
     {/* BUBBLE 2: ITEMS LIST */}
-    <div class="w-full flex-grow bg-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col">
-        <div id="cart-list" class="flex-grow overflow-y-auto px-6 py-6 flex flex-col gap-3 custom-scrollbar">
+    <div class="w-full bg-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col">
+        <div id="cart-list" class="overflow-y-auto max-h-[350px] md:max-h-[400px] px-4 md:px-6 py-5 md:py-6 flex flex-col gap-3 custom-scrollbar">
             <div class="h-full flex flex-col items-center justify-center text-center opacity-40">
                 <span class="text-4xl mb-4 grayscale">🛒</span>
                 <p class="text-white italic uppercase text-[10px] font-black tracking-widest">Inventory Empty</p>
@@ -28,7 +28,7 @@
     </div>
 
     {/* BUBBLE 3: CHECKOUT */}
-    <div class="w-full p-6 bg-white/[0.02] backdrop-blur-2xl border border-pink-500/30 rounded-[2.5rem] shadow-[0_8px_32px_rgba(236,72,153,0.15)] shrink-0 relative group/total overflow-hidden">
+    <div class="w-full px-4 md:px-6 py-5 md:py-6 bg-white/[0.02] backdrop-blur-2xl border border-pink-500/30 rounded-[2rem] shadow-[0_20px_50px_rgba(236,72,153,0.15)] shrink-0 relative group/total overflow-hidden">
         {/* Glow ambient */}
         <div class="absolute -top-20 -right-20 w-56 h-56 bg-gradient-to-br from-pink-500/30 to-purple-600/30 blur-[80px] rounded-full animate-pulse transition-all duration-700 pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-pink-500/5 to-transparent pointer-events-none"></div>
@@ -67,9 +67,9 @@
     window.playerBalance = 5000; // Simulated wallet
 
     // Function to save
-    const saveCart = () => {
+    const saveCart = (animate = true) => {
         localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(window.cart));
-        updateCartUI();
+        updateCartUI(animate);
     };
 
     // --- DRAWER CONTROLS ---
@@ -79,27 +79,22 @@
         const drawer = document.getElementById('cart-drawer');
         if (!drawer) return;
 
-        // Logic toggle
         isCartExpanded = (typeof forceState === 'boolean') ? forceState : !isCartExpanded;
 
         if (isCartExpanded) {
-            drawer.classList.remove('opacity-0', 'translate-x-[50px]', 'pointer-events-none');
-            // Refresh visual state when opening
-            updateCartUI();
+            drawer.classList.remove('opacity-0', 'pointer-events-none');
+            drawer.classList.add('opacity-100', 'pointer-events-auto');
+            updateCartUI(false);
         } else {
-            drawer.classList.add('opacity-0', 'translate-x-[50px]');
-            // Use timeout to set pointer-events-none after animation if needed,
-            // but for safety we can just let CSS handle opacity pointer-events?
-            // Actually, best to act immediately on class logic if CSS handles it.
-            // The template class has 'pointer-events-none' on parent wrapper, but drawer overrides it.
-            // Let's stick to opacity/translate.
+            drawer.classList.add('opacity-0', 'pointer-events-none');
+            drawer.classList.remove('opacity-100', 'pointer-events-auto');
         }
     };
 
     // --- ITEM ACTIONS ---
     window.addToCart = (item) => {
         window.cart.push(item);
-        saveCart();
+        saveCart(true);
         window.toggleCart(true); // Auto-open on add
 
         // Optional: Play sound or visual cue
@@ -107,7 +102,7 @@
 
     window.removeFromCart = (index) => {
         window.cart.splice(index, 1);
-        saveCart();
+        saveCart(false);
     };
 
     // --- EVENT LISTENER FOR SHOP PAGES ---
@@ -119,7 +114,7 @@
     });
 
     // --- UI RENDERER ---
-    function updateCartUI() {
+    function updateCartUI(animate = true) {
         const list = document.querySelector('#cart-list');
         const totalDisplay = document.querySelector('#cart-total');
         const balanceDisplay = document.querySelector('#player-balance');
@@ -131,8 +126,11 @@
             navbarBadge.innerText = window.cart.length;
             navbarBadge.style.opacity = window.cart.length > 0 ? '1' : '0';
             // Pop effect
-            navbarBadge.style.transform = 'scale(1.5)';
-            setTimeout(() => navbarBadge.style.transform = 'scale(1)', 200);
+            if (animate) {
+                navbarBadge.classList.remove('animate-cart-pop');
+                void navbarBadge.offsetWidth; // Trigger reflow
+                navbarBadge.classList.add('animate-cart-pop');
+            }
         }
 
         if (!list || !totalDisplay || !checkoutBtn) return; // Exit if drawer not mounted (unlikely)
@@ -199,5 +197,53 @@
     }
 
     // Init Logic on Load
-    updateCartUI();
+    updateCartUI(false);
 </script>
+
+<style is:global>
+    @keyframes cart-bounce {
+        0% { transform: scale(1); }
+        25% { transform: scale(1.5); background-color: #db2777; color: white; box-shadow: 0 0 10px rgba(219, 39, 119, 0.5); }
+        40% { transform: scale(0.9); }
+        60% { transform: scale(1.15); }
+        100% { transform: scale(1); background-color: white; color: #db2777; box-shadow: none; }
+    }
+    .animate-cart-pop {
+        animation: cart-bounce 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* Frosted glass effect for cart bubbles - optimized for mobile */
+    #cart-drawer > div {
+        background: rgba(255, 255, 255, 0.02) !important;
+        -webkit-backdrop-filter: blur(40px) !important;
+        backdrop-filter: blur(40px) !important;
+        isolation: isolate;
+        will-change: opacity;
+        contain: layout style;
+    }
+
+    /* Enhancement layer for cart bubbles */
+    #cart-drawer > div::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+        border-radius: inherit;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* GPU acceleration for drawer */
+    #cart-drawer {
+        will-change: opacity;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+
+    /* Firefox fallback */
+    @supports not (backdrop-filter: blur(1px)) {
+        #cart-drawer > div {
+            background: rgba(10, 10, 10, 0.9) !important;
+        }
+    }
+</style>

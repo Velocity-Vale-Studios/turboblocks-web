@@ -93,44 +93,45 @@ export const TeamSection = component$(() => {
     const active = team[currentIndex.value];
 
     return (
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch">
 
             {/* LEWE OKNO: SZKLANY PANEL - ZMODYFIKOWANE */}
-            <div class={`lg:col-span-7 bg-gradient-to-br from-white/5 to-white/[0.02] border ${active.borderColorClass} rounded-[3.5rem] p-12 backdrop-blur-3xl flex flex-col justify-center relative overflow-hidden group ${active.glowClass} transition-all duration-700`}>
+            <div class={`lg:col-span-7 bg-gradient-to-br from-white/5 to-white/[0.02] border ${active.borderColorClass} rounded-[2rem] lg:rounded-[3.5rem] p-6 lg:p-12 backdrop-blur-3xl flex flex-col justify-center relative overflow-hidden group ${active.glowClass} transition-all duration-700`}>
                 <div class={`absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br ${active.theme} blur-[100px] opacity-20 transition-all duration-1000`}></div>
 
                 {/* Status Badge */}
-                <div class="absolute top-12 left-12 inline-block px-4 py-1.5 bg-cyan-400/10 border border-cyan-400/20 rounded-full text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em]">
+                <div class="absolute top-6 lg:top-12 left-6 lg:left-12 inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-cyan-400/10 border border-cyan-400/20 rounded-full text-[8px] lg:text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em]">
                     Online Profile // CC-2026
                 </div>
 
                 {/* Główny opis aktywnej osoby */}
-                <div key={active.name} class="mt-8 mb-8 relative z-10 slide-anim">
-                    <h5 class="text-5xl font-black text-white uppercase italic tracking-tighter transition-all duration-300 mb-2 pr-4">{active.name}</h5>
-                    <p class={`${active.textClass} font-black text-xs uppercase tracking-[0.3em] mb-8`}>{active.role}</p>
+                <div key={active.name} class="mt-6 lg:mt-8 mb-6 lg:mb-8 relative z-10 slide-anim">
+                    <h5 class="text-3xl lg:text-5xl font-black text-white uppercase italic tracking-tighter transition-all duration-300 mb-2 pr-4">{active.name}</h5>
+                    <p class={`${active.textClass} font-black text-[10px] lg:text-xs uppercase tracking-[0.3em] mb-4 lg:mb-8`}>{active.role}</p>
 
-                    <p class={`text-white/60 text-lg italic font-medium border-l-4 ${active.borderClass} pl-6 max-w-lg leading-relaxed`}>
+                    <p class={`text-white/60 text-base lg:text-lg italic font-medium border-l-4 ${active.borderClass} pl-4 lg:pl-6 max-w-lg leading-relaxed`}>
                         "{active.quote}"
                     </p>
                 </div>
 
                 {/* PASEK NAWIGACJI (HEADS STRIP) */}
-                <div class="flex items-center justify-between gap-4 mt-auto pt-8 border-t border-white/5 relative z-10">
+                <div class="flex items-center justify-center gap-2 lg:gap-4 mt-auto pt-6 lg:pt-8 border-t border-white/5 relative z-10 flex-wrap">
 
                     {/* Lewa Strzałka */}
-                    <button onClick$={prev} class="w-10 h-10 flex items-center justify-center text-white/40 hover:text-white hover:scale-125 transition-all duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+                    <button onClick$={prev} class="w-8 lg:w-10 h-8 lg:h-10 flex items-center justify-center text-white/40 hover:text-white hover:scale-125 transition-all duration-300 shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 lg:w-6 h-5 lg:h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                         </svg>
                     </button>
 
                     {/* Lista Głów */}
-                    <div class="flex items-center gap-3 overflow-x-auto no-scrollbar py-4 px-4 bg-white/[0.02] rounded-2xl border border-white/5">
+                    <div class={`flex items-center gap-2 lg:gap-3 py-2 lg:py-4 px-3 lg:px-4 bg-white/[0.02] rounded-xl lg:rounded-2xl border border-white/5`}
+                        style={`width: auto; max-width: 100%; display: flex; flex-wrap: nowrap;`}>
                         {team.map((member, index) => (
                             <button
                                 key={member.name}
                                 onClick$={() => setIndex(index)}
-                                class={`relative w-12 h-12 rounded-xl overflow-hidden transition-all duration-300 ${
+                                class={`relative w-9 h-9 lg:w-12 lg:h-12 rounded-lg lg:rounded-xl overflow-hidden transition-all duration-300 shrink-0 ${
                                     currentIndex.value === index
                                         ? `ring-2 ${member.ringClass} scale-110 shadow-md ${member.shadowClass} opacity-100 grayscale-0`
                                         : 'opacity-40 grayscale hover:opacity-100 hover:grayscale-0 hover:scale-105'
@@ -146,8 +147,8 @@ export const TeamSection = component$(() => {
                     </div>
 
                     {/* Prawa Strzałka */}
-                    <button onClick$={next} class="w-10 h-10 flex items-center justify-center text-white/40 hover:text-white hover:scale-125 transition-all duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+                    <button onClick$={next} class="w-8 lg:w-10 h-8 lg:h-10 flex items-center justify-center text-white/40 hover:text-white hover:scale-125 transition-all duration-300 shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 lg:w-6 h-5 lg:h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                     </button>
@@ -155,25 +156,25 @@ export const TeamSection = component$(() => {
                 </div>
             </div>
 
-            {/* PRAWE OKNO: NEON SPLASH (Bez zmian - Zaktualizowany Border) */}
-            <div class={`lg:col-span-5 bg-gradient-to-br ${active.theme} backdrop-blur-3xl border ${active.borderColorClass} rounded-[3.5rem] relative overflow-hidden min-h-[600px] flex items-center justify-center ${active.glowClass}`}>
-                <div key={active.name} class="absolute inset-0 flex items-center justify-center p-10 slide-anim">
+            {/* PRAWE OKNO: NEON SPLASH */}
+            <div class={`lg:col-span-5 bg-gradient-to-br ${active.theme} backdrop-blur-3xl border ${active.borderColorClass} rounded-[2rem] lg:rounded-[3.5rem] relative overflow-hidden min-h-[400px] lg:min-h-[600px] flex items-center justify-center ${active.glowClass}`}>
+                <div key={active.name} class="absolute inset-0 flex items-center justify-center p-4 lg:p-10 slide-anim">
                     <img
                         src={`https://mc-heads.net/body/${active.name}/400`}
                         alt={active.name}
-                        class="h-[90%] w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] scale-x-[-1]"
+                        class="h-[80%] lg:h-[90%] w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] scale-x-[-1]"
                     />
                 </div>
 
-                <div key={active.name + 'info'} class="absolute bottom-8 left-8 right-8 p-8 bg-black/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] slide-anim">
+                <div key={active.name + 'info'} class="absolute bottom-4 lg:bottom-8 left-4 lg:left-8 right-4 lg:right-8 p-4 lg:p-8 bg-black/40 backdrop-blur-xl border border-white/10 rounded-[1.5rem] lg:rounded-[2.5rem] slide-anim">
                     <div class="flex flex-col items-center">
-                        <span class="text-5xl font-black italic text-white uppercase tracking-tighter leading-none mb-2">
+                        <span class="text-3xl lg:text-5xl font-black italic text-white uppercase tracking-tighter leading-none mb-2">
                             {active.name}
                         </span>
-                        <div class="flex items-center gap-4">
-                            <div class={`h-[2px] w-8 ${active.bgClass}`}></div>
-                            <span class="text-[10px] font-black text-white/60 uppercase tracking-[0.4em]">{active.role}</span>
-                            <div class={`h-[2px] w-8 ${active.bgClass}`}></div>
+                        <div class="flex items-center gap-2 lg:gap-4">
+                            <div class={`h-[2px] w-6 lg:w-8 ${active.bgClass}`}></div>
+                            <span class="text-[8px] lg:text-[10px] font-black text-white/60 uppercase tracking-[0.4em]">{active.role}</span>
+                            <div class={`h-[2px] w-6 lg:w-8 ${active.bgClass}`}></div>
                         </div>
                     </div>
                 </div>
