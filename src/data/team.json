@@ -1,0 +1,72 @@
+[
+  {
+    "name": "k8bus",
+    "role": "Director",
+    "img": "/image/k8busSFIRST.png",
+    "theme": "from-pink-500/40 via-purple-500/40 to-cyan-500/40",
+    "quote": "Building dreams, one block at a time.",
+    "textClass": "text-pink-500",
+    "borderClass": "border-pink-500",
+    "borderColorClass": "border-pink-500/30",
+    "bgClass": "bg-pink-500",
+    "ringClass": "ring-pink-500",
+    "shadowClass": "shadow-pink-500/40",
+    "glowClass": "shadow-[0_0_40px_rgba(236,72,153,0.2)]"
+  },
+  {
+    "name": "m4t3k33",
+    "role": "Lead Engineer",
+    "img": "/image/image-13.jpg",
+    "theme": "from-blue-600/40 via-indigo-500/40 to-cyan-400/40",
+    "quote": "Efficiency is the key to success.",
+    "textClass": "text-blue-500",
+    "borderClass": "border-blue-500",
+    "borderColorClass": "border-blue-500/30",
+    "bgClass": "bg-blue-500",
+    "ringClass": "ring-blue-500",
+    "shadowClass": "shadow-blue-500/40",
+    "glowClass": "shadow-[0_0_40px_rgba(37,99,235,0.2)]"
+  },
+  {
+    "name": "nejt12475",
+    "role": "Engineer",
+    "img": "/image/image-13.jpg",
+    "theme": "from-emerald-500/40 via-teal-500/40 to-lime-400/40",
+    "quote": "Solving problems you didn't know you had.",
+    "textClass": "text-emerald-500",
+    "borderClass": "border-emerald-500",
+    "borderColorClass": "border-emerald-500/30",
+    "bgClass": "bg-emerald-500",
+    "ringClass": "ring-emerald-500",
+    "shadowClass": "shadow-emerald-500/40",
+    "glowClass": "shadow-[0_0_40px_rgba(16,185,129,0.2)]"
+  },
+  {
+    "name": "MALYMATI2007",
+    "role": "Engineer",
+    "img": "/image/image-13.jpg",
+    "theme": "from-orange-500/40 via-red-500/40 to-yellow-400/40",
+    "quote": "Innovation never sleeps.",
+    "textClass": "text-orange-500",
+    "borderClass": "border-orange-500",
+    "borderColorClass": "border-orange-500/30",
+    "bgClass": "bg-orange-500",
+    "ringClass": "ring-orange-500",
+    "shadowClass": "shadow-orange-500/40",
+    "glowClass": "shadow-[0_0_40px_rgba(249,115,22,0.2)]"
+  },
+  {
+    "name": "Ayame",
+    "role": "Pixel Artist",
+    "img": "/image/image-13.jpg",
+    "theme": "from-violet-500/40 via-fuchsia-500/40 to-rose-400/40",
+    "quote": "Pixel perfect, every time.",
+    "textClass": "text-violet-500",
+    "borderClass": "border-violet-500",
+    "borderColorClass": "border-violet-500/30",
+    "bgClass": "bg-violet-500",
+    "ringClass": "ring-violet-500",
+    "shadowClass": "shadow-violet-500/40",
+    "glowClass": "shadow-[0_0_40px_rgba(139,92,246,0.2)]"
+  }
+]

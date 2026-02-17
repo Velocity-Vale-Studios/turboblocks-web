@@ -1,0 +1,11 @@
+{
+  "name": "Winter Festive",
+  "status": "LIMITED EVENT",
+  "desc": "Zimowy zestaw przedmiotów dostępny tylko przez ograniczony czas.",
+  "isFeatured": true,
+  "gradient": "from-blue-600 via-indigo-500 to-cyan-400",
+  "items": [
+    { "name": "Krampus Horns", "type": "Headgear", "price": "2500 TC", "icon": "😈", "rarity": "Legendary" },
+    { "name": "Snow Frost Brush", "type": "Weapon Skin", "price": "600 TC", "icon": "🖌️", "rarity": "Epic" }
+  ]
+}
