@@ -129,18 +129,21 @@ const classicChunks = chunkItems(classicCollection.items);
                                 {featuredChunks.map((chunk, slideIndex) => (
                                     <div class="w-full flex-shrink-0 px-8 grid grid-cols-4 gap-6 transform-gpu">
                                         {chunk.map(item => (
-                                            <div class={`group/item relative bg-black/40 border backdrop-blur-md rounded-[2.5rem] p-8 hover:-translate-y-2 transition-all duration-500 ${getRarityStyles(item.rarity)} hover:bg-white/5`}>
+                                            <div
+                                                class={`group/item relative bg-black/40 border backdrop-blur-md rounded-[2.5rem] p-8 hover:-translate-y-2 transition-all duration-500 ${getRarityStyles(item.rarity)} hover:bg-white/5 cursor-pointer item-card`}
+                                                data-item={JSON.stringify(item)}
+                                            >
                                                 <div class="flex justify-between items-start mb-6">
-                                                    <div class="text-5xl filter drop-shadow-lg group-hover/item:scale-110 transition-transform duration-300">{item.icon}</div>
-                                                    <span class={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border bg-black/50 ${getRarityStyles(item.rarity)}`}>{item.rarity}</span>
+                                                    <div class="text-5xl filter drop-shadow-lg group-hover/item:scale-110 transition-transform duration-300 pointer-events-none">{item.icon}</div>
+                                                    <span class={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border bg-black/50 pointer-events-none ${getRarityStyles(item.rarity)}`}>{item.rarity}</span>
                                                 </div>
-                                                <h3 class="text-xl font-black italic text-white uppercase tracking-tighter mb-2 leading-none">{item.name}</h3>
-                                                <p class="text-white/30 text-xs font-medium mb-6 line-clamp-2">{item.desc}</p>
+                                                <h3 class="text-xl font-black italic text-white uppercase tracking-tighter mb-2 leading-none pointer-events-none">{item.name}</h3>
+                                                <p class="text-white/30 text-xs font-medium mb-6 line-clamp-2 pointer-events-none">{item.desc}</p>
                                                 <div class="mt-auto flex justify-between items-center pt-6 border-t border-white/5">
-                                                    <span class="font-black text-white">{item.price}</span>
+                                                    <span class="font-black text-white pointer-events-none">{item.price}</span>
                                                     <button
-                                                        onclick={`addToCart({name: "${item.name}", price: "${item.price}", icon: "${item.icon}"})`}
-                                                        class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-blue-400 hover:text-white transition-all shadow-lg hover:scale-105"
+                                                        class="add-to-cart-btn w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-blue-400 hover:text-white transition-all shadow-lg hover:scale-105 z-20 relative"
+                                                        data-item={JSON.stringify(item)}
                                                     >
                                                         +
                                                     </button>
@@ -214,30 +217,33 @@ const classicChunks = chunkItems(classicCollection.items);
                                 {classicChunks.map((chunk, slideIndex) => (
                                     <div class="w-full flex-shrink-0 px-8 grid grid-cols-4 gap-8 transform-gpu">
                                         {chunk.map(item => (
-                                            <div class={`group/item relative h-full flex flex-col p-8 rounded-[2.5rem] bg-black/40 border backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:bg-white/5 ${getRarityStyles(item.rarity)}`}>
+                                            <div
+                                                class={`group/item relative h-full flex flex-col p-8 rounded-[2.5rem] bg-black/40 border backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:bg-white/5 cursor-pointer item-card ${getRarityStyles(item.rarity)}`}
+                                                data-item={JSON.stringify(item)}
+                                            >
 
                                                 <div class="flex justify-between items-start mb-6">
-                                                    <div class="text-5xl filter drop-shadow-lg group-hover/item:scale-110 transition-transform duration-300">
+                                                    <div class="text-5xl filter drop-shadow-lg group-hover/item:scale-110 transition-transform duration-300 pointer-events-none">
                                                         {item.icon}
                                                     </div>
-                                                    <span class={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border bg-black/50 ${getRarityStyles(item.rarity)}`}>
+                                                    <span class={`text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border bg-black/50 pointer-events-none ${getRarityStyles(item.rarity)}`}>
                                                         {item.rarity}
                                                     </span>
                                                 </div>
 
-                                                <h3 class="text-xl font-black italic text-white uppercase tracking-tighter mb-2 leading-none group-hover/item:text-orange-300 transition-colors">
+                                                <h3 class="text-xl font-black italic text-white uppercase tracking-tighter mb-2 leading-none group-hover/item:text-orange-300 transition-colors pointer-events-none">
                                                     {item.name}
                                                 </h3>
 
-                                                <p class="text-white/30 text-xs font-medium mb-6 line-clamp-2 leading-relaxed">
+                                                <p class="text-white/30 text-xs font-medium mb-6 line-clamp-2 leading-relaxed pointer-events-none">
                                                     {item.desc}
                                                 </p>
 
                                                 <div class="mt-auto flex justify-between items-center pt-6 border-t border-white/5">
-                                                    <span class="font-black text-white">{item.price}</span>
+                                                    <span class="font-black text-white pointer-events-none">{item.price}</span>
                                                     <button
-                                                        onclick={`addToCart({name: "${item.name}", price: "${item.price}", icon: "${item.icon}"})`}
-                                                        class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-all shadow-lg hover:scale-105"
+                                                        class="add-to-cart-btn w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-orange-500 hover:text-white transition-all shadow-lg hover:scale-105 relative z-20"
+                                                        data-item={JSON.stringify(item)}
                                                     >
                                                         +
                                                     </button>
@@ -263,6 +269,64 @@ const classicChunks = chunkItems(classicCollection.items);
             </div>
         </section>
 
+
+        {/* ITEM DETAILS MODAL */}
+        <div id="item-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+            {/* Backdrop */}
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+
+            {/* Modal Content */}
+            <div class="relative w-full max-w-2xl transform scale-95 transition-all duration-300 opacity-0 bg-[#0a0a0a] border border-white/10 rounded-[3rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)]" id="modal-content">
+
+                {/* Background Effects */}
+                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-blue-500/20 via-purple-500/10 to-transparent blur-[100px] -z-10 rounded-full animate-pulse"></div>
+
+                <div class="relative z-10 p-12 flex flex-col items-center text-center">
+
+                    {/* Close Button */}
+                    <button onclick="closeModal()" class="absolute top-8 right-8 w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-white/10 rounded-full text-white/50 hover:text-white transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    {/* Item Icon */}
+                    <div class="mb-8 relative">
+                         <div class="absolute inset-0 bg-blue-500/30 blur-[60px] rounded-full" id="modal-glow"></div>
+                         <div class="text-9xl filter drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] animate-bounce-slow" id="modal-icon">📦</div>
+                    </div>
+
+                    {/* Rarity Tag */}
+                    <div class="mb-6">
+                        <span id="modal-rarity" class="px-4 py-1.5 rounded-xl border bg-black/50 text-xs font-black uppercase tracking-[0.2em] backdrop-blur-md">
+                            COMMON
+                        </span>
+                    </div>
+
+                    {/* Title & Type */}
+                    <h2 id="modal-title" class="text-4xl md:text-5xl font-black italic text-white uppercase tracking-tighter mb-2">Item Name</h2>
+                    <span id="modal-type" class="text-white/40 text-sm font-bold uppercase tracking-widest mb-8 block">Item Type</span>
+
+                    {/* Description */}
+                    <p id="modal-desc" class="text-white/60 text-lg font-medium leading-relaxed max-w-md mb-10">
+                        Opis przedmiotu...
+                    </p>
+
+                    {/* Footer Actions */}
+                    <div class="flex items-center gap-6 w-full justify-center border-t border-white/5 pt-8">
+                        <div class="flex flex-col items-start">
+                            <span class="text-[10px] font-black text-white/30 uppercase tracking-widest mb-1">Price</span>
+                            <span id="modal-price" class="text-3xl font-black italic text-white tracking-widest">0 TC</span>
+                        </div>
+
+                        <button id="modal-btn" class="px-10 py-4 bg-white text-black font-black uppercase text-sm tracking-widest rounded-2xl hover:bg-blue-500 hover:text-white transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] hover:scale-105 transform active:scale-95">
+                            Add to Cart
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     </main>
 
@@ -391,6 +455,9 @@ const classicChunks = chunkItems(classicCollection.items);
         // Init
         updateCarousel(true);
         updateCarouselFeatured(true);
+    </script>
+    <script is:inline src="/scripts/shop-modal.js"></script>
+</Layout>
     </script>
 </Layout>
 
