@@ -118,41 +118,73 @@ export const TeamSection = component$(() => {
                 </div>
 
                 {/* PASEK NAWIGACJI */}
-                <div class="flex items-center justify-center gap-2 lg:gap-4 mt-auto pt-6 lg:pt-8 border-t border-white/5 relative z-10 flex-wrap">
-                    {/* Lewa Strzałka */}
-                    <button onClick$={prev} class="w-8 lg:w-10 h-8 lg:h-10 flex items-center justify-center text-white/40 hover:text-white hover:scale-125 transition-all duration-300 shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 lg:w-6 h-5 lg:h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg>
-                    </button>
+                <div class="flex flex-col items-center gap-4 mt-auto pt-6 lg:pt-8 border-t border-white/5 relative z-10 w-full">
 
-                    {/* Lista Głów */}
-                    <div class="flex items-center gap-2 lg:gap-3 py-2 px-3 bg-white/[0.02] rounded-xl border border-white/5 overflow-x-auto max-w-full">
-                        {team.map((member, index) => (
-                            <button
-                                key={member.name}
-                                onClick$={() => setIndex(index)}
-                                class={`relative w-10 h-10 lg:w-12 lg:h-12 rounded-lg overflow-hidden transition-all duration-300 shrink-0 ${
-                                    currentIndex.value === index
-                                        ? `ring-2 ${member.ringClass} scale-110 shadow-lg ${member.shadowClass} opacity-100`
-                                        : 'opacity-40 grayscale hover:opacity-100 hover:grayscale-0 hover:scale-105'
-                                }`}
-                            >
-                                <img
-                                    src={`https://mc-heads.net/avatar/${member.name}/100`}
-                                    alt={member.name}
-                                    class="w-full h-full object-cover"
-                                />
-                            </button>
-                        ))}
+                    {/* Górny rząd: Tylko głowy na mobile / Strzałki + głowy na desktop */}
+                    <div class="flex items-center justify-center w-full gap-2 lg:gap-4">
+
+                        {/* Lewa Strzałka - Widoczna tylko od LG w górę */}
+                        <button
+                            onClick$={prev}
+                            class="hidden lg:flex w-10 h-10 items-center justify-center text-white/40 hover:text-white hover:scale-125 transition-all duration-300 shrink-0"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+
+                        {/* Lista Głów */}
+                        <div class="flex items-center justify-center gap-2 lg:gap-3 py-2 px-3 bg-white/[0.02] rounded-xl border border-white/5">
+                            {team.map((member, index) => (
+                                <button
+                                    key={member.name}
+                                    onClick$={() => setIndex(index)}
+                                    class={`relative w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg overflow-hidden transition-all duration-300 shrink-0 
+                                        ${currentIndex.value === index
+                                        ? `ring-2 ${member.ringClass} scale-110 shadow-lg ${member.shadowClass} opacity-100 z-10`
+                                        : `opacity-40 grayscale hover:opacity-100 hover:grayscale-0 hover:scale-110 hover:ring-2 ${member.ringClass} hover:shadow-lg ${member.shadowClass} z-0 hover:z-10`
+                                    }`}
+                                >
+                                    <img
+                                        src={`https://mc-heads.net/avatar/${member.name}/100`}
+                                        alt={member.name}
+                                        class="w-full h-full object-cover"
+                                    />
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Prawa Strzałka - Widoczna tylko od LG w górę */}
+                        <button
+                            onClick$={next}
+                            class="hidden lg:flex w-10 h-10 items-center justify-center text-white/40 hover:text-white hover:scale-125 transition-all duration-300 shrink-0"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
                     </div>
 
-                    {/* Prawa Strzałka */}
-                    <button onClick$={next} class="w-8 lg:w-10 h-8 lg:h-10 flex items-center justify-center text-white/40 hover:text-white hover:scale-125 transition-all duration-300 shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 lg:w-6 h-5 lg:h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </button>
+                    {/* Dolny rząd: Strzałki widoczne TYLKO na mobile (poniżej LG) */}
+                    <div class="flex lg:hidden items-center gap-8">
+                        <button
+                            onClick$={prev}
+                            class="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white/60 active:scale-90 transition-all"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+
+                        <button
+                            onClick$={next}
+                            class="w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white/60 active:scale-90 transition-all"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
