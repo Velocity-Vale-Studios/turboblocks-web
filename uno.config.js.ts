@@ -11,24 +11,6 @@ export default defineConfig({
             },
         }),
     ],
-    // Wymuszone klasy dla dynamicznych danych z JSONa
-    safelist: [
-        // Glows (Neony)
-        'shadow-[0_0_40px_rgba(236,72,153,0.2)]', // Pink
-        'shadow-[0_0_40px_rgba(37,99,235,0.2)]',  // Blue
-        'shadow-[0_0_40px_rgba(16,185,129,0.2)]', // Emerald (Nejt)
-        'shadow-[0_0_40px_rgba(249,115,22,0.2)]',  // Orange
-        'shadow-[0_0_40px_rgba(139,92,246,0.2)]', // Violet (Ayame)
-        // Border colors
-        'border-pink-500/30', 'border-blue-500/30', 'border-emerald-500/30', 'border-orange-500/30', 'border-violet-500/30',
-        // Text colors
-        'text-pink-500', 'text-blue-500', 'text-emerald-500', 'text-orange-500', 'text-violet-500'
-    ],
-    content: {
-        pipeline: {
-            include: [/\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html|json)($|\?)/],
-        },
-    },
     theme: {
         colors: {
             premium: {
