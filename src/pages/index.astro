@@ -1,13 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import GameModes from '../components/GameModes.astro';
-import AboutUs from '../components/AboutUs.astro'; // Importujemy nowy połączony komponent
 ---
 
-<Layout title="Home">
-    <Hero />
-    <GameModes />
-
-    <AboutUs />
+<Layout title="Strona Główna - TurboBlocks">
+    <div class="flex flex-col items-center justify-center min-h-[50vh] text-center">
+        <h1 class="text-5xl font-black tracking-tighter uppercase">
+            Witamy na <span class="text-cyan-400">TurboBlocks</span>
+        </h1>
+        <p class="mt-4 text-white/50 tracking-widest text-sm">
+            NAVBAR POWINIEN JUŻ DZIAŁAĆ
+        </p>
+    </div>
 </Layout>

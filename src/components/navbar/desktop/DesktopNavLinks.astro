@@ -1,0 +1,28 @@
+---
+interface Props {
+    config: any;
+    currentPath: string;
+}
+
+const { config, currentPath } = Astro.props;
+
+const animClasses = "transition-all duration-300 hover:scale-105 active:scale-95 transform-gpu";
+const commonHeight = "h-9 sm:h-10";
+const commonPadding = "px-4 sm:px-6";
+const baseLayoutClasses = `relative ${commonHeight} ${commonPadding} text-xs font-bold font-sans uppercase tracking-[0.2em] rounded-2xl ${animClasses} flex items-center justify-center`;
+const inactiveLinkClasses = `text-white/60 ring-1 ring-inset ring-transparent hover:text-cyan-100 hover:bg-cyan-500/10 hover:ring-cyan-400/30 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:backdrop-blur-md`;
+const activeLinkClasses = `bg-gradient-to-r from-cyan-500/10 to-blue-500/10 text-cyan-100 ring-1 ring-inset ring-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)] backdrop-blur-md scale-105`;
+
+const isCurrent = (path: string) => {
+    if (path === '/') return currentPath === '/';
+    return currentPath.startsWith(path);
+};
+---
+
+<div class="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center gap-4">
+    {config.links.map((link: any) => (
+            <a href={link.href} class={`h-10 ${baseLayoutClasses} ${isCurrent(link.href) ? activeLinkClasses : inactiveLinkClasses}`}>
+                {link.name}
+            </a>
+    ))}
+</div>

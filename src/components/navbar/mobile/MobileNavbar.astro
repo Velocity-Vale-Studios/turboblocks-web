@@ -1,0 +1,65 @@
+---
+import DiscordBtn from '../shared/DiscordBtn.astro';
+import CartTrigger from '../shared/CartTrigger.astro';
+import Hamburger from './Hamburger.astro';
+import MobileMenu from './MobileMenu.astro';
+import { navConfig } from '../../../data/navigation';
+
+const { currentPath } = Astro.props;
+---
+
+<header class="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] z-[100]">
+    <div class="flex items-center justify-between px-2 py-2 rounded-2xl bg-black/40 backdrop-blur-2xl border border-white/10 shadow-xl">
+
+        <div class="flex items-center gap-1.5">
+            <button
+                    id="copyIPMobile"
+                    data-ip={navConfig.server.ip}
+                    class="flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white active:scale-90 transition-all"
+            >
+                <div id="ipIconMobile" class="i-carbon-copy w-5 h-5"></div>
+            </button>
+            <DiscordBtn />
+        </div>
+
+        <div class="flex-grow"></div>
+
+        <div class="flex items-center gap-1.5">
+            <a href={navConfig.shop.href} class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white active:scale-90 transition-all">
+                <div class="i-carbon-store w-5 h-5"></div>
+            </a>
+            <CartTrigger />
+            <Hamburger />
+        </div>
+    </div>
+
+    <MobileMenu config={navConfig} currentPath={currentPath} />
+</header>
+
+<script>
+    const ipBtn = document.getElementById('copyIPMobile');
+    const ipIcon = document.getElementById('ipIconMobile');
+
+    ipBtn?.addEventListener('click', () => {
+        const ip = ipBtn.getAttribute('data-ip') || "";
+        navigator.clipboard.writeText(ip);
+
+        ipIcon?.classList.replace('i-carbon-copy', 'i-carbon-checkmark');
+        ipIcon?.classList.add('text-green-400');
+        if (window.navigator.vibrate) window.navigator.vibrate(50);
+
+        setTimeout(() => {
+            ipIcon?.classList.replace('i-carbon-checkmark', 'i-carbon-copy');
+            ipIcon?.classList.remove('text-green-400');
+        }, 2000);
+    });
+
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+
+    menuBtn?.addEventListener('click', () => {
+        menu?.classList.toggle('opacity-0');
+        menu?.classList.toggle('translate-y-0');
+        menu?.classList.toggle('pointer-events-none');
+    });
+</script>

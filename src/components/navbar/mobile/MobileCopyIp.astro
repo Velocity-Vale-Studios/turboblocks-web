@@ -1,0 +1,31 @@
+---
+import { navConfig } from '../../../data/navigation';
+---
+<button
+        id="copyIPMobile"
+        data-ip={navConfig.server.ip}
+        class="flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 border border-white/10 active:scale-90 transition-all text-white"
+>
+    <div id="ipIconMobile" class="i-carbon-copy w-5 h-5"></div>
+</button>
+
+<script>
+    const btn = document.getElementById('copyIPMobile');
+    const icon = document.getElementById('ipIconMobile');
+
+    btn?.addEventListener('click', () => {
+        const ipToCopy = btn.getAttribute('data-ip') || "play.turboblocks.eu";
+
+        navigator.clipboard.writeText(ipToCopy);
+
+        icon?.classList.replace('i-carbon-copy', 'i-carbon-checkmark');
+        icon?.classList.add('text-green-400');
+
+        if (window.navigator.vibrate) window.navigator.vibrate(50);
+
+        setTimeout(() => {
+            icon?.classList.replace('i-carbon-checkmark', 'i-carbon-copy');
+            icon?.classList.remove('text-green-400');
+        }, 2000);
+    });
+</script>

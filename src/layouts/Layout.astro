@@ -1,58 +1,20 @@
 ---
 // src/layouts/Layout.astro
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import CartOverlay from '../components/CartOverlay.astro';
-const { title } = Astro.props;
+import Navbar from '../components/navbar/Navbar.astro';
+import '../styles/global.css';
+
+const { title = "TurboBlocks" } = Astro.props;
 ---
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="TurboBlocks - The ultimate arcade gaming experience." />
-    <title>{title} | TurboBlocks</title>
+    <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
 </head>
-<body class="bg-gradient-to-b from-black via-black to-[#0a0a0a] text-white font-sans antialiased">
-    <div class="fixed inset-0 z-0 pointer-events-none">
-        <!-- Subtle gradient background -->
-        <div class="absolute inset-0 bg-gradient-to-b from-orange-600/5 via-transparent to-transparent"></div>
-        <div class="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full filter blur-3xl"></div>
-    </div>
-
-    <div class="relative z-10 flex flex-col min-h-screen">
-        <Navbar />
-
-        <main class="flex-grow">
-            <slot />
-        </main>
-
-        <Footer />
-        <CartOverlay />
-    </div>
+<body class="bg-[#050505] text-white antialiased">
+<Navbar />
+<main class="pt-24 lg:pt-32">
+    <slot />
+</main>
 </body>
 </html>
-
-<style is:global>
-    :root {
-        color-scheme: dark;
-    }
-    html {
-        font-family: 'Inter', system-ui, sans-serif;
-        scroll-behavior: smooth;
-    }
-
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.3);
-    }
-    ::-webkit-scrollbar-thumb {
-        background: rgba(255, 140, 0, 0.5);
-        border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 140, 0, 0.8);
-    }
-</style>

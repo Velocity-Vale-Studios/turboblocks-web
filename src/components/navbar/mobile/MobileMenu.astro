@@ -1,0 +1,23 @@
+---
+import { navConfig } from '../../../data/navigation';
+const currentPath = Astro.url.pathname;
+---
+<div
+        id="mobileMenu"
+        class="absolute top-16 left-0 right-0 p-3 bg-black/90 backdrop-blur-3xl border border-white/10 rounded-3xl transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 z-[99]"
+>
+    <div class="flex flex-col gap-2">
+        {navConfig.links.map(link => (
+                <a
+                        href={link.href}
+                        class={`w-full py-4 px-6 rounded-2xl font-bold tracking-[0.2em] text-xs transition-all active:scale-[0.98] ${
+                            currentPath === link.href
+                                ? 'bg-cyan-500/20 text-cyan-400 ring-1 ring-cyan-500/30'
+                                : 'bg-white/5 text-white/70'
+                        }`}
+                >
+                    {link.name}
+                </a>
+        ))}
+    </div>
+</div>
