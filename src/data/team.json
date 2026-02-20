@@ -1,0 +1,32 @@
+[
+  {
+    "name": "k8bus",
+    "role": "Director",
+    "quote": "Building dreams, one block at a time.",
+    "colorKey": "pink"
+  },
+  {
+    "name": "m4t3k33",
+    "role": "Lead Engineer",
+    "quote": "Efficiency is the key to success.",
+    "colorKey": "blue"
+  },
+  {
+    "name": "nejt12475",
+    "role": "Engineer",
+    "quote": "Solving problems you didn't know you had.",
+    "colorKey": "emerald"
+  },
+  {
+    "name": "MALYMATI2007",
+    "role": "Engineer",
+    "quote": "Innovation never sleeps.",
+    "colorKey": "orange"
+  },
+  {
+    "name": "Ayame",
+    "role": "Pixel Artist",
+    "quote": "Pixel perfect, every time.",
+    "colorKey": "violet"
+  }
+]

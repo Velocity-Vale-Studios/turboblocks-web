@@ -1,0 +1,36 @@
+---
+interface Props {
+    ip: string;
+    label: string;
+}
+const { ip, label } = Astro.props;
+---
+
+<button
+        id="copy-ip-btn"
+        data-ip={ip}
+        class="group relative px-8 py-4 bg-cyan-500 text-black font-black uppercase italic tracking-tighter rounded-xl hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_30px_rgba(6,182,212,0.4)] overflow-hidden"
+>
+  <span class="relative z-10 flex items-center gap-2">
+    {label}
+      <span class="text-[10px] bg-black/20 px-2 py-0.5 rounded italic opacity-70 group-hover:opacity-100 transition-opacity">
+      {ip}
+    </span>
+  </span>
+    <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+</button>
+
+<script>
+    const btn = document.getElementById('copy-ip-btn');
+    btn?.addEventListener('click', () => {
+        const ip = btn.getAttribute('data-ip') || '';
+        navigator.clipboard.writeText(ip);
+
+        // Prosty efekt po kliknięciu
+        const originalText = btn.innerHTML;
+        btn.innerHTML = "SKOPIOWANO!";
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+        }, 2000);
+    });
+</script>

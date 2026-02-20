@@ -1,0 +1,25 @@
+---
+// src/components/landing/GameModes/GameModes.astro
+import modesData from 'src/data/modes.json';
+import ModeCard from './shared/ModeCard.astro';
+---
+
+<section id="modes" class="max-w-[1440px] mx-auto px-6 md:px-20 py-16 md:py-24 relative overflow-visible">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500/5 blur-[120px] -z-10 pointer-events-none"></div>
+
+    <div class="mb-10 md:mb-16 flex flex-col items-center md:items-start text-center md:text-left relative z-10">
+        <h2 class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.5em] md:tracking-[0.8em] text-cyan-400 mb-2">Choose Your Path</h2>
+        <h3 class="text-3xl sm:text-4xl md:text-6xl font-black italic text-white uppercase tracking-tighter leading-none">
+            AVAILABLE <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 pr-4 md:pr-10">MODES</span>
+        </h3>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4 items-stretch relative z-10">
+        {modesData.map(mode => (
+            /* BUFOR DLA GLOW: Ujemne marginesy i paddingi, żeby cienie nie były ucinane */
+                <div class="-m-4 md:-m-12 p-4 md:p-12">
+                    <ModeCard mode={mode} />
+                </div>
+        ))}
+    </div>
+</section>

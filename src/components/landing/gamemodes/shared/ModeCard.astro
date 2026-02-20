@@ -1,0 +1,84 @@
+---
+// src/components/landing/GameModes/shared/ModeCard.astro
+const { mode } = Astro.props;
+
+// Mapowanie prostych kluczy na konkretne style, ale używamy ich bezpośrednio w HTML poniżej
+const isPink = mode.colorKey === 'pink';
+const isCyan = mode.colorKey === 'cyan';
+const isActive = mode.status === 'active';
+---
+
+<div class:list={[
+    "group relative p-6 md:p-14 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl transition-all duration-700 flex flex-col h-full bg-gradient-to-br from-white/5 to-white/[0.02]",
+    // BORDER COLOR
+    isPink ? "border-pink-500/30" : "border-cyan-500/30",
+    // GLOW
+    isPink ? "shadow-[0_0_40px_rgba(236,72,153,0.2)] hover:shadow-[0_0_80px_rgba(236,72,153,0.1)]" : "shadow-[0_0_40px_rgba(6,182,212,0.2)] hover:shadow-[0_0_80px_rgba(6,182,212,0.1)]"
+]}>
+
+    <div class="absolute inset-0 rounded-[2.5rem] md:rounded-[4rem] overflow-hidden pointer-events-none">
+        <div class:list={[
+            "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-20 transition-opacity duration-700",
+            isPink ? "from-pink-500/20 via-purple-500/10" : "from-cyan-500/10 via-blue-900/5"
+        ]}></div>
+
+        {mode.status === 'future' && (
+                <div class="absolute top-4 right-4 md:top-12 md:right-12 text-white/5 rotate-12">
+                    <svg class="w-16 h-16 md:w-32 md:h-32" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1v-3a5 5 0 0 0-5-5zm-3 5a3 3 0 0 1 6 0v3H9V7zm3 11a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                    </svg>
+                </div>
+        )}
+    </div>
+
+    <div class="relative z-10 flex flex-col h-full">
+        <div class="flex justify-between items-start mb-10 md:mb-14">
+            <div class:list={[
+                "w-14 h-14 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] border border-white/10 flex items-center justify-center text-2xl md:text-5xl shadow-2xl transition-all duration-500 ease-out",
+                // Klasy dla animacji na hover całej karty (group)
+                "group-hover:rotate-12 group-hover:scale-110 group-hover:border-white/30 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]",
+                isActive ? "bg-white/5" : "bg-black/20 grayscale"
+            ]}>
+                <span class="group-hover:animate-pulse">{mode.icon}</span>
+            </div>
+
+            <span class:list={[
+                "text-[8px] md:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 md:py-3 md:px-6 rounded-xl border border-white/10 shadow-2xl",
+                isActive && isPink ? "bg-pink-500/10 text-pink-400" : "",
+                isActive && isCyan ? "bg-cyan-500/10 text-cyan-400" : "",
+                !isActive ? "bg-white/5 text-white/20" : ""
+            ]}>
+                {mode.tag}
+            </span>
+        </div>
+
+        <h4 class:list={[
+            "text-3xl md:text-6xl font-black italic uppercase tracking-tighter mb-4 md:mb-8 leading-[0.85]",
+            isActive ? "text-white" : "text-white/40"
+        ]}>
+            {mode.name}
+        </h4>
+
+        <p class="text-white/60 text-sm md:text-xl font-medium italic border-l-4 border-white/10 pl-6 md:pl-10 leading-relaxed mb-10 md:mb-16">
+            {mode.desc}
+        </p>
+
+        <div class="mt-auto flex flex-wrap items-center gap-4">
+            {isActive ? (
+                    <>
+                        <a href={mode.url} class="flex-1 sm:flex-none text-center px-8 py-4 bg-white text-black font-black uppercase text-[10px] md:text-xs tracking-widest rounded-2xl hover:scale-110 hover:bg-pink-500 hover:text-white transition-all duration-500 shadow-[0_20px_40px_rgba(255,255,255,0.2)]">
+                            {mode.btnText}
+                        </a>
+                        <div class="flex items-center justify-center px-5 py-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-3 shadow-[0_0_15px_#22c55e]"></div>
+                            <span class="text-white/60 font-black text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">{mode.onlineCount || '0'} ONLINE</span>
+                        </div>
+                    </>
+            ) : (
+                    <div class="flex items-center justify-center px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white/20 font-black uppercase text-[10px] md:text-xs tracking-widest italic cursor-not-allowed">
+                        {mode.btnText}
+                    </div>
+            )}
+        </div>
+    </div>
+</div>

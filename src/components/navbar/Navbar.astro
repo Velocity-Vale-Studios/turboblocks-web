@@ -3,7 +3,6 @@ import DesktopNavbar from './desktop/DesktopNavbar.astro';
 import MobileNavbar from './mobile/MobileNavbar.astro';
 import { navConfig } from '../../data/navigation';
 
-// Usunięty ewentualny ukośnik na końcu, żeby aktywne linki zawsze działały poprawnie
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 

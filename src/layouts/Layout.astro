@@ -2,19 +2,22 @@
 // src/layouts/Layout.astro
 import Navbar from '../components/navbar/Navbar.astro';
 import '../styles/global.css';
+import Footer from "@/components/footer/Footer.astro";
 
 const { title = "TurboBlocks" } = Astro.props;
 ---
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
 </head>
-<body class="bg-[#050505] text-white antialiased">
+<body class="bg-[#050505] text-white antialiased selection:bg-cyan-500/30 selection:text-cyan-400">
 <Navbar />
-<main class="pt-24 lg:pt-32">
+<main>
     <slot />
 </main>
+<Footer />
 </body>
 </html>
