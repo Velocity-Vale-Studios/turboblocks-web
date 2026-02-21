@@ -70,7 +70,7 @@ const team = [
 const active = team[0];
 ---
 
-<section id="team" class="max-w-7xl mx-auto px-8 py-24 relative overflow-visible">
+<section id="team" class="max-w-7xl mx-auto px-8 py-24 relative overflow-hidden">
     <div class="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/10 blur-[120px] -z-10 animate-pulse"></div>
     <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-500/10 blur-[120px] -z-10 animate-pulse" style="animation-delay: 2s;"></div>
 
@@ -90,14 +90,21 @@ const active = team[0];
             <div id="text-anim-target" class="mt-16 lg:mt-8 mb-6 lg:mb-8 relative z-10 slide-anim">
                 <h5 id="m-name" class="text-3xl lg:text-5xl font-black text-white uppercase italic tracking-tighter mb-2 pr-4">{active.name}</h5>
                 <p id="m-role" class={`${active.textClass} font-black text-[10px] lg:text-xs uppercase tracking-[0.3em] mb-4 lg:mb-8`}>{active.role}</p>
-                <p id="m-quote" class={`text-white/60 text-base lg:text-lg italic font-medium border-l-4 ${active.borderClass} pl-4 lg:pl-6 max-w-lg leading-relaxed`}>"{active.quote}"</p>
+                <div class="min-h-[4.5rem] lg:min-h-[5.5rem] flex items-center"> <p id="m-quote" class={`text-white/60 text-base lg:text-lg italic font-medium border-l-4 ${active.borderClass} pl-4 lg:pl-6 max-w-lg leading-relaxed line-clamp-2 lg:line-clamp-3`}>
+                    "{active.quote}"
+                </p>
+                </div>
             </div>
 
             <div class="flex flex-col items-center gap-4 mt-auto pt-6 lg:pt-8 border-t border-white/5 relative z-10 w-full">
                 <div class="flex items-center justify-center w-full gap-4">
-                    <button id="prev-btn" class="text-white/20 hover:text-white hover:scale-125 transition-all cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+                    <button id="prev-btn" class="hidden md:flex text-white/20 hover:text-white hover:scale-125 transition-all cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
 
-                    <div class="flex items-center justify-center gap-3 py-2 px-3 bg-white/[0.02] rounded-xl border border-white/5">
+                    <div class="flex items-center justify-center gap-3 py-2 px-3 bg-white/[0.02] rounded-xl border border-white/5 mx-auto md:mx-0">
                         {team.map((member, index) => (
                                 <button
                                         class={`team-trigger relative w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg overflow-hidden transition-all duration-300 opacity-40 grayscale data-[active=true]:opacity-100 data-[active=true]:grayscale-0 data-[active=true]:ring-2 data-[active=true]:scale-110 ${index === 0 ? active.ringClass : ''}`}
@@ -109,7 +116,11 @@ const active = team[0];
                         ))}
                     </div>
 
-                    <button id="next-btn" class="text-white/20 hover:text-white hover:scale-125 transition-all cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+                    <button id="next-btn" class="hidden md:flex text-white/20 hover:text-white hover:scale-125 transition-all cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
