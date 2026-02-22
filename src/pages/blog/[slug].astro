@@ -1,0 +1,160 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+    const blogEntries = await getCollection('blog');
+    return blogEntries.map(entry => ({
+        params: { slug: entry.slug },
+        props: { entry }, // Przekazujemy cały obiekt 'entry' do propsów
+    }));
+}
+
+const { entry } = Astro.props;
+
+const { Content } = await entry.render();
+const post = entry.data;
+---
+
+<style is:global>
+    #table-of-contents div {
+        /* BAZA: Prostokątna bańka 1:1 z Twojego guzika IP */
+        @apply relative flex items-center justify-start w-full px-5 h-11
+        bg-[color-mix(in_srgb,var(--post-accent-color),transparent_92%)]
+        backdrop-blur-md rounded-2xl font-black italic text-[10px]
+        tracking-widest uppercase transition-all duration-300
+        overflow-hidden cursor-pointer select-none mb-3;
+
+        /* Techniczny Ring (Obramowanie wewnętrzne) */
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--post-accent-color), transparent 75%);
+        color: var(--post-accent-color);
+    }
+
+    /* EFEKT HOVER: Identyczny jak w Twoim PLAY.TURBOBLOCKS.EU */
+    #table-of-contents div:hover,
+    #table-of-contents div.active {
+        /* Mocniejsze tło i ring */
+        background: color-mix(in srgb, var(--post-accent-color), transparent 85%);
+        box-shadow:
+                inset 0 0 0 1px color-mix(in srgb, var(--post-accent-color), transparent 40%),
+                0 0 20px color-mix(in srgb, var(--post-accent-color), transparent 85%);
+
+        /* Tekst staje się biały z neonową poświatą */
+        color: white;
+        text-shadow: 0 0 10px var(--post-accent-color);
+        transform: scale(1.02);
+    }
+
+    /* Dekoracyjny element przed tekstem */
+    #table-of-contents div::before {
+        content: "//";
+        @apply mr-3 opacity-30 text-[8px];
+    }
+</style>
+
+<Layout title={post.title}>
+    <main class="max-w-7xl mx-auto px-8 pt-32 pb-24 relative min-h-screen">
+
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none overflow-hidden">
+            <div class={`absolute top-[5%] left-0 w-[500px] h-[500px] bg-gradient-to-br ${post.gradient} blur-[150px] opacity-[0.15]`}></div>
+        </div>
+
+        <div
+                class="flex flex-col lg:flex-row gap-12 items-start"
+                style={`--post-accent-color: ${
+                    post.accent.includes('pink') ? '#f472b6' :
+                        post.accent.includes('cyan') ? '#22d3ee' :
+                            post.accent.includes('orange') ? '#fbbf24' : '#ffffff'
+                };`}
+        >
+
+            <aside class="hidden lg:block w-[300px] shrink-0 sticky top-32 space-y-8">
+                <div class={`p-8 rounded-[2.5rem] bg-white/[0.02] border backdrop-blur-3xl ${post.borderColorClass} ${post.glowClass}`}>
+                    <h4 class={`text-[10px] font-black uppercase tracking-[0.3em] mb-8 italic border-b border-white/5 pb-4 ${post.accent}`}>
+                        Nawigacja //
+                    </h4>
+
+                    <nav id="table-of-contents" class="flex flex-col">
+                    </nav>
+                </div>
+
+                <a href="https://discord.gg/turboblocks" target="_blank"
+                   class="group relative block w-full rounded-[2.2rem] bg-white/[0.03] border border-white/10 p-7 backdrop-blur-xl transition-all duration-500 hover:border-indigo-500/50 hover:bg-white/[0.06] overflow-hidden">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/10 blur-3xl group-hover:bg-indigo-500/20 transition-colors"></div>
+                    <div class="relative flex items-center gap-5">
+                        <div class="w-14 h-14 shrink-0 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(88,101,242,0.15)] group-hover:scale-110 transition-all duration-500">
+                            <svg class="w-7 h-7 text-[#5865F2]" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 11.721 11.721 0 0 0-.617-1.25.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.032.027C.533 9.048-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.054-.108.015-.23-.087-.272a13.235 13.235 0 0 1-1.873-.894.077.077 0 0 1-.008-.128c.125-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.874.894.077.077 0 0 0-.086.272c.351.699.765 1.362 1.227 1.994a.078.078 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.419-2.157 2.419z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-[9px] font-black text-pink-500 uppercase tracking-[0.2em] mb-1 opacity-90 italic whitespace-nowrap overflow-hidden text-ellipsis">Masz pytania?</p>
+                            <h3 class="text-xl font-black italic text-white uppercase tracking-tighter leading-none group-hover:translate-x-1 transition-transform duration-300">
+                                Join <span class="text-indigo-400 drop-shadow-[2px_0_0_rgba(88,101,242,0.3)]">Discord</span>
+                            </h3>
+                        </div>
+                    </div>
+                </a>
+            </aside>
+
+            <div class="flex-1 min-w-0 space-y-8">
+                <section class={`p-8 md:p-16 rounded-[3rem] border backdrop-blur-3xl bg-white/[0.02] ${post.borderColorClass} ${post.glowClass}`}>
+                    <div class="flex items-center gap-4 mb-8">
+                        <span class={`px-4 py-2 rounded-xl border text-[9px] font-black uppercase tracking-widest ${post.bgAccent} ${post.borderAccent} ${post.accent}`}>
+                            {post.tag}
+                        </span>
+                        <span class="text-[10px] font-bold text-white/30 uppercase tracking-[0.3em]">{post.date}</span>
+                    </div>
+                    <h1 class="text-4xl md:text-7xl font-black italic text-white uppercase tracking-tighter leading-[0.85] mb-8">
+                        {post.title}
+                    </h1>
+                    <p class="text-white/70 text-lg md:text-xl leading-relaxed border-l-4 border-white/10 pl-6 italic">
+                        {post.desc}
+                    </p>
+                </section>
+
+                <section class="p-8 md:p-16 rounded-[3rem] border border-white/10 bg-white/[0.01] backdrop-blur-3xl">
+                    <div class="prose prose-invert max-w-none prose-p:text-white/60 prose-p:text-lg prose-headings:text-white prose-strong:text-white prose-li:text-white/60">
+                        <Content />
+                    </div>
+                </section>
+
+                <section class="p-8 rounded-[2.5rem] border border-white/5 bg-white/[0.02] flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="flex items-center gap-4">
+                        <div class={`w-12 h-12 rounded-xl border ${post.borderAccent} ${post.bgAccent} flex items-center justify-center text-2xl shadow-lg`}>
+                            {post.icon}
+                        </div>
+                        <div>
+                            <p class="text-white font-black uppercase text-xs italic">Koniec transmisji //</p>
+                            <p class="text-white/30 text-[9px] uppercase font-bold tracking-widest">TurboBlocks Studio Team</p>
+                        </div>
+                    </div>
+                    <div class="text-[10px] font-black text-white/10 uppercase tracking-[0.4em] italic">Dzięki za przeczytanie!</div>
+                </section>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    const content = document.querySelector('.prose');
+    const toc = document.querySelector('#table-of-contents');
+    const headings = content?.querySelectorAll('h2');
+
+    if (headings && headings.length > 0 && toc) {
+        toc.innerHTML = '';
+        headings.forEach((h2, index) => {
+            h2.id = `section-${index}`;
+            const link = document.createElement('div');
+
+            // Wstawiamy tekst w span dla lepszych efektów
+            link.innerHTML = `<span>${h2.innerText}</span>`;
+
+            link.onclick = () => {
+                const y = h2.getBoundingClientRect().top + window.pageYOffset - 120;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            };
+            toc.appendChild(link);
+        });
+    }
+</script>

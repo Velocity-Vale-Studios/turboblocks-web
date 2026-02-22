@@ -1,68 +1,20 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
-// DATA DRIVEN: Tutaj zarządzasz wszystkimi postami
-const posts = [
-    {
-        title: 'WIELKA AKTUALIZACJA 2.0 JUŻ DOSTĘPNA!',
-        date: '15 LUTY 2026',
-        tag: 'UPDATE',
-        url: '/blog/update-2-0', // Dodano URL
-        desc: 'Dzisiaj wprowadziliśmy długo oczekiwane zmiany w systemie ekonomii oraz nowe biomy na mapie Survival. Sprawdź pełną listę zmian, nowy system craftingu i dowiedz się co nowego czeka na Ciebie w świecie TurboBlocks.',
-        gradient: 'from-pink-500 via-purple-600 to-indigo-500',
-        borderColorClass: 'border-pink-500/30',
-        glowClass: 'shadow-[0_0_50px_rgba(236,72,153,0.2)] hover:shadow-[0_0_100px_rgba(236,72,153,0.4)]',
-        accent: 'text-pink-400',
-        btnHoverAccent: 'hover:bg-pink-500',
-        textHoverAccent: 'group-hover:text-pink-400',
-        shadowAccent: 'hover:shadow-[0_0_40px_rgba(236,72,153,0.5)]',
-        borderAccent: 'border-pink-500/50',
-        bgAccent: 'bg-pink-500/10',
-        icon: '🚀',
-        featured: true
-    },
-    {
-        title: 'COLOR CLASH: SEZON 1',
-        date: '12 LUTY 2026',
-        tag: 'EVENT',
-        url: '/blog/color-clash-season-1',
-        desc: 'Przygotujcie pędzle i miecze! Nowy sezon Color Clash nadchodzi z zupełnie nowymi nagrodami, mapami i mechaniką przejmowania punktów.',
-        gradient: 'from-cyan-500 via-blue-500 to-teal-400',
-        borderColorClass: 'border-cyan-500/30',
-        glowClass: 'shadow-[0_0_40px_rgba(6,182,212,0.15)] hover:shadow-[0_0_80px_rgba(6,182,212,0.3)]',
-        accent: 'text-cyan-400',
-        btnHoverAccent: 'hover:bg-cyan-500',
-        textHoverAccent: 'group-hover:text-cyan-400',
-        shadowAccent: 'hover:shadow-[0_0_40px_rgba(6,182,212,0.5)]',
-        borderAccent: 'border-cyan-500/50',
-        bgAccent: 'bg-cyan-500/10',
-        icon: '🎨',
-        featured: false
-    },
-    {
-        title: 'COMMUNITY HIGHLIGHTS #42',
-        date: '10 LUTY 2026',
-        tag: 'COMMUNITY',
-        url: '/blog/community-42',
-        desc: 'Zobaczcie najciekawsze budowle i momenty z ostatniego tygodnia przesyłane przez naszą społeczność na Discordzie.',
-        gradient: 'from-orange-500 via-red-500 to-yellow-500',
-        borderColorClass: 'border-orange-500/30',
-        glowClass: 'shadow-[0_0_40px_rgba(249,115,22,0.15)] hover:shadow-[0_0_80px_rgba(249,115,22,0.3)]',
-        accent: 'text-orange-400',
-        btnHoverAccent: 'hover:bg-orange-500',
-        textHoverAccent: 'group-hover:text-orange-400',
-        shadowAccent: 'hover:shadow-[0_0_40px_rgba(249,115,22,0.5)]',
-        borderAccent: 'border-orange-500/50',
-        bgAccent: 'bg-orange-500/10',
-        icon: '🏆',
-        featured: false
-    }
-];
+// Pobieramy wszystkie posty z folderu content/blog
+const allPosts = await getCollection('blog');
 
+// Mapujemy dane tak, aby pasowały do Twojego layoutu (wyciągamy dane z .data)
+const posts = allPosts.map(post => ({
+    ...post.data,
+    url: `/blog/${post.slug}` // URL tworzy się automatycznie z nazwy pliku .md
+}));
+
+// Logika wyboru featured pozostaje bez zmian
 const featuredPost = posts.find(p => p.featured);
 const otherPosts = posts.filter(p => !p.featured);
 ---
-
 <Layout title="Insides">
     <div class="max-w-7xl mx-auto px-8 pt-32 pb-16 md:pt-48 md:pb-32 relative">
 
