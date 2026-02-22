@@ -2,31 +2,31 @@
   {
     "name": "k8bus",
     "role": "Director",
-    "quote": "Building dreams, one block at a time.",
-    "colorKey": "pink"
+    "color": "pink",
+    "quote": "Hey, I’m K8bus! As the founder of TurboBlocks, I’m the one tuning the engine behind our arcade experience. From building our website to planning new, high-speed minigames, I make sure everything runs at full throttle every single week. Keeping the team on track is a busy ride, but when I’m not coding, you’ll find me hanging out on the server or Discord. If you see me around in-game, don’t be a stranger—come say hi!"
   },
   {
     "name": "m4t3k33",
     "role": "Lead Engineer",
-    "quote": "Efficiency is the key to success.",
-    "colorKey": "blue"
+    "color": "blue",
+    "quote": ""
   },
   {
     "name": "nejt12475",
     "role": "Engineer",
-    "quote": "Solving problems you didn't know you had.",
-    "colorKey": "emerald"
+    "color": "emerald",
+    "quote": "Solving problems you didn't know you had."
   },
   {
     "name": "MALYMATI2007",
     "role": "Engineer",
-    "quote": "Innovation never sleeps.",
-    "colorKey": "orange"
+    "color": "orange",
+    "quote": ""
   },
   {
     "name": "Ayame",
     "role": "Pixel Artist",
-    "quote": "Pixel perfect, every time.",
-    "colorKey": "violet"
+    "color": "violet",
+    "quote": ""
   }
 ]

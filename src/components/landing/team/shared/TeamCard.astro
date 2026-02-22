@@ -1,0 +1,26 @@
+---
+import TeamNav from './TeamNav.astro';
+
+const { active, team } = Astro.props;
+---
+
+<div id="info-window" class={`lg:col-span-7 bg-gradient-to-br from-white/5 to-white/[0.02] border ${active.borderColorClass} rounded-[2rem] lg:rounded-[3.5rem] p-6 lg:p-12 backdrop-blur-3xl flex flex-col justify-center relative overflow-hidden group ${active.glowClass} transition-all duration-700`}>
+
+    <div id="ambient-glow" class={`absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br ${active.theme} blur-[100px] opacity-20 transition-all duration-1000 pointer-events-none`}></div>
+
+    <div class="absolute top-6 lg:top-12 left-6 lg:left-12 inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-cyan-400/10 border border-cyan-400/20 rounded-full text-[8px] lg:text-[10px] font-black text-cyan-400 uppercase tracking-[0.2em]">
+        Online Profile // CC-2026
+    </div>
+
+    <div id="text-anim-target" class="mt-16 lg:mt-8 mb-6 lg:mb-8 relative z-10 slide-anim">
+        <h5 id="m-name" class="text-3xl lg:text-5xl font-black text-white uppercase italic tracking-tighter mb-2 pr-4">{active.name}</h5>
+        <p id="m-role" class={`${active.textClass} font-black text-[10px] lg:text-xs uppercase tracking-[0.3em] mb-4 lg:mb-8`}>{active.role}</p>
+        <div class="min-h-[4.5rem] lg:min-h-[5.5rem] flex items-center">
+            <p id="m-quote" class={`text-white/60 text-base lg:text-lg italic font-medium border-l-4 ${active.borderClass} pl-4 lg:pl-6 max-w-lg leading-relaxed line-clamp-2 lg:line-clamp-3`}>
+                "{active.quote}"
+            </p>
+        </div>
+    </div>
+
+    <TeamNav team={team} active={active} />
+</div>
