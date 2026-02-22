@@ -48,16 +48,19 @@ const team = rawTeamData.map(member => ({
 const active = team[0];
 ---
 
-<section id="team" class="max-w-7xl mx-auto px-8 py-24 relative overflow-hidden">
-    <div class="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/10 blur-[120px] -z-10 animate-pulse"></div>
-    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-500/10 blur-[120px] -z-10 animate-pulse" style="animation-delay: 2s;"></div>
+<section id="team" class="max-w-7xl mx-auto px-8 py-24 relative">
 
-    <div class="mb-12 flex flex-col items-center md:items-start">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div class="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/10 blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-500/10 blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="mb-12 flex flex-col items-center md:items-start relative z-10">
         <h2 class="text-[10px] font-black uppercase tracking-[0.8em] text-cyan-400 mb-2 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">Color Clash Season</h2>
         <h3 class="text-6xl font-black italic text-white uppercase tracking-tighter">Meet the <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 pr-4 drop-shadow-[0_0_30px_rgba(236,72,153,0.3)]">Creators</span></h3>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch min-h-[600px]">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch min-h-[600px] relative z-10">
         <TeamCard team={team} active={active} />
         <TeamVisual active={active} />
     </div>

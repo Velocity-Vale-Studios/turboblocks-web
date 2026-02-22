@@ -4,7 +4,7 @@ import TeamNav from './TeamNav.astro';
 const { active, team } = Astro.props;
 ---
 
-<div id="info-window" class={`lg:col-span-7 bg-gradient-to-br from-white/5 to-white/[0.02] border ${active.borderColorClass} rounded-[2rem] lg:rounded-[3.5rem] p-6 lg:p-12 backdrop-blur-3xl flex flex-col justify-center relative overflow-hidden group ${active.glowClass} transition-all duration-700`}>
+<div id="info-window" class={`lg:col-span-7 bg-gradient-to-br from-white/5 to-white/[0.02] border ${active.borderColorClass} rounded-[2rem] lg:rounded-[3.5rem] p-6 lg:p-12 backdrop-blur-3xl flex flex-col justify-center relative group ${active.glowClass} transition-all duration-700`}>
 
     <div id="ambient-glow" class={`absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br ${active.theme} blur-[100px] opacity-20 transition-all duration-1000 pointer-events-none`}></div>
 
