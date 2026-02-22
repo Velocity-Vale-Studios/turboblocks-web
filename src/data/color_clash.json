@@ -1,0 +1,120 @@
+{
+  "mechanics": [
+    {
+      "id": "paint-system",
+      "title": "Paint & Territory",
+      "icon": "🎨",
+      "color": "pink",
+      "shortDesc": "Szybki system przejmowania bloków i logika terytorium.",
+      "longDesc": "Rdzeń technologii ColorClash-Paint zaprojektowany pod kątem ekstremalnej wydajności:\n- **Deterministic Overwrite:** Natychmiastowe przejmowanie neutralnych i wrogich bloków.\n- **Visual Dimming:** Farba świeża jest najjaśniejsza, z czasem lekko blaknie (bez wpływu na logikę).\n- **Performance:** Optymalizacja O(1) dla sprawdzania ruchu i cache'owanie chunków.\n- **Territory Ticks:** Cykliczne raportowanie stanu posiadania (countOwnedBlocks) do systemu punktacji.",
+      "technical": {
+        "queries": "O(1) Per Step",
+        "storage": "Sparse Maps / Chunk Caching",
+        "rules": "Instant Overwrite"
+      },
+      "media": { "type": "video", "url": "/videos/paint-tech.mp4" }
+    },
+    {
+      "id": "scoring-combo",
+      "title": "Scoring & Combo",
+      "icon": "⚡",
+      "color": "cyan",
+      "shortDesc": "Nagradzamy rytm, ruch i agresywne przejmowanie mapy.",
+      "longDesc": "System Combo Multiplier wymusza dynamiczną rozgrywkę:\n- **Buildup:** Ciągłe malowanie i eliminacje budują poziom Combo.\n- **Multiplier:** Ostateczny wynik z każdej akcji jest mnożony przez aktualny współczynnik Flow.\n- **Reset:** Śmierć natychmiastowo resetuje licznik Combo.\n- **Sync:** Serwer jest autorytatywny, UI czyta snapshoty, aby uniknąć spamu aktualizacji.",
+      "technical": {
+        "logic": "Multiplayer Aggregation",
+        "updates": "Fixed Rate Snapshots",
+        "authority": "Server Side"
+      },
+      "media": { "type": "video", "url": "/videos/combo-system.mp4" }
+    },
+    {
+      "id": "power-ups",
+      "title": "Chromatic Energy",
+      "icon": "🧪",
+      "color": "purple",
+      "shortDesc": "Niestabilne wybuchy energii zmieniające zasady gry.",
+      "longDesc": "Power-upy to 'unstable bursts', które mają tworzyć unikalne sytuacje:\n- **Spawn System:** Map-defined anchors z losowym czasem odświeżania.\n- **Arsenal:** Od 'Neon Turbo' (obszarowy flood) po 'Trap Tiles' (chromatyczny kamuflaż).\n- **Clean Up:** Gwarantowane usuwanie efektów (guaranteed removal) po zakończeniu czasu trwania.\n- **Chaos Mode:** Specjalny modyfikator zwiększający częstotliwość spawnu.",
+      "technical": {
+        "logic": "Duration & Stacking",
+        "types": "Neon Turbo, Rocket, Shield, Trap",
+        "vfx": "Synced SFX/VFX Cleanup"
+      },
+      "media": { "type": "video", "url": "/videos/powerups-demo.mp4" }
+    }
+  ],
+  "gameModes": [
+    {
+      "id": "ffa",
+      "tag": "Solo",
+      "title": "Free-for-All",
+      "icon": "👤",
+      "color": "cyan",
+      "shortDesc": "Czysta rywalizacja. Tylko Ty i Twoja mapa.",
+      "longDesc": "Tryb, w którym każdy punkt terytorium należy tylko do Ciebie. Brak sojuszników oznacza, że każda inna plama koloru na mapie jest Twoim celem. Najwyższa intensywność zarządzania energią.",
+      "media": { "type": "image", "url": "/images/modes/ffa.jpg" }
+    },
+    {
+      "id": "team-battle",
+      "tag": "4vs4",
+      "title": "Team Battle",
+      "icon": "👥",
+      "color": "purple",
+      "shortDesc": "Strategiczna koordynacja i łączenie plam koloru.",
+      "longDesc": "Współpraca jest kluczowa. System sumuje wkład graczy (Team Score), a wspólne malowanie obszarów pozwala na szybsze budowanie Combo całej drużyny. Strategiczne blokowanie przejść kolorem drużynowym.",
+      "media": { "type": "image", "url": "/images/modes/team.jpg" }
+    },
+    {
+      "id": "chaos",
+      "tag": "Extreme",
+      "title": "Chaos Mode",
+      "icon": "⚠️",
+      "color": "pink",
+      "shortDesc": "Zasady przestają istnieć. Dynamiczne eventy.",
+      "longDesc": "Modyfikator nakładany na bazowe tryby. Zwiększona częstotliwość Power-upów, szybsze tempo Combo i dodatkowe 'Global Events', które mogą nagle zmienić grawitację lub odwrócić kolory na mapie.",
+      "media": { "type": "image", "url": "/images/modes/chaos.jpg" }
+    }
+  ],
+  "regions": [
+    {
+      "id": "neon-city",
+      "subtitle": "Region 01 // Megacity",
+      "title": "Neon City",
+      "icon": "🏙️",
+      "color": "cyan",
+      "shortDesc": "Pionowa dżungla idealna do ataków z góry.",
+      "longDesc": "Mapa charakteryzująca się dużą ilością pionowych powierzchni (ściany wieżowców). Optymalna dla graczy korzystających z 'Sticky Shoes' i szybkich rotacji wertykalnych.",
+      "media": { "type": "video", "url": "/videos/regions/neon.mp4" }
+    },
+    {
+      "id": "volcanic-island",
+      "subtitle": "Region 02 // Core",
+      "title": "Volcanic Island",
+      "icon": "🌋",
+      "color": "orange",
+      "shortDesc": "Dynamiczne zmiany poziomu terenu.",
+      "longDesc": "Wyspa z aktywnym wulkanem, który okresowo niszczy pomalowane bloki w centralnej strefie. Wymaga ciągłej re-koloryzacji i pilnowania 'Territory Ticks'.",
+      "media": { "type": "video", "url": "/videos/regions/volcano.mp4" }
+    },
+    {
+      "id": "frozen-realm",
+      "subtitle": "Region 03 // Void",
+      "title": "Frozen Realm",
+      "icon": "❄️",
+      "color": "blue",
+      "shortDesc": "Śliskie nawierzchnie i mniejsza trakcja.",
+      "longDesc": "Region o unikalnej fizyce poruszania się. Malowanie bloków lodu zwiększa przyczepność Twojej drużyny, podczas gdy wrogowie ślizgają się na Twoim kolorze.",
+      "media": { "type": "video", "url": "/videos/regions/frozen.mp4" }
+    },
+    {
+      "id": "rainbow-maze",
+      "subtitle": "Region 04 // Experim.",
+      "title": "Rainbow Maze",
+      "icon": "🌀",
+      "color": "pink",
+      "shortDesc": "Labirynt zmieniający układ ścian.",
+      "longDesc": "Mapa eksperymentalna, w której 'Special Block Bonuses' są ukryte wewnątrz ruchomych ścian. Wymaga doskonałej pamięci przestrzennej i szybkiego claimowania nowych korytarzy.",
+      "media": { "type": "video", "url": "/videos/regions/maze.mp4" }
+    }
+  ]
+}
