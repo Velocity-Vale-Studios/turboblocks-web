@@ -1,10 +1,10 @@
 ---
 title: "COMMUNITY HIGHLIGHTS #42"
-date: "10 LUTY 2026"
+date: "FEBRUARY 10, 2026"
 tag: "COMMUNITY"
 featured: false
 icon: "🏆"
-desc: "Zobaczcie najciekawsze budowle i momenty z ostatniego tygodnia przesyłane przez naszą społeczność na Discordzie."
+desc: "Check out the most impressive builds and moments from last week, submitted by our community on Discord."
 
 # STYLIZACJA
 gradient: "from-orange-500 via-red-500 to-yellow-500"
@@ -18,10 +18,10 @@ borderAccent: "border-orange-500/50"
 bgAccent: "bg-orange-500/10"
 ---
 
-## Wasza twórczość nas inspiruje!
+## Your Creativity Inspires Us!
 
-Co tydzień wybieramy najlepsze momenty z życia serwera. W tym numerze skupiamy się na niesamowitych projektach architektonicznych stworzonych przez naszych graczy.
+Every week we pick the best moments from server life. This issue focuses on the incredible architectural projects created by our players.
 
-> "Nie spodziewaliśmy się, że system budowania TurboBlocks pozwoli na taką skalę detali!" — **Zespół K8BUS**.
+> "We didn't expect the TurboBlocks building system to allow this level of detail!" — **Team K8BUS**.
 
-Sprawdź nasz kanał na Discordzie, aby przesłać własne nagrania i zrzuty ekranu do następnego wydania!
+Check our Discord channel to submit your own recordings and screenshots for the next edition!

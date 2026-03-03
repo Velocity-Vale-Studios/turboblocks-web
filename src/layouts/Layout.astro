@@ -3,11 +3,12 @@
 import Navbar from '../components/navbar/Navbar.astro';
 import '../styles/global.css';
 import Footer from "@/components/footer/Footer.astro";
+import CartOverlay from "../components/shop/CartOverlay.astro";
 
 const { title = "TurboBlocks" } = Astro.props;
 ---
 <!DOCTYPE html>
-<html lang="pl" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,5 +20,6 @@ const { title = "TurboBlocks" } = Astro.props;
     <slot />
 </main>
 <Footer />
+<CartOverlay />
 </body>
 </html>

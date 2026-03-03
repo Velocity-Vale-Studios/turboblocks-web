@@ -5,8 +5,8 @@
       "title": "Paint & Territory",
       "icon": "🎨",
       "color": "pink",
-      "shortDesc": "Szybki system przejmowania bloków i logika terytorium.",
-      "longDesc": "Rdzeń technologii ColorClash-Paint zaprojektowany pod kątem ekstremalnej wydajności:\n- **Deterministic Overwrite:** Natychmiastowe przejmowanie neutralnych i wrogich bloków.\n- **Visual Dimming:** Farba świeża jest najjaśniejsza, z czasem lekko blaknie (bez wpływu na logikę).\n- **Performance:** Optymalizacja O(1) dla sprawdzania ruchu i cache'owanie chunków.\n- **Territory Ticks:** Cykliczne raportowanie stanu posiadania (countOwnedBlocks) do systemu punktacji.",
+      "shortDesc": "Fast block-claiming system and territory logic.",
+      "longDesc": "The core of ColorClash-Paint technology, designed for extreme performance:\n- **Deterministic Overwrite:** Instant claiming of neutral and enemy blocks.\n- **Visual Dimming:** Fresh paint is brightest, fading slightly over time (no gameplay impact).\n- **Performance:** O(1) optimization for movement checks and chunk caching.\n- **Territory Ticks:** Periodic ownership reporting (countOwnedBlocks) to the scoring system.",
       "technical": {
         "queries": "O(1) Per Step",
         "storage": "Sparse Maps / Chunk Caching",
@@ -19,8 +19,8 @@
       "title": "Scoring & Combo",
       "icon": "⚡",
       "color": "cyan",
-      "shortDesc": "Nagradzamy rytm, ruch i agresywne przejmowanie mapy.",
-      "longDesc": "System Combo Multiplier wymusza dynamiczną rozgrywkę:\n- **Buildup:** Ciągłe malowanie i eliminacje budują poziom Combo.\n- **Multiplier:** Ostateczny wynik z każdej akcji jest mnożony przez aktualny współczynnik Flow.\n- **Reset:** Śmierć natychmiastowo resetuje licznik Combo.\n- **Sync:** Serwer jest autorytatywny, UI czyta snapshoty, aby uniknąć spamu aktualizacji.",
+      "shortDesc": "We reward rhythm, movement, and aggressive map control.",
+      "longDesc": "The Combo Multiplier system enforces dynamic gameplay:\n- **Buildup:** Continuous painting and eliminations build the Combo level.\n- **Multiplier:** The final score of each action is multiplied by the current Flow coefficient.\n- **Reset:** Death instantly resets the Combo counter.\n- **Sync:** Server is authoritative, UI reads snapshots to avoid update spam.",
       "technical": {
         "logic": "Multiplayer Aggregation",
         "updates": "Fixed Rate Snapshots",
@@ -33,8 +33,8 @@
       "title": "Chromatic Energy",
       "icon": "🧪",
       "color": "purple",
-      "shortDesc": "Niestabilne wybuchy energii zmieniające zasady gry.",
-      "longDesc": "Power-upy to 'unstable bursts', które mają tworzyć unikalne sytuacje:\n- **Spawn System:** Map-defined anchors z losowym czasem odświeżania.\n- **Arsenal:** Od 'Neon Turbo' (obszarowy flood) po 'Trap Tiles' (chromatyczny kamuflaż).\n- **Clean Up:** Gwarantowane usuwanie efektów (guaranteed removal) po zakończeniu czasu trwania.\n- **Chaos Mode:** Specjalny modyfikator zwiększający częstotliwość spawnu.",
+      "shortDesc": "Unstable energy bursts that change the rules of the game.",
+      "longDesc": "Power-ups are 'unstable bursts' designed to create unique situations:\n- **Spawn System:** Map-defined anchors with randomized refresh timers.\n- **Arsenal:** From 'Neon Turbo' (area flood) to 'Trap Tiles' (chromatic camouflage).\n- **Clean Up:** Guaranteed removal of effects after duration expires.\n- **Chaos Mode:** Special modifier increasing spawn frequency.",
       "technical": {
         "logic": "Duration & Stacking",
         "types": "Neon Turbo, Rocket, Shield, Trap",
@@ -50,8 +50,8 @@
       "title": "Free-for-All",
       "icon": "👤",
       "color": "cyan",
-      "shortDesc": "Czysta rywalizacja. Tylko Ty i Twoja mapa.",
-      "longDesc": "Tryb, w którym każdy punkt terytorium należy tylko do Ciebie. Brak sojuszników oznacza, że każda inna plama koloru na mapie jest Twoim celem. Najwyższa intensywność zarządzania energią.",
+      "shortDesc": "Pure competition. Just you and your map.",
+      "longDesc": "A mode where every piece of territory belongs only to you. No allies means every other color stain on the map is your target. Maximum energy management intensity.",
       "media": { "type": "image", "url": "/images/modes/ffa.jpg" }
     },
     {
@@ -60,8 +60,8 @@
       "title": "Team Battle",
       "icon": "👥",
       "color": "purple",
-      "shortDesc": "Strategiczna koordynacja i łączenie plam koloru.",
-      "longDesc": "Współpraca jest kluczowa. System sumuje wkład graczy (Team Score), a wspólne malowanie obszarów pozwala na szybsze budowanie Combo całej drużyny. Strategiczne blokowanie przejść kolorem drużynowym.",
+      "shortDesc": "Strategic coordination and merging color zones.",
+      "longDesc": "Cooperation is key. The system aggregates player contributions (Team Score), and joint painting allows faster Combo building for the entire team. Strategic blocking of passages with team color.",
       "media": { "type": "image", "url": "/images/modes/team.jpg" }
     },
     {
@@ -70,8 +70,8 @@
       "title": "Chaos Mode",
       "icon": "⚠️",
       "color": "pink",
-      "shortDesc": "Zasady przestają istnieć. Dynamiczne eventy.",
-      "longDesc": "Modyfikator nakładany na bazowe tryby. Zwiększona częstotliwość Power-upów, szybsze tempo Combo i dodatkowe 'Global Events', które mogą nagle zmienić grawitację lub odwrócić kolory na mapie.",
+      "shortDesc": "Rules cease to exist. Dynamic events.",
+      "longDesc": "A modifier applied to base modes. Increased power-up frequency, faster Combo tempo, and additional 'Global Events' that can suddenly change gravity or invert colors on the map.",
       "media": { "type": "image", "url": "/images/modes/chaos.jpg" }
     }
   ],
@@ -82,8 +82,8 @@
       "title": "Neon City",
       "icon": "🏙️",
       "color": "cyan",
-      "shortDesc": "Pionowa dżungla idealna do ataków z góry.",
-      "longDesc": "Mapa charakteryzująca się dużą ilością pionowych powierzchni (ściany wieżowców). Optymalna dla graczy korzystających z 'Sticky Shoes' i szybkich rotacji wertykalnych.",
+      "shortDesc": "Vertical jungle perfect for attacks from above.",
+      "longDesc": "A map characterized by a large amount of vertical surfaces (skyscraper walls). Optimal for players using 'Sticky Shoes' and fast vertical rotations.",
       "media": { "type": "video", "url": "/videos/regions/neon.mp4" }
     },
     {
@@ -92,8 +92,8 @@
       "title": "Volcanic Island",
       "icon": "🌋",
       "color": "orange",
-      "shortDesc": "Dynamiczne zmiany poziomu terenu.",
-      "longDesc": "Wyspa z aktywnym wulkanem, który okresowo niszczy pomalowane bloki w centralnej strefie. Wymaga ciągłej re-koloryzacji i pilnowania 'Territory Ticks'.",
+      "shortDesc": "Dynamic terrain level changes.",
+      "longDesc": "An island with an active volcano that periodically destroys painted blocks in the central zone. Requires constant re-coloring and monitoring of 'Territory Ticks'.",
       "media": { "type": "video", "url": "/videos/regions/volcano.mp4" }
     },
     {
@@ -102,8 +102,8 @@
       "title": "Frozen Realm",
       "icon": "❄️",
       "color": "blue",
-      "shortDesc": "Śliskie nawierzchnie i mniejsza trakcja.",
-      "longDesc": "Region o unikalnej fizyce poruszania się. Malowanie bloków lodu zwiększa przyczepność Twojej drużyny, podczas gdy wrogowie ślizgają się na Twoim kolorze.",
+      "shortDesc": "Slippery surfaces and reduced traction.",
+      "longDesc": "A region with unique movement physics. Painting ice blocks increases your team's grip, while enemies slide on your color.",
       "media": { "type": "video", "url": "/videos/regions/frozen.mp4" }
     },
     {
@@ -112,8 +112,8 @@
       "title": "Rainbow Maze",
       "icon": "🌀",
       "color": "pink",
-      "shortDesc": "Labirynt zmieniający układ ścian.",
-      "longDesc": "Mapa eksperymentalna, w której 'Special Block Bonuses' są ukryte wewnątrz ruchomych ścian. Wymaga doskonałej pamięci przestrzennej i szybkiego claimowania nowych korytarzy.",
+      "shortDesc": "A maze with shifting wall layouts.",
+      "longDesc": "An experimental map where 'Special Block Bonuses' are hidden inside moving walls. Requires excellent spatial memory and fast claiming of new corridors.",
       "media": { "type": "video", "url": "/videos/regions/maze.mp4" }
     }
   ]
