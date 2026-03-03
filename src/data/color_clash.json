@@ -1,0 +1,120 @@
+{
+  "mechanics": [
+    {
+      "id": "paint-system",
+      "title": "Paint & Territory",
+      "icon": "🎨",
+      "color": "pink",
+      "shortDesc": "Fast block-claiming system and territory logic.",
+      "longDesc": "The core of ColorClash-Paint technology, designed for extreme performance:\n- **Deterministic Overwrite:** Instant claiming of neutral and enemy blocks.\n- **Visual Dimming:** Fresh paint is brightest, fading slightly over time (no gameplay impact).\n- **Performance:** O(1) optimization for movement checks and chunk caching.\n- **Territory Ticks:** Periodic ownership reporting (countOwnedBlocks) to the scoring system.",
+      "technical": {
+        "queries": "O(1) Per Step",
+        "storage": "Sparse Maps / Chunk Caching",
+        "rules": "Instant Overwrite"
+      },
+      "media": { "type": "video", "url": "/videos/paint-tech.mp4" }
+    },
+    {
+      "id": "scoring-combo",
+      "title": "Scoring & Combo",
+      "icon": "⚡",
+      "color": "cyan",
+      "shortDesc": "We reward rhythm, movement, and aggressive map control.",
+      "longDesc": "The Combo Multiplier system enforces dynamic gameplay:\n- **Buildup:** Continuous painting and eliminations build the Combo level.\n- **Multiplier:** The final score of each action is multiplied by the current Flow coefficient.\n- **Reset:** Death instantly resets the Combo counter.\n- **Sync:** Server is authoritative, UI reads snapshots to avoid update spam.",
+      "technical": {
+        "logic": "Multiplayer Aggregation",
+        "updates": "Fixed Rate Snapshots",
+        "authority": "Server Side"
+      },
+      "media": { "type": "video", "url": "/videos/combo-system.mp4" }
+    },
+    {
+      "id": "power-ups",
+      "title": "Chromatic Energy",
+      "icon": "🧪",
+      "color": "purple",
+      "shortDesc": "Unstable energy bursts that change the rules of the game.",
+      "longDesc": "Power-ups are 'unstable bursts' designed to create unique situations:\n- **Spawn System:** Map-defined anchors with randomized refresh timers.\n- **Arsenal:** From 'Neon Turbo' (area flood) to 'Trap Tiles' (chromatic camouflage).\n- **Clean Up:** Guaranteed removal of effects after duration expires.\n- **Chaos Mode:** Special modifier increasing spawn frequency.",
+      "technical": {
+        "logic": "Duration & Stacking",
+        "types": "Neon Turbo, Rocket, Shield, Trap",
+        "vfx": "Synced SFX/VFX Cleanup"
+      },
+      "media": { "type": "video", "url": "/videos/powerups-demo.mp4" }
+    }
+  ],
+  "gameModes": [
+    {
+      "id": "ffa",
+      "tag": "Solo",
+      "title": "Free-for-All",
+      "icon": "👤",
+      "color": "cyan",
+      "shortDesc": "Pure competition. Just you and your map.",
+      "longDesc": "A mode where every piece of territory belongs only to you. No allies means every other color stain on the map is your target. Maximum energy management intensity.",
+      "media": { "type": "image", "url": "/images/modes/ffa.jpg" }
+    },
+    {
+      "id": "team-battle",
+      "tag": "4vs4",
+      "title": "Team Battle",
+      "icon": "👥",
+      "color": "purple",
+      "shortDesc": "Strategic coordination and merging color zones.",
+      "longDesc": "Cooperation is key. The system aggregates player contributions (Team Score), and joint painting allows faster Combo building for the entire team. Strategic blocking of passages with team color.",
+      "media": { "type": "image", "url": "/images/modes/team.jpg" }
+    },
+    {
+      "id": "chaos",
+      "tag": "Extreme",
+      "title": "Chaos Mode",
+      "icon": "⚠️",
+      "color": "pink",
+      "shortDesc": "Rules cease to exist. Dynamic events.",
+      "longDesc": "A modifier applied to base modes. Increased power-up frequency, faster Combo tempo, and additional 'Global Events' that can suddenly change gravity or invert colors on the map.",
+      "media": { "type": "image", "url": "/images/modes/chaos.jpg" }
+    }
+  ],
+  "regions": [
+    {
+      "id": "neon-city",
+      "subtitle": "Region 01 // Megacity",
+      "title": "Neon City",
+      "icon": "🏙️",
+      "color": "cyan",
+      "shortDesc": "Vertical jungle perfect for attacks from above.",
+      "longDesc": "A map characterized by a large amount of vertical surfaces (skyscraper walls). Optimal for players using 'Sticky Shoes' and fast vertical rotations.",
+      "media": { "type": "video", "url": "/videos/regions/neon.mp4" }
+    },
+    {
+      "id": "volcanic-island",
+      "subtitle": "Region 02 // Core",
+      "title": "Volcanic Island",
+      "icon": "🌋",
+      "color": "orange",
+      "shortDesc": "Dynamic terrain level changes.",
+      "longDesc": "An island with an active volcano that periodically destroys painted blocks in the central zone. Requires constant re-coloring and monitoring of 'Territory Ticks'.",
+      "media": { "type": "video", "url": "/videos/regions/volcano.mp4" }
+    },
+    {
+      "id": "frozen-realm",
+      "subtitle": "Region 03 // Void",
+      "title": "Frozen Realm",
+      "icon": "❄️",
+      "color": "blue",
+      "shortDesc": "Slippery surfaces and reduced traction.",
+      "longDesc": "A region with unique movement physics. Painting ice blocks increases your team's grip, while enemies slide on your color.",
+      "media": { "type": "video", "url": "/videos/regions/frozen.mp4" }
+    },
+    {
+      "id": "rainbow-maze",
+      "subtitle": "Region 04 // Experim.",
+      "title": "Rainbow Maze",
+      "icon": "🌀",
+      "color": "pink",
+      "shortDesc": "A maze with shifting wall layouts.",
+      "longDesc": "An experimental map where 'Special Block Bonuses' are hidden inside moving walls. Requires excellent spatial memory and fast claiming of new corridors.",
+      "media": { "type": "video", "url": "/videos/regions/maze.mp4" }
+    }
+  ]
+}

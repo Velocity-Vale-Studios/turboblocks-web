@@ -1,0 +1,27 @@
+---
+interface Props {
+    color: 'pink' | 'cyan' | 'purple';
+    position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+    delay?: string;
+}
+
+const { color, position, delay = '0s' } = Astro.props;
+
+const colors = {
+    pink: "bg-pink-500/20",
+    cyan: "bg-cyan-500/20",
+    purple: "bg-purple-500/20"
+};
+
+const positions = {
+    'top-left': "-top-24 -left-24",
+    'top-right': "-top-24 -right-24",
+    'bottom-left': "-bottom-24 -left-24",
+    'bottom-right': "-bottom-24 -right-24"
+};
+---
+
+<div
+        class={`absolute ${positions[position]} w-[300px] h-[300px] md:w-[600px] md:h-[600px] ${colors[color]} blur-[100px] md:blur-[150px] animate-pulse pointer-events-none -z-10`}
+        style={`animation-delay: ${delay};`}
+></div>

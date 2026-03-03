@@ -1,13 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import GameModes from '../components/GameModes.astro';
-import AboutUs from '../components/AboutUs.astro'; // Importujemy nowy połączony komponent
+
+import Hero from 'src/components/landing/hero/Hero.astro';
+import GameModes from 'src/components/landing/gamemodes/GameModes.astro';
+import Team from '../components/landing/team/Team.astro';
 ---
 
-<Layout title="Home">
+<Layout title="TurboBlocks | The Ultimate Minecraft Server">
     <Hero />
+
     <GameModes />
 
-    <AboutUs />
+    <Team />
 </Layout>

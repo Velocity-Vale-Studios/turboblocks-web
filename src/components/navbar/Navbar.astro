@@ -1,0 +1,17 @@
+---
+import DesktopNavbar from './desktop/DesktopNavbar.astro';
+import MobileNavbar from './mobile/MobileNavbar.astro';
+import { navConfig } from '../../data/navigation';
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<nav class="contents">
+    <div class="hidden lg:block">
+        <DesktopNavbar config={navConfig} currentPath={currentPath} />
+    </div>
+
+    <div class="lg:hidden">
+        <MobileNavbar config={navConfig} currentPath={currentPath} />
+    </div>
+</nav>

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "color-clash",
+    "name": "Color Clash",
+    "tag": "LIVE NOW",
+    "desc": "Strategic territory warfare. Paint the map, capture points, and dominate the arena in the most colorful mode of the season.",
+    "icon": "🎨",
+    "colorKey": "pink",
+    "status": "active",
+    "btnText": "Learn More",
+    "url": "/modes/color-clash",
+    "onlineCount": "124"
+  },
+  {
+    "id": "rocky-raceway",
+    "name": "Rocky Raceway",
+    "tag": "COMING SOON",
+    "desc": "Extreme racing on breakneck tracks. Vehicle physics you won't forget.",
+    "icon": "🏎️",
+    "colorKey": "cyan",
+    "status": "future",
+    "btnText": "Coming Soon...",
+    "url": "#"
+  }
+]

@@ -1,0 +1,11 @@
+---
+const animClasses = "transition-all duration-300 hover:scale-105 active:scale-95 transform-gpu";
+const purpleGradient = "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.6)]";
+---
+
+<button onclick="if(window.innerWidth>=1024){toggleCart()}else{window.location.href='/checkout'}" class={`relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-2xl group ${purpleGradient} ${animClasses}`}>
+    <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+        <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+    <span id="navbar-cart-count" class="absolute -top-1 -right-1 w-5 h-5 bg-white text-pink-600 text-[9px] font-black rounded-full flex items-center justify-center opacity-0 transition-all duration-300 shadow-lg">0</span>
+</button>

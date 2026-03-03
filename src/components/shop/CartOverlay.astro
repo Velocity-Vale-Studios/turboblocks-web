@@ -1,0 +1,159 @@
+---
+// Desktop cart overlay — mounted globally in Layout.astro
+// Popup z podglądem koszyka, przycisk prowadzi do /checkout
+---
+
+<div id="cart-drawer" class="hidden lg:flex fixed top-32 right-4 md:right-8 z-[9000] flex-col items-stretch gap-3 pointer-events-none opacity-0 translate-x-4 transition-all duration-400 ease-out w-[420px] max-h-[calc(100vh-150px)]">
+
+    {/* BUBBLE 1: HEADER */}
+    <div class="w-full px-6 py-5 bg-gradient-to-br from-white/[0.06] to-white/[0.02] backdrop-blur-3xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex justify-between items-center shrink-0 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"></div>
+        <div>
+            <h2 class="text-lg font-black italic text-white uppercase tracking-tighter leading-none">
+                TURBO <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-500">CART</span>
+            </h2>
+            <p class="text-[8px] font-bold text-white/30 uppercase tracking-[0.3em] mt-1 pl-0.5">Cart Preview</p>
+        </div>
+        <button
+            onclick="toggleCart(false)"
+            class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 hover:rotate-90 transition-all duration-300 shadow-lg shrink-0"
+        >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
+    {/* BUBBLE 2: ITEMS LIST */}
+    <div class="w-full bg-gradient-to-br from-white/[0.06] to-white/[0.02] backdrop-blur-3xl border border-white/10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col relative">
+        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+        <div id="cart-list" class="overflow-y-auto max-h-[350px] px-5 py-5 flex flex-col gap-2.5">
+            <div class="h-full flex flex-col items-center justify-center text-center opacity-40 py-8">
+                <span class="text-4xl mb-4 grayscale">🛒</span>
+                <p class="text-white italic uppercase text-[10px] font-black tracking-widest">Cart Empty</p>
+            </div>
+        </div>
+    </div>
+
+    {/* BUBBLE 3: TOTAL + CHECKOUT LINK */}
+    <div class="w-full px-6 py-5 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-pink-500/30 rounded-[2rem] shadow-[0_20px_50px_rgba(236,72,153,0.15)] shrink-0 relative overflow-hidden">
+        <div class="absolute -top-20 -right-20 w-56 h-56 bg-gradient-to-br from-pink-500/20 to-purple-600/20 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
+
+        <div class="relative z-10">
+            <div class="flex justify-between items-end mb-5">
+                <div class="flex flex-col gap-1">
+                    <span class="text-[8px] font-black text-white/40 uppercase tracking-[0.2em]">Total</span>
+                    <span id="cart-total" class="text-3xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white to-pink-200 tracking-tighter">0 TC</span>
+                </div>
+                <span id="cart-item-count" class="text-[9px] font-black text-white/30 uppercase tracking-widest">0 items</span>
+            </div>
+
+            <a id="checkout-btn" href="/checkout" class="relative overflow-hidden w-full py-4 rounded-2xl bg-white text-black font-black uppercase tracking-[0.2em] text-[10px] shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_60px_rgba(236,72,153,0.5)] transition-all duration-300 active:scale-95 flex items-center justify-center gap-3 border border-transparent hover:border-pink-500/30 group/btn no-underline">
+                <span class="relative z-10 group-hover/btn:text-pink-600 transition-colors">Checkout</span>
+                <span class="relative z-10 group-hover/btn:text-pink-600 group-hover/btn:translate-x-1 transition-all">→</span>
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-100 to-pink-100 scale-x-0 group-hover/btn:scale-x-100 transition-transform duration-300 origin-left"></div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    const CART_STORAGE_KEY = 'turbo_cart_v1';
+    window.cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+
+    const saveCart = (animate) => {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(window.cart));
+        updateCartUI(animate);
+    };
+
+    let isCartExpanded = false;
+
+    window.toggleCart = (forceState) => {
+        const drawer = document.getElementById('cart-drawer');
+        if (!drawer) return;
+        isCartExpanded = (typeof forceState === 'boolean') ? forceState : !isCartExpanded;
+        if (isCartExpanded) {
+            drawer.classList.remove('opacity-0', 'pointer-events-none', 'translate-x-4');
+            drawer.classList.add('opacity-100', 'pointer-events-auto', 'translate-x-0');
+            updateCartUI(false);
+        } else {
+            drawer.classList.add('opacity-0', 'pointer-events-none', 'translate-x-4');
+            drawer.classList.remove('opacity-100', 'pointer-events-auto', 'translate-x-0');
+        }
+    };
+
+    window.addToCart = (item) => {
+        window.cart.push(item);
+        saveCart(true);
+        if (window.innerWidth >= 1024) window.toggleCart(true);
+    };
+
+    window.removeFromCart = (index) => {
+        window.cart.splice(index, 1);
+        saveCart(false);
+    };
+
+    window.addEventListener('shop:add', (e) => {
+        if (e.detail) window.addToCart(e.detail);
+    });
+
+    function updateCartUI(animate) {
+        const list = document.getElementById('cart-list');
+        const totalDisplay = document.getElementById('cart-total');
+        const countDisplay = document.getElementById('cart-item-count');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const navbarBadge = document.getElementById('navbar-cart-count');
+
+        if (navbarBadge) {
+            navbarBadge.innerText = window.cart.length;
+            navbarBadge.style.opacity = window.cart.length > 0 ? '1' : '0';
+            if (animate) {
+                navbarBadge.classList.remove('animate-cart-pop');
+                void navbarBadge.offsetWidth;
+                navbarBadge.classList.add('animate-cart-pop');
+            }
+        }
+
+        if (!list || !totalDisplay) return;
+
+        if (countDisplay) {
+            const n = window.cart.length;
+            countDisplay.innerText = n === 0 ? '0 items' : n === 1 ? '1 item' : n + ' items';
+        }
+
+        if (window.cart.length === 0) {
+            list.innerHTML = '<div class="h-full flex flex-col items-center justify-center text-center opacity-40 py-8"><span class="text-4xl mb-4 grayscale">🛒</span><p class="text-white italic uppercase text-[10px] font-black tracking-widest">Cart Empty</p></div>';
+            totalDisplay.innerText = '0 TC';
+            if (checkoutBtn) { checkoutBtn.style.pointerEvents = 'none'; checkoutBtn.style.opacity = '0.3'; }
+        } else {
+            list.innerHTML = '';
+            let total = 0;
+            window.cart.forEach((item, index) => {
+                const priceVal = parseInt(String(item.price).replace(/[^0-9]/g, '')) || 0;
+                total += priceVal;
+                const el = document.createElement('div');
+                el.className = "group relative flex items-center gap-3 bg-black/40 border border-white/5 p-3 pr-4 rounded-[1.5rem] backdrop-blur-md transition-all hover:bg-white/5 hover:border-white/10 shrink-0";
+                el.innerHTML = '<div class="w-12 h-12 bg-gradient-to-br from-white/10 to-transparent rounded-xl flex items-center justify-center text-xl shadow-inner border border-white/5 shrink-0">' + (item.icon||'📦') + '</div><div class="flex-grow overflow-hidden"><p class="text-[10px] font-black text-white uppercase italic tracking-tighter truncate pr-2">' + item.name + '</p><p class="text-[9px] font-bold text-pink-400 uppercase mt-0.5 tracking-widest">' + item.price + '</p></div><button onclick="removeFromCart(' + index + ')" class="w-7 h-7 rounded-full flex items-center justify-center text-white/20 hover:text-red-500 hover:bg-red-500/10 transition-all shrink-0"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>';
+                list.appendChild(el);
+            });
+            totalDisplay.innerText = total + ' TC';
+            if (checkoutBtn) { checkoutBtn.style.pointerEvents = ''; checkoutBtn.style.opacity = ''; }
+        }
+    }
+
+    updateCartUI(false);
+</script>
+
+<style is:global>
+    @keyframes cart-bounce {
+        0% { transform: scale(1); }
+        25% { transform: scale(1.5); background-color: #db2777; color: white; box-shadow: 0 0 10px rgba(219, 39, 119, 0.5); }
+        40% { transform: scale(0.9); }
+        60% { transform: scale(1.15); }
+        100% { transform: scale(1); background-color: white; color: #db2777; box-shadow: none; }
+    }
+    .animate-cart-pop {
+        animation: cart-bounce 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+</style>
+

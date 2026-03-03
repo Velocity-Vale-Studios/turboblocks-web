@@ -1,36 +1,24 @@
-import { defineConfig, presetUno, presetWebFonts } from 'unocss'
+import {defineConfig} from "unocss";
 
 export default defineConfig({
-    presets: [
-        presetUno(),
-        presetWebFonts({
-            provider: 'google',
-            fonts: {
-                sans: 'Inter:300,400,600',
-                heading: 'Plus Jakarta Sans:200,800',
-            },
-        }),
-    ],
-    theme: {
-        colors: {
-            premium: {
-                bg: '#0a0b10',
-                card: 'rgba(255, 255, 255, 0.03)',
-                border: 'rgba(255, 255, 255, 0.08)',
-                mint: '#e0fbfc',
-                lavender: '#e2e2ff',
-                peach: '#ffd4b8',
-            },
-            arcade: {
-                pink: '#ff006e',
-                neon_pink: '#ff4d7d',
-                cyan: '#00d9ff',
-                lime: '#39ff14',
-                purple: '#b500d9',
-                neon_purple: '#d946ef',
-                yellow: '#ffff00',
-                orange: '#ff8c00',
-            }
-        }
-    }
+    // ... Twoje istniejące presets i theme ...
+    safelist: [
+        // Dodajemy wszystkie kombinacje kolorów arcade, których używamy
+        ...['pink', 'cyan', 'lime', 'orange', 'purple', 'neon_pink', 'neon_purple', 'yellow'].flatMap(c => [
+            `text-arcade-${c}`,
+            `bg-arcade-${c}`,
+            `border-arcade-${c}`,
+            `border-arcade-${c}/30`,
+            `ring-arcade-${c}`,
+            `from-arcade-${c}/40`,
+            `via-arcade-${c}/40`,
+            `to-arcade-${c}/40`,
+        ]),
+        // Cienie glow (Uno potrzebuje pełnych stringów w safelist dla customowych wartości)
+        'shadow-[0_0_40px_rgba(255,0,110,0.3)]',
+        'shadow-[0_0_40px_rgba(0,217,255,0.3)]',
+        'shadow-[0_0_40px_rgba(57,255,20,0.3)]',
+        'shadow-[0_0_40px_rgba(255,140,0,0.3)]',
+        'shadow-[0_0_40px_rgba(181,0,217,0.3)]'
+    ]
 })

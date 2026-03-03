@@ -1,0 +1,251 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Checkout — TurboShop">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pt-28 sm:pt-32 pb-24 md:pb-48 relative min-h-screen">
+
+        {/* Ambient glow */}
+        <div class="fixed inset-0 -z-10 pointer-events-none">
+            <div class="absolute top-[10%] left-0 w-[400px] h-[400px] bg-gradient-to-br from-pink-500/15 via-purple-500/10 to-transparent blur-[160px]"></div>
+            <div class="absolute bottom-[15%] right-0 w-[300px] h-[300px] bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-transparent blur-[140px]"></div>
+        </div>
+
+        {/* Back link */}
+        <a href="/shop" class="inline-flex items-center gap-2 text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-8 hover:text-white transition-colors">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+            Back to Shop
+        </a>
+
+        {/* Header */}
+        <div class="mb-10 md:mb-16">
+            <div class="inline-block px-4 py-1.5 bg-pink-400/10 border border-pink-400/20 rounded-full mb-4">
+                <span class="text-[10px] font-black uppercase tracking-[0.4em] text-pink-400 block leading-none">Payment Terminal</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-black italic text-white uppercase tracking-tighter leading-none">
+                CHECK<span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 pr-2 md:pr-4">OUT</span>
+            </h1>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
+
+            {/* ===== LEWA KOLUMNA: KOSZYK ===== */}
+            <div class="lg:col-span-7 space-y-6">
+
+                {/* Lista przedmiotów */}
+                <section class="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 rounded-[2rem] overflow-hidden relative">
+                    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                    <div class="px-5 sm:px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                        <span class="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Your Items</span>
+                        <span id="ck-count" class="text-[9px] font-black text-white/20 uppercase tracking-widest">0</span>
+                    </div>
+                    <div id="ck-list" class="p-5 sm:p-6 flex flex-col gap-3 max-h-[50vh] lg:max-h-[60vh] overflow-y-auto">
+                        <div class="flex flex-col items-center justify-center text-center opacity-40 py-12">
+                            <span class="text-5xl mb-4 grayscale">🛒</span>
+                            <p class="text-white italic uppercase text-[10px] font-black tracking-widest">Cart Empty</p>
+                            <a href="/shop" class="mt-4 text-[9px] font-black text-cyan-400 uppercase tracking-widest hover:text-white transition-colors">Go to Shop →</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            {/* ===== PRAWA KOLUMNA: PODSUMOWANIE + PŁATNOŚĆ ===== */}
+            <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
+
+                {/* Podsumowanie */}
+                <section class="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 rounded-[2rem] p-5 sm:p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+                    <h3 class="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-5">Summary</h3>
+
+                    <div class="space-y-3 mb-5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-white/50 font-medium">Items</span>
+                            <span id="ck-subtotal" class="text-sm font-black text-white">0 TC</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-white/50 font-medium">Discount</span>
+                            <span class="text-sm font-black text-green-400">-0 TC</span>
+                        </div>
+                        <div class="h-[1px] bg-white/5"></div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-base font-black text-white uppercase">Total</span>
+                            <span id="ck-total" class="text-2xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white to-pink-200 tracking-tighter">0 TC</span>
+                        </div>
+                    </div>
+
+                    {/* Kod rabatowy */}
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="Discount code" class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-xs font-bold placeholder-white/20 focus:outline-none focus:border-cyan-500/30 transition-colors" />
+                        <button class="px-5 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black text-white/50 uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all">
+                            OK
+                        </button>
+                    </div>
+                </section>
+
+                {/* Metoda płatności */}
+                <section class="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 rounded-[2rem] p-5 sm:p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-pink-500/20 to-transparent"></div>
+                    <h3 class="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-5">Payment Method</h3>
+
+                    <div class="grid grid-cols-2 gap-3" id="payment-methods">
+                        {/* BLIK */}
+                        <button data-method="blik" class="pay-method group/pay relative flex flex-col items-center justify-center gap-2 p-4 sm:p-5 bg-black/40 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-pink-500/30">
+                            <span class="text-2xl">🏦</span>
+                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest group-hover/pay:text-white transition-colors">BLIK</span>
+                        </button>
+
+                        {/* PayPal */}
+                        <button data-method="paypal" class="pay-method group/pay relative flex flex-col items-center justify-center gap-2 p-4 sm:p-5 bg-black/40 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-blue-500/30">
+                            <svg class="w-7 h-7 text-[#00457C]" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c1.684.015 3.108-.474 4.063-1.56.955-1.087 1.392-2.596 1.128-4.36C25.2 0 22.764 0 20.644 0H9.32a.856.856 0 0 0-.845.74L5.371 18.17a.642.642 0 0 0 .634.74h4.006l-.072.461c-.058.37.22.706.596.706h3.592c.457 0 .845-.33.917-.78l.038-.189.727-4.597.047-.254c.072-.45.46-.78.917-.78h.577c3.735 0 6.66-1.517 7.512-5.907.357-1.835.172-3.367-.77-4.443z"/></svg>
+                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest group-hover/pay:text-white transition-colors">PayPal</span>
+                        </button>
+
+                        {/* Karta */}
+                        <button data-method="card" class="pay-method group/pay relative flex flex-col items-center justify-center gap-2 p-4 sm:p-5 bg-black/40 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-purple-500/30">
+                            <span class="text-2xl">💳</span>
+                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest group-hover/pay:text-white transition-colors">Card</span>
+                        </button>
+
+                        {/* TurboCoins */}
+                        <button data-method="turbocoins" class="pay-method group/pay relative flex flex-col items-center justify-center gap-2 p-4 sm:p-5 bg-black/40 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-cyan-500/30">
+                            <span class="text-2xl">⚡</span>
+                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest group-hover/pay:text-white transition-colors">TurboCoins</span>
+                        </button>
+                    </div>
+
+                    <p id="selected-method-label" class="text-[9px] font-black text-white/20 uppercase tracking-widest mt-4 text-center">Select a payment method</p>
+                </section>
+
+                {/* Przycisk zapłać */}
+                <section class="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-pink-500/30 rounded-[2rem] p-5 sm:p-6 relative overflow-hidden shadow-[0_0_40px_rgba(236,72,153,0.1)]">
+                    <div class="absolute -top-16 -right-16 w-48 h-48 bg-gradient-to-br from-pink-500/25 to-purple-600/25 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <button id="ck-pay-btn" disabled class="relative overflow-hidden w-full py-5 rounded-2xl bg-white/5 text-white/20 font-black uppercase tracking-[0.2em] text-[10px] cursor-not-allowed flex items-center justify-center gap-3 transition-all duration-500">
+                            <span>Select a payment method</span>
+                        </button>
+                        <p class="text-[8px] text-white/15 uppercase tracking-widest text-center mt-3 font-bold">Transaction secured with end-to-end encryption</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script is:inline>
+    const CART_KEY = 'turbo_cart_v1';
+    let selectedMethod = null;
+
+    function getCart() {
+        return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    }
+    function saveCartData(cart) {
+        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        if (window.cart) window.cart = cart;
+    }
+
+    window.ckRemove = function(index) {
+        const cart = getCart();
+        cart.splice(index, 1);
+        saveCartData(cart);
+        renderCheckout();
+    };
+
+    function renderCheckout() {
+        const cart = getCart();
+        const list = document.getElementById('ck-list');
+        const countEl = document.getElementById('ck-count');
+        const subtotalEl = document.getElementById('ck-subtotal');
+        const totalEl = document.getElementById('ck-total');
+        if (!list) return;
+
+        const n = cart.length;
+        if (countEl) countEl.innerText = n === 0 ? '0' : n === 1 ? '1 item' : n + ' items';
+
+        if (n === 0) {
+            list.innerHTML = '<div class="flex flex-col items-center justify-center text-center opacity-40 py-12"><span class="text-5xl mb-4 grayscale">🛒</span><p class="text-white italic uppercase text-[10px] font-black tracking-widest">Cart Empty</p><a href="/shop" class="mt-4 text-[9px] font-black text-cyan-400 uppercase tracking-widest hover:text-white transition-colors">Go to Shop →</a></div>';
+            if (subtotalEl) subtotalEl.innerText = '0 TC';
+            if (totalEl) totalEl.innerText = '0 TC';
+            updatePayBtn();
+            return;
+        }
+
+        list.innerHTML = '';
+        let total = 0;
+
+        cart.forEach(function(item, index) {
+            const priceVal = parseInt(String(item.price).replace(/[^0-9]/g, '')) || 0;
+            total += priceVal;
+            const el = document.createElement('div');
+            el.className = 'flex items-center gap-4 bg-black/40 border border-white/5 p-3 sm:p-4 rounded-[1.5rem] backdrop-blur-md transition-all hover:bg-white/5 hover:border-white/10';
+            el.innerHTML = '<div class="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-white/10 to-transparent rounded-xl sm:rounded-2xl flex items-center justify-center text-xl sm:text-2xl border border-white/5 shrink-0">' + (item.icon||'📦') + '</div>'
+                + '<div class="flex-grow overflow-hidden">'
+                + '<p class="text-[11px] sm:text-xs font-black text-white uppercase italic tracking-tighter truncate">' + item.name + '</p>'
+                + '<div class="flex items-center gap-2 mt-1">'
+                + '<span class="text-[9px] sm:text-[10px] font-bold text-pink-400 uppercase tracking-widest">' + item.price + '</span>'
+                + '<span class="text-[8px] text-white/20 font-bold uppercase">' + (item.rarity||'') + '</span>'
+                + '</div></div>'
+                + '<button onclick="ckRemove(' + index + ')" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-white/20 hover:text-red-500 hover:bg-red-500/10 transition-all shrink-0">'
+                + '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>';
+            list.appendChild(el);
+        });
+
+        if (subtotalEl) subtotalEl.innerText = total + ' TC';
+        if (totalEl) totalEl.innerText = total + ' TC';
+        updatePayBtn();
+    }
+
+    // Payment method selection
+    function initPaymentMethods() {
+        var methods = document.querySelectorAll('.pay-method');
+        var label = document.getElementById('selected-method-label');
+        var names = { blik: 'BLIK', paypal: 'PayPal', card: 'Credit Card', turbocoins: 'TurboCoins' };
+
+        methods.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                selectedMethod = btn.getAttribute('data-method');
+
+                // Reset all
+                methods.forEach(function(b) {
+                    b.classList.remove('border-pink-500/50', 'bg-pink-500/10', 'border-cyan-500/50', 'bg-cyan-500/10', 'border-purple-500/50', 'bg-purple-500/10', 'border-blue-500/50', 'bg-blue-500/10');
+                    b.classList.add('border-white/10', 'bg-black/40');
+                });
+
+                // Highlight selected
+                btn.classList.remove('border-white/10', 'bg-black/40');
+                if (selectedMethod === 'blik') { btn.classList.add('border-pink-500/50', 'bg-pink-500/10'); }
+                else if (selectedMethod === 'paypal') { btn.classList.add('border-blue-500/50', 'bg-blue-500/10'); }
+                else if (selectedMethod === 'card') { btn.classList.add('border-purple-500/50', 'bg-purple-500/10'); }
+                else if (selectedMethod === 'turbocoins') { btn.classList.add('border-cyan-500/50', 'bg-cyan-500/10'); }
+
+                if (label) label.innerText = 'Selected: ' + (names[selectedMethod] || selectedMethod);
+                updatePayBtn();
+            });
+        });
+    }
+
+    function updatePayBtn() {
+        var btn = document.getElementById('ck-pay-btn');
+        if (!btn) return;
+        var cart = getCart();
+        var hasItems = cart.length > 0;
+        var hasMethod = !!selectedMethod;
+
+        if (hasItems && hasMethod) {
+            btn.disabled = false;
+            btn.className = 'relative overflow-hidden w-full py-5 rounded-2xl bg-white text-black font-black uppercase tracking-[0.2em] text-[10px] shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(236,72,153,0.5)] transition-all duration-300 active:scale-95 flex items-center justify-center gap-3 border border-transparent hover:border-pink-500/30 cursor-pointer group/pay';
+            var names = { blik: 'BLIK', paypal: 'PayPal', card: 'Card', turbocoins: 'TurboCoins' };
+            btn.innerHTML = '<span class="relative z-10">Pay with ' + (names[selectedMethod]||'') + '</span><span class="relative z-10 group-hover/pay:translate-x-1 transition-transform">→</span>';
+        } else if (hasItems && !hasMethod) {
+            btn.disabled = true;
+            btn.className = 'w-full py-5 rounded-2xl bg-white/5 text-white/20 font-black uppercase tracking-[0.2em] text-[10px] cursor-not-allowed flex items-center justify-center gap-3 transition-all duration-500';
+            btn.innerHTML = '<span>Select a payment method</span>';
+        } else {
+            btn.disabled = true;
+            btn.className = 'w-full py-5 rounded-2xl bg-white/5 text-white/20 font-black uppercase tracking-[0.2em] text-[10px] cursor-not-allowed flex items-center justify-center gap-3 transition-all duration-500';
+            btn.innerHTML = '<span>Cart Empty</span>';
+        }
+    }
+
+    renderCheckout();
+    initPaymentMethods();
+</script>
