@@ -1,7 +1,6 @@
 import {defineConfig} from "unocss";
 
 export default defineConfig({
-    // ... Twoje istniejące presets i theme ...
     safelist: [
         // Dodajemy wszystkie kombinacje kolorów arcade, których używamy
         ...['pink', 'cyan', 'lime', 'orange', 'purple', 'neon_pink', 'neon_purple', 'yellow'].flatMap(c => [

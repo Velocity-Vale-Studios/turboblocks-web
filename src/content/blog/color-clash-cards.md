@@ -1,7 +1,7 @@
 ---
 title: "COLOR IS POWER: UNVEILING COLOR CLASH!"
 date: "MARCH 3, 2026"
-tag: "GDD / SNEAK PEEK"
+tag: "SNEAK PEEK"
 featured: true
 icon: "🔥"
 desc: "We are diving into the Game Design Document of our core mode. Discover exactly what Color Clash is, how the maps work, and why painting is more than just decoration."
