@@ -1,58 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ShopSafelist from '../components/shop/ShopSafelist.astro';
+import { shopCollections } from '../data/shop';
 
-const featuredCollection = {
-    name: "Winter Festive",
-    status: "LIMITED EVENT",
-    desc: "A winter item set available for a limited time only. Get the legendary Krampus Horns and frosty effects.",
-    gradient: "from-blue-600 via-indigo-500 to-cyan-400",
-    borderColorClass: "border-blue-500/30",
-    glowClass: "shadow-[0_0_60px_rgba(59,130,246,0.25)] hover:shadow-[0_0_100px_rgba(59,130,246,0.4)]",
-    accent: "text-blue-400",
-    items: [
-        { name: "Krampus Horns", type: "Headgear", price: "2500 TC", icon: "😈", rarity: "Legendary", desc: "The rarest event artifact.", theme: "blue" },
-        { name: "Snow Frost Brush", type: "Weapon Skin", price: "600 TC", icon: "🖌️", rarity: "Epic", desc: "Frost-style painting.", theme: "cyan" },
-        { name: "Candy Burst", type: "Death Anim", price: "850 TC", icon: "🍭", rarity: "Rare", desc: "Sweet explosion.", theme: "pink" },
-        { name: "Frost Reform", type: "Respawn Anim", price: "750 TC", icon: "❄️", rarity: "Epic", desc: "Frosty respawn animation.", theme: "white" },
-        { name: "Santa Hat", type: "Headgear", price: "Free", icon: "🎅", rarity: "Common", desc: "Classic Santa hat.", theme: "red" },
-        { name: "Frost Goggles", type: "Accessories", price: "300 TC", icon: "🥽", rarity: "Common", desc: "Freeze-resistant goggles.", theme: "cyan" },
-        { name: "Winter Scarf", type: "Accessories", price: "250 TC", icon: "🧣", rarity: "Common", desc: "A warm scarf for cold days.", theme: "blue" },
-        { name: "Snow Backpack", type: "Backpack", price: "450 TC", icon: "🎒", rarity: "Rare", desc: "Backpack filled with snow.", theme: "white" },
-        { name: "Icy Sweep Roller", type: "Weapon Skin", price: "550 TC", icon: "🚜", rarity: "Rare", desc: "Roller that leaves ice behind.", theme: "cyan" },
-        { name: "Step Freeze Boots", type: "Boots", price: "500 TC", icon: "👟", rarity: "Rare", desc: "Boots that freeze the ground.", theme: "blue" },
-        { name: "Snow Burst Grenade", type: "Gadget", price: "400 TC", icon: "❄️", rarity: "Common", desc: "Snow grenade.", theme: "white" },
-        { name: "Snow Drift Trail", type: "Player Trail", price: "350 TC", icon: "💨", rarity: "Common", desc: "Snowy trail behind the player.", theme: "white" },
-        { name: "Candy Glow Trail", type: "Player Trail", price: "400 TC", icon: "🍬", rarity: "Common", desc: "Sweet glowing path.", theme: "pink" },
-        { name: "Winter Gloves", type: "Accessories", price: "150 TC", icon: "🧤", rarity: "Common", desc: "Winter gloves.", theme: "blue" }
-    ]
-};
+// ═══════════════════════════════════════════════════════════════
+// 🔧 SHOP CONFIG — zmień ID żeby podmienić kolekcje na stronie
+// ═══════════════════════════════════════════════════════════════
+const FEATURED_COLLECTION_ID = "chromatic-riot";      // sekcja Featured (górna, z opisem)
+const CLASSIC_COLLECTION_ID  = "neon-genesis";          // sekcja Classic  (dolna, bez opisu)
+// ═══════════════════════════════════════════════════════════════
+// Dostępne ID (11 kolekcji):
+//   "winter-festive", "solar-flare", "neon-genesis", "chromatic-riot",
+//   "cryo-neon", "magma-flow", "prism-shift", "system-override",
+//   "kinetic-surge", "neon-hazard", "astral-void"
+// ═══════════════════════════════════════════════════════════════
 
-const classicCollection = {
-    name: "Solar Flare",
-    status: "CLASSIC SELECTION",
-    gradient: "from-orange-500 via-red-500 to-yellow-500",
-    borderColorClass: "border-orange-500/30",
-    glowClass: "shadow-[0_0_60px_rgba(249,115,22,0.25)] hover:shadow-[0_0_100px_rgba(249,115,22,0.4)]",
-    accent: "text-orange-500",
-    items: [
-        { name: "Sun Backpack", type: "Backpack", price: "1800 TC", icon: "☀️", rarity: "Legendary", desc: "Solar-powered backpack.", theme: "orange" },
-        { name: "Flare Stroke", type: "Weapon Skin", price: "650 TC", icon: "🔥", rarity: "Epic", desc: "Fiery trail stroke.", theme: "red" },
-        { name: "Solar Reform", type: "Respawn Anim", price: "700 TC", icon: "✨", rarity: "Rare", desc: "Golden respawn effect.", theme: "yellow" },
-        { name: "Sun Visor", type: "Headgear", price: "200 TC", icon: "🕶️", rarity: "Common", desc: "Classic sun visor.", theme: "orange" },
-        { name: "Solar Trail", type: "Player Trail", price: "300 TC", icon: "☄️", rarity: "Rare", desc: "Fiery comet trail.", theme: "orange" },
-        { name: "Flare Steps", type: "Boots", price: "400 TC", icon: "👟", rarity: "Rare", desc: "Boots that leave embers.", theme: "red" },
-        { name: "Blaze Bomb", type: "Gadget", price: "450 TC", icon: "💣", rarity: "Epic", desc: "Incendiary bomb.", theme: "orange" },
-        { name: "Solar Gloves", type: "Accessories", price: "150 TC", icon: "🧤", rarity: "Common", desc: "Heat-resistant gloves.", theme: "orange" },
-        { name: "Sunshot Cannon", type: "Weapon Skin", price: "600 TC", icon: "🔫", rarity: "Epic", desc: "Solar-powered cannon.", theme: "yellow" },
-        { name: "Solar Sweep", type: "Weapon Skin", price: "500 TC", icon: "🚜", rarity: "Rare", desc: "Solar vehicle.", theme: "orange" }
-    ]
-};
+const findCollection = (id: string) => shopCollections.find(c => c.id === id)!;
+
+const featuredCollection = findCollection(FEATURED_COLLECTION_ID);
+const classicCollection  = findCollection(CLASSIC_COLLECTION_ID);
 
 const getRarityStyles = (rarity: string) => {
     switch(rarity) {
         case 'Legendary': return 'border-yellow-500/50 shadow-[0_0_30px_rgba(234,179,8,0.2)] text-yellow-400';
         case 'Epic': return 'border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.15)] text-purple-400';
         case 'Rare': return 'border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.1)] text-blue-400';
+        case 'Uncommon': return 'border-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.1)] text-green-400';
         default: return 'border-white/10 text-white/60';
     }
 };
@@ -68,10 +41,11 @@ const chunkItems = (items: any[]) => {
 };
 
 const featuredChunks = chunkItems(featuredCollection.items);
-const classicChunks = chunkItems(classicCollection.items);
+const classicChunks  = chunkItems(classicCollection.items);
 ---
 
 <Layout title="TurboShop">
+    <ShopSafelist />
     <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-28 sm:pt-32 pb-24 md:pb-48 relative">
 
         {/* Ambient glow */}
@@ -94,24 +68,26 @@ const classicChunks = chunkItems(classicCollection.items);
         <section class="mb-16 md:mb-32">
             <div class={`relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 overflow-hidden bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${featuredCollection.borderColorClass} ${featuredCollection.glowClass} group`}>
                 <div class={`absolute inset-0 bg-gradient-to-br ${featuredCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700`}></div>
-                <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+                <div class={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${featuredCollection.lineColor} to-transparent`}></div>
 
                 <div class="relative z-10">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 gap-6 text-center md:text-left">
                         <div>
-                            <span class="px-4 py-1.5 bg-blue-500/20 border border-blue-500/30 rounded-xl text-blue-400 text-[10px] md:text-xs font-black uppercase tracking-widest shadow-[0_0_15px_rgba(59,130,246,0.3)] animate-pulse inline-block mb-4">
+                            <span class={`px-4 py-1.5 ${featuredCollection.badgeBg} border ${featuredCollection.badgeBorder} rounded-xl ${featuredCollection.badgeText} text-[10px] md:text-xs font-black uppercase tracking-widest ${featuredCollection.badgeShadow} ${featuredCollection.badgeAnimate ? 'animate-pulse' : ''} inline-block mb-4`}>
                                 {featuredCollection.status}
                             </span>
                             <h2 class="text-3xl sm:text-4xl md:text-7xl font-black italic text-white uppercase tracking-tighter mb-4">{featuredCollection.name}</h2>
-                            <p class="text-white/50 max-w-xl text-sm md:text-lg font-medium">{featuredCollection.desc}</p>
+                            {featuredCollection.desc && (
+                                <p class="text-white/50 max-w-xl text-sm md:text-lg font-medium">{featuredCollection.desc}</p>
+                            )}
                         </div>
                     </div>
 
                     <div class="carousel-mask relative py-4 md:py-12 -mx-4 md:-mx-8">
-                        <div id="featured-track" class="shop-track flex w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform">
-                            {featuredChunks.map((chunk) => (
+                        <div id="track-featured" class="shop-track flex w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform" data-carousel-track data-active-color={featuredCollection.activeCarouselColor}>
+                            {featuredChunks.map((chunk: any[]) => (
                                 <div class="w-full flex-shrink-0 px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
-                                    {chunk.map(item => (
+                                    {chunk.map((item: any) => (
                                         item ? (
                                             <div class={`group/item relative bg-black/40 border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ${getRarityStyles(item.rarity)} hover:bg-white/5 cursor-pointer item-card flex flex-col h-full`}
                                                  data-item={JSON.stringify(item)}>
@@ -135,15 +111,15 @@ const classicChunks = chunkItems(classicCollection.items);
                     </div>
 
                     <div class="flex items-center justify-center gap-6 mt-6 md:mt-8">
-                        <button type="button" class="carousel-prev-featured w-10 h-10 flex items-center justify-center text-blue-400 hover:scale-125 transition-all">
+                        <button type="button" data-carousel-prev="featured" class={`w-10 h-10 flex items-center justify-center ${featuredCollection.accent} hover:scale-125 transition-all`}>
                             <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
                         </button>
-                        <div class="flex items-center gap-2" id="slider-dots-featured">
-                            {featuredChunks.map((_, index) => (
+                        <div class="flex items-center gap-2" data-carousel-dots="featured">
+                            {featuredChunks.map((_: any, index: number) => (
                                 <button class="dot-bullet" data-index={index}></button>
                             ))}
                         </div>
-                        <button type="button" class="carousel-next-featured w-10 h-10 flex items-center justify-center text-blue-400 hover:scale-125 transition-all">
+                        <button type="button" data-carousel-next="featured" class={`w-10 h-10 flex items-center justify-center ${featuredCollection.accent} hover:scale-125 transition-all`}>
                             <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                         </button>
                     </div>
@@ -155,12 +131,12 @@ const classicChunks = chunkItems(classicCollection.items);
         <section class="mb-16 md:mb-32">
             <div class={`relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 overflow-hidden bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${classicCollection.borderColorClass} ${classicCollection.glowClass} group`}>
                 <div class={`absolute inset-0 bg-gradient-to-br ${classicCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700`}></div>
-                <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-orange-500/30 to-transparent"></div>
+                <div class={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${classicCollection.lineColor} to-transparent`}></div>
 
                 <div class="relative z-10">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 gap-6 text-center md:text-left">
                         <div>
-                            <span class="px-4 py-1.5 bg-orange-500/20 border border-orange-500/30 rounded-xl text-orange-400 text-[10px] md:text-xs font-black uppercase tracking-widest shadow-[0_0_15px_rgba(249,115,22,0.3)] inline-block mb-4">
+                            <span class={`px-4 py-1.5 ${classicCollection.badgeBg} border ${classicCollection.badgeBorder} rounded-xl ${classicCollection.badgeText} text-[10px] md:text-xs font-black uppercase tracking-widest ${classicCollection.badgeShadow} inline-block mb-4`}>
                                 {classicCollection.status}
                             </span>
                             <h2 class="text-3xl sm:text-4xl md:text-7xl font-black italic text-white uppercase tracking-tighter mb-4">{classicCollection.name}</h2>
@@ -168,10 +144,10 @@ const classicChunks = chunkItems(classicCollection.items);
                     </div>
 
                     <div class="carousel-mask relative py-4 md:py-12 -mx-4 md:-mx-8">
-                        <div id="classic-track" class="shop-track flex w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform">
-                            {classicChunks.map((chunk) => (
+                        <div id="track-classic" class="shop-track flex w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform" data-carousel-track data-active-color={classicCollection.activeCarouselColor}>
+                            {classicChunks.map((chunk: any[]) => (
                                 <div class="w-full flex-shrink-0 px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
-                                    {chunk.map(item => (
+                                    {chunk.map((item: any) => (
                                         item ? (
                                             <div class={`group/item relative bg-black/40 border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ${getRarityStyles(item.rarity)} hover:bg-white/5 cursor-pointer item-card flex flex-col h-full`}
                                                  data-item={JSON.stringify(item)}>
@@ -195,15 +171,15 @@ const classicChunks = chunkItems(classicCollection.items);
                     </div>
 
                     <div class="flex items-center justify-center gap-6 mt-6 md:mt-8">
-                        <button type="button" class="carousel-prev-classic w-10 h-10 flex items-center justify-center text-orange-400 hover:scale-125 transition-all">
+                        <button type="button" data-carousel-prev="classic" class={`w-10 h-10 flex items-center justify-center ${classicCollection.accent} hover:scale-125 transition-all`}>
                             <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
                         </button>
-                        <div class="flex items-center gap-2" id="slider-dots-classic">
-                            {classicChunks.map((_, index) => (
+                        <div class="flex items-center gap-2" data-carousel-dots="classic">
+                            {classicChunks.map((_: any, index: number) => (
                                 <button class="dot-bullet" data-index={index}></button>
                             ))}
                         </div>
-                        <button type="button" class="carousel-next-classic w-10 h-10 flex items-center justify-center text-orange-400 hover:scale-125 transition-all">
+                        <button type="button" data-carousel-next="classic" class={`w-10 h-10 flex items-center justify-center ${classicCollection.accent} hover:scale-125 transition-all`}>
                             <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                         </button>
                     </div>
@@ -279,12 +255,12 @@ const classicChunks = chunkItems(classicCollection.items);
     </style>
 
     <script is:inline>
-        function createCarousel(config) {
-            const track = document.getElementById(config.trackId);
-            const dotsContainer = document.getElementById(config.dotsId);
-            const prevBtn = document.querySelector(config.prevBtn);
-            const nextBtn = document.querySelector(config.nextBtn);
-            if (!track) return;
+        function createCarousel(track) {
+            const id = track.id.replace('track-', '');
+            const activeColor = track.dataset.activeColor || 'white';
+            const dotsContainer = document.querySelector('[data-carousel-dots="' + id + '"]');
+            const prevBtn = document.querySelector('[data-carousel-prev="' + id + '"]');
+            const nextBtn = document.querySelector('[data-carousel-next="' + id + '"]');
 
             let current = 0;
             const total = track.children.length;
@@ -298,8 +274,8 @@ const classicChunks = chunkItems(classicCollection.items);
                         dot.style.boxShadow = '';
                         dot.style.transform = '';
                         if (i === current) {
-                            dot.style.background = config.activeColor || 'white';
-                            dot.style.boxShadow = '0 0 10px ' + (config.activeColor || 'white');
+                            dot.style.background = activeColor;
+                            dot.style.boxShadow = '0 0 10px ' + activeColor;
                             dot.style.transform = 'scale(1.25)';
                         } else {
                             dot.style.background = 'rgba(255,255,255,0.1)';
@@ -342,6 +318,7 @@ const classicChunks = chunkItems(classicCollection.items);
                     case 'Legendary': return { badge: 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10', glow: 'rgba(234,179,8,0.2)', border: 'border-yellow-500/30', line: 'via-yellow-500/50' };
                     case 'Epic': return { badge: 'text-purple-400 border-purple-500/30 bg-purple-500/10', glow: 'rgba(168,85,247,0.2)', border: 'border-purple-500/30', line: 'via-purple-500/50' };
                     case 'Rare': return { badge: 'text-blue-400 border-blue-500/30 bg-blue-500/10', glow: 'rgba(59,130,246,0.2)', border: 'border-blue-500/30', line: 'via-blue-500/50' };
+                    case 'Uncommon': return { badge: 'text-green-400 border-green-500/30 bg-green-500/10', glow: 'rgba(34,197,94,0.2)', border: 'border-green-500/30', line: 'via-green-500/50' };
                     default: return { badge: 'text-white/60 border-white/10 bg-white/5', glow: 'rgba(255,255,255,0.05)', border: 'border-white/10', line: 'via-white/20' };
                 }
             };
@@ -427,15 +404,9 @@ const classicChunks = chunkItems(classicCollection.items);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            createCarousel({
-                trackId: 'featured-track', dotsId: 'slider-dots-featured',
-                prevBtn: '.carousel-prev-featured', nextBtn: '.carousel-next-featured',
-                activeColor: 'rgb(96, 165, 250)'
-            });
-            createCarousel({
-                trackId: 'classic-track', dotsId: 'slider-dots-classic',
-                prevBtn: '.carousel-prev-classic', nextBtn: '.carousel-next-classic',
-                activeColor: 'rgb(251, 146, 60)'
+            // Auto-discover and init all carousels
+            document.querySelectorAll('[data-carousel-track]').forEach(track => {
+                createCarousel(track);
             });
             initShopModal();
         });
