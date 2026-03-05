@@ -22,11 +22,21 @@ const classicCollection  = findCollection(CLASSIC_COLLECTION_ID);
 
 const getRarityStyles = (rarity: string) => {
     switch(rarity) {
-        case 'Legendary': return 'border-yellow-500/50 shadow-[0_0_30px_rgba(234,179,8,0.2)] text-yellow-400';
-        case 'Epic': return 'border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.15)] text-purple-400';
-        case 'Rare': return 'border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.1)] text-blue-400';
-        case 'Uncommon': return 'border-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.1)] text-green-400';
-        default: return 'border-white/10 text-white/60';
+        case 'Legendary': return 'border-yellow-500/50 bg-gradient-to-br from-yellow-500/10 via-amber-500/5 to-transparent hover:from-yellow-500/20 hover:via-amber-500/10 shadow-[0_0_20px_rgba(234,179,8,0.15)] hover:shadow-[0_0_50px_rgba(234,179,8,0.4)] text-yellow-400 hover:border-yellow-500/70';
+        case 'Epic': return 'border-purple-500/40 bg-gradient-to-br from-purple-500/10 via-fuchsia-500/5 to-transparent hover:from-purple-500/20 hover:via-fuchsia-500/10 shadow-[0_0_15px_rgba(168,85,247,0.1)] hover:shadow-[0_0_40px_rgba(168,85,247,0.35)] text-purple-400 hover:border-purple-500/60';
+        case 'Rare': return 'border-blue-500/30 bg-gradient-to-br from-blue-500/8 via-cyan-500/4 to-transparent hover:from-blue-500/15 hover:via-cyan-500/8 shadow-[0_0_12px_rgba(59,130,246,0.08)] hover:shadow-[0_0_35px_rgba(59,130,246,0.3)] text-blue-400 hover:border-blue-500/50';
+        case 'Uncommon': return 'border-green-500/20 bg-gradient-to-br from-green-500/6 via-emerald-500/3 to-transparent hover:from-green-500/12 hover:via-emerald-500/6 shadow-[0_0_10px_rgba(34,197,94,0.06)] hover:shadow-[0_0_30px_rgba(34,197,94,0.25)] text-green-400 hover:border-green-500/40';
+        default: return 'border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent hover:from-white/[0.06] shadow-none hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] text-white/60 hover:border-white/20';
+    }
+};
+
+const getRarityPricePill = (rarity: string) => {
+    switch(rarity) {
+        case 'Legendary': return 'bg-yellow-500/15 border border-yellow-500/30 text-yellow-400 shadow-[0_0_12px_rgba(234,179,8,0.25)]';
+        case 'Epic':      return 'bg-purple-500/15 border border-purple-500/30 text-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.2)]';
+        case 'Rare':      return 'bg-blue-500/15 border border-blue-500/30 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.15)]';
+        case 'Uncommon':  return 'bg-green-500/15 border border-green-500/30 text-green-400 shadow-[0_0_8px_rgba(34,197,94,0.15)]';
+        default:          return 'bg-white/5 border border-white/10 text-white/60';
     }
 };
 
@@ -66,8 +76,8 @@ const classicChunks  = chunkItems(classicCollection.items);
 
         {/* FEATURED COLLECTION */}
         <section class="mb-16 md:mb-32">
-            <div class={`relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 overflow-hidden bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${featuredCollection.borderColorClass} ${featuredCollection.glowClass} group`}>
-                <div class={`absolute inset-0 bg-gradient-to-br ${featuredCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700`}></div>
+            <div class={`relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${featuredCollection.borderColorClass} ${featuredCollection.glowClass} group`}>
+                <div class={`absolute inset-0 bg-gradient-to-br ${featuredCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden pointer-events-none`}></div>
                 <div class={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${featuredCollection.lineColor} to-transparent`}></div>
 
                 <div class="relative z-10">
@@ -83,13 +93,13 @@ const classicChunks  = chunkItems(classicCollection.items);
                         </div>
                     </div>
 
-                    <div class="carousel-mask relative py-4 md:py-12 -mx-4 md:-mx-8">
-                        <div id="track-featured" class="shop-track flex w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform" data-carousel-track data-active-color={featuredCollection.activeCarouselColor}>
+                    <div class="carousel-wrap relative py-4 md:py-12 -mx-4 md:-mx-8">
+                        <div id="track-featured" class="shop-track flex" data-carousel-track data-active-color={featuredCollection.activeCarouselColor}>
                             {featuredChunks.map((chunk: any[]) => (
-                                <div class="w-full flex-shrink-0 px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
+                                <div class="flex-shrink-0 px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
                                     {chunk.map((item: any) => (
                                         item ? (
-                                            <div class={`group/item relative bg-black/40 border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ${getRarityStyles(item.rarity)} hover:bg-white/5 cursor-pointer item-card flex flex-col h-full`}
+                                            <div class={`group/item relative border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ease-out ${getRarityStyles(item.rarity)} cursor-pointer item-card flex flex-col h-full hover:scale-[1.03]`}
                                                  data-item={JSON.stringify(item)}>
                                                 <div class="flex justify-between items-start mb-4 md:mb-6 w-full">
                                                     <div class="text-3xl md:text-5xl group-hover/item:scale-110 transition-transform">{item.icon}</div>
@@ -97,7 +107,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                                                 </div>
                                                 <h3 class="text-[11px] md:text-xl font-black italic text-white uppercase tracking-tighter mb-1 line-clamp-1">{item.name}</h3>
                                                 <div class="mt-auto w-full flex flex-col md:flex-row justify-between items-center pt-4 border-t border-white/5 gap-2 md:gap-3">
-                                                    <span class="font-black text-white text-xs md:text-base">{item.price}</span>
+                                                    <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-full ${getRarityPricePill(item.rarity)}`}>{item.price}</span>
                                                     <button type="button" class="add-to-cart-btn w-full md:w-10 h-8 md:h-10 bg-white text-black rounded-xl font-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform text-sm">+</button>
                                                 </div>
                                             </div>
@@ -129,8 +139,8 @@ const classicChunks  = chunkItems(classicCollection.items);
 
         {/* CLASSIC COLLECTION */}
         <section class="mb-16 md:mb-32">
-            <div class={`relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 overflow-hidden bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${classicCollection.borderColorClass} ${classicCollection.glowClass} group`}>
-                <div class={`absolute inset-0 bg-gradient-to-br ${classicCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700`}></div>
+            <div class={`relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${classicCollection.borderColorClass} ${classicCollection.glowClass} group`}>
+                <div class={`absolute inset-0 bg-gradient-to-br ${classicCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden pointer-events-none`}></div>
                 <div class={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${classicCollection.lineColor} to-transparent`}></div>
 
                 <div class="relative z-10">
@@ -143,13 +153,13 @@ const classicChunks  = chunkItems(classicCollection.items);
                         </div>
                     </div>
 
-                    <div class="carousel-mask relative py-4 md:py-12 -mx-4 md:-mx-8">
-                        <div id="track-classic" class="shop-track flex w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform" data-carousel-track data-active-color={classicCollection.activeCarouselColor}>
+                    <div class="carousel-wrap relative py-4 md:py-12 -mx-4 md:-mx-8">
+                        <div id="track-classic" class="shop-track flex" data-carousel-track data-active-color={classicCollection.activeCarouselColor}>
                             {classicChunks.map((chunk: any[]) => (
-                                <div class="w-full flex-shrink-0 px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
+                                <div class="flex-shrink-0 px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
                                     {chunk.map((item: any) => (
                                         item ? (
-                                            <div class={`group/item relative bg-black/40 border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ${getRarityStyles(item.rarity)} hover:bg-white/5 cursor-pointer item-card flex flex-col h-full`}
+                                            <div class={`group/item relative border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ease-out ${getRarityStyles(item.rarity)} cursor-pointer item-card flex flex-col h-full hover:scale-[1.03]`}
                                                  data-item={JSON.stringify(item)}>
                                                 <div class="flex justify-between items-start mb-4 md:mb-6 w-full">
                                                     <div class="text-3xl md:text-5xl group-hover/item:scale-110 transition-transform">{item.icon}</div>
@@ -157,7 +167,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                                                 </div>
                                                 <h3 class="text-[11px] md:text-xl font-black italic text-white uppercase tracking-tighter mb-1 line-clamp-1">{item.name}</h3>
                                                 <div class="mt-auto w-full flex flex-col md:flex-row justify-between items-center pt-4 border-t border-white/5 gap-2 md:gap-3">
-                                                    <span class="font-black text-white text-xs md:text-base">{item.price}</span>
+                                                    <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-full ${getRarityPricePill(item.rarity)}`}>{item.price}</span>
                                                     <button type="button" class="add-to-cart-btn w-full md:w-10 h-8 md:h-10 bg-white text-black rounded-xl font-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform text-sm">+</button>
                                                 </div>
                                             </div>
@@ -220,7 +230,7 @@ const classicChunks  = chunkItems(classicCollection.items);
 
                     <div class="flex justify-between items-center mb-5 px-1">
                         <span class="text-[9px] font-black text-white/30 uppercase tracking-[0.2em]">Price</span>
-                        <span id="modal-price" class="text-2xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white to-pink-200 tracking-tighter">0 TC</span>
+                        <span id="modal-price" class="text-lg font-black px-4 py-1.5 rounded-full border bg-white/5 border-white/10 text-white/60">0 TC</span>
                     </div>
 
                     <button id="modal-add-btn" class="relative overflow-hidden w-full py-4 bg-white text-black rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(236,72,153,0.4)] transition-all duration-300 active:scale-[0.97] flex items-center justify-center gap-3 group/add">
@@ -234,10 +244,13 @@ const classicChunks  = chunkItems(classicCollection.items);
     </div>
 
     <style>
-        .carousel-mask {
-            overflow: hidden;
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+        .carousel-wrap {
+            clip-path: inset(-50px 0px);
+        }
+        .shop-track {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
         }
         .dot-bullet {
             width: 10px;
@@ -258,38 +271,54 @@ const classicChunks  = chunkItems(classicCollection.items);
         function createCarousel(track) {
             const id = track.id.replace('track-', '');
             const activeColor = track.dataset.activeColor || 'white';
+            const wrap = track.parentElement;               // .carousel-wrap
             const dotsContainer = document.querySelector('[data-carousel-dots="' + id + '"]');
             const prevBtn = document.querySelector('[data-carousel-prev="' + id + '"]');
             const nextBtn = document.querySelector('[data-carousel-next="' + id + '"]');
+            const slides = Array.from(track.children);
 
             let current = 0;
-            const total = track.children.length;
+            const total = slides.length;
             let isAnimating = false;
+            let wrapW = 0;
 
-            const update = () => {
-                track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            const measure = () => {
+                const w = wrap.offsetWidth;
+                if (w === wrapW) return;
+                wrapW = w;
+                slides.forEach(s => { s.style.width = w + 'px'; });
+                track.style.width = (w * total) + 'px';
+            };
+
+            const moveTo = (animate) => {
+                track.style.transition = animate
+                    ? 'transform 0.5s cubic-bezier(0.4,0,0.2,1)'
+                    : 'none';
+                track.style.transform = 'translate3d(' + -(current * wrapW) + 'px,0,0)';
+
                 if (dotsContainer) {
                     Array.from(dotsContainer.children).forEach((dot, i) => {
-                        dot.style.background = '';
-                        dot.style.boxShadow = '';
-                        dot.style.transform = '';
                         if (i === current) {
                             dot.style.background = activeColor;
                             dot.style.boxShadow = '0 0 10px ' + activeColor;
                             dot.style.transform = 'scale(1.25)';
                         } else {
                             dot.style.background = 'rgba(255,255,255,0.1)';
+                            dot.style.boxShadow = '';
+                            dot.style.transform = '';
                         }
                     });
                 }
             };
 
+            const layout = (animate) => { measure(); moveTo(animate); };
+
             const slide = (dir) => {
                 if (isAnimating) return;
                 isAnimating = true;
                 current = dir === 'next' ? (current + 1) % total : (current - 1 + total) % total;
-                update();
-                setTimeout(() => isAnimating = false, 500);
+                moveTo(true);
+                setTimeout(() => isAnimating = false, 520);
             };
 
             if (nextBtn) nextBtn.addEventListener('click', (e) => { e.preventDefault(); slide('next'); });
@@ -299,11 +328,19 @@ const classicChunks  = chunkItems(classicCollection.items);
                     const dot = e.target.closest('.dot-bullet');
                     if (dot && !isAnimating) {
                         const index = parseInt(dot.dataset.index);
-                        if (index !== current) { current = index; update(); }
+                        if (index !== current) { current = index; moveTo(true); }
                     }
                 });
             }
-            update();
+
+            var stableParent = wrap.parentElement;
+            if (window.ResizeObserver) {
+                new ResizeObserver(() => layout(false)).observe(stableParent);
+            } else {
+                window.addEventListener('resize', () => layout(false));
+            }
+
+            layout(false);
         }
 
         function initShopModal() {
@@ -315,11 +352,11 @@ const classicChunks  = chunkItems(classicCollection.items);
 
             const rarityStyles = (r) => {
                 switch(r) {
-                    case 'Legendary': return { badge: 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10', glow: 'rgba(234,179,8,0.2)', border: 'border-yellow-500/30', line: 'via-yellow-500/50' };
-                    case 'Epic': return { badge: 'text-purple-400 border-purple-500/30 bg-purple-500/10', glow: 'rgba(168,85,247,0.2)', border: 'border-purple-500/30', line: 'via-purple-500/50' };
-                    case 'Rare': return { badge: 'text-blue-400 border-blue-500/30 bg-blue-500/10', glow: 'rgba(59,130,246,0.2)', border: 'border-blue-500/30', line: 'via-blue-500/50' };
-                    case 'Uncommon': return { badge: 'text-green-400 border-green-500/30 bg-green-500/10', glow: 'rgba(34,197,94,0.2)', border: 'border-green-500/30', line: 'via-green-500/50' };
-                    default: return { badge: 'text-white/60 border-white/10 bg-white/5', glow: 'rgba(255,255,255,0.05)', border: 'border-white/10', line: 'via-white/20' };
+                    case 'Legendary': return { badge: 'text-yellow-400 border-yellow-500/30 bg-yellow-500/10', glow: 'rgba(234,179,8,0.2)', glowHex: '#eab308', border: 'border-yellow-500/30', line: 'via-yellow-500/50', price: 'text-yellow-400 bg-yellow-500/15 border-yellow-500/30 shadow-[0_0_12px_rgba(234,179,8,0.3)]' };
+                    case 'Epic':      return { badge: 'text-purple-400 border-purple-500/30 bg-purple-500/10', glow: 'rgba(168,85,247,0.2)', glowHex: '#a855f7', border: 'border-purple-500/30', line: 'via-purple-500/50', price: 'text-purple-400 bg-purple-500/15 border-purple-500/30 shadow-[0_0_12px_rgba(168,85,247,0.25)]' };
+                    case 'Rare':      return { badge: 'text-blue-400 border-blue-500/30 bg-blue-500/10', glow: 'rgba(59,130,246,0.2)', glowHex: '#3b82f6', border: 'border-blue-500/30', line: 'via-blue-500/50', price: 'text-blue-400 bg-blue-500/15 border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.2)]' };
+                    case 'Uncommon':  return { badge: 'text-green-400 border-green-500/30 bg-green-500/10', glow: 'rgba(34,197,94,0.2)', glowHex: '#22c55e', border: 'border-green-500/30', line: 'via-green-500/50', price: 'text-green-400 bg-green-500/15 border-green-500/30 shadow-[0_0_8px_rgba(34,197,94,0.2)]' };
+                    default:          return { badge: 'text-white/60 border-white/10 bg-white/5', glow: 'rgba(255,255,255,0.05)', glowHex: '#ffffff', border: 'border-white/10', line: 'via-white/20', price: 'text-white/60 bg-white/5 border-white/10' };
                 }
             };
 
@@ -333,6 +370,10 @@ const classicChunks  = chunkItems(classicCollection.items);
                 document.getElementById('modal-desc').textContent = data.desc;
                 document.getElementById('modal-price').textContent = data.price;
 
+                // Price pill
+                const priceEl = document.getElementById('modal-price');
+                priceEl.className = 'text-lg font-black px-4 py-1.5 rounded-full border ' + s.price;
+
                 // Rarity badge
                 const r = document.getElementById('modal-rarity');
                 r.textContent = data.rarity;
@@ -344,11 +385,16 @@ const classicChunks  = chunkItems(classicCollection.items);
                 const iconGlow = document.getElementById('modal-icon-glow');
                 if (iconGlow) iconGlow.style.background = s.glow;
 
-                // Card border
+                // Gradient line top — rarity color
+                const gradLine = document.getElementById('modal-gradient-line');
+                if (gradLine) gradLine.style.backgroundImage = 'linear-gradient(to right, transparent, ' + s.glowHex + '66, transparent)';
+
+                // Card border + rarity shadow
                 const card = document.getElementById('modal-card');
                 if (card) {
                     card.className = card.className.replace(/border-\w+-\d+\/\d+/g, 'border-white/10');
                     card.classList.add(s.border);
+                    card.style.boxShadow = '0 0 80px rgba(0,0,0,0.6), 0 0 60px ' + s.glow;
                 }
 
                 modal.classList.remove('hidden');
