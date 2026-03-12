@@ -20,32 +20,40 @@ bgAccent: "bg-emerald-500/10"
 
 ## Master Your Tools
 
-[cite_start]In Color Clash, standing still is failure[cite: 66]. [cite_start]Your tools are not just weapons—they are extensions of your movement and presence in the arena[cite: 60, 62].
+In Color Clash, standing still is failure. Your tools are not just weapons — they are extensions of your movement and presence in the arena.
 
 ### Equipment Specifications:
 
 | Tool | Focus | Primary Behavior |
 | :--- | :--- | :--- |
-| **Paint Brush** | Precision | [cite_start]Intentional, controlled strokes [cite: 63] |
-| **Paint Cannon** | Pressure | [cite_start]Long-range projection and area denial [cite: 64] |
-| **Paint Roller** | Momentum | [cite_start]Rapid expansion through movement [cite: 64] |
-| **Painting Boots** | Locomotion | [cite_start]Passive painting while running [cite: 64] |
+| **Paint Brush** | Precision | Intentional, controlled strokes |
+| **Paint Cannon** | Pressure | Long-range projection and area denial |
+| **Paint Roller** | Momentum | Rapid expansion through movement |
+| **Painting Boots** | Locomotion | Passive painting while running |
+
+![Tools of the Trade](https://placehold.co/800x400/001a0d/34d399?text=Tools+of+the+Trade)
 
 ## Chromatic Regions
 
-[cite_start]The world is a canvas first and a structure second[cite: 108]. [cite_start]Each arena exists because color behaves differently in that specific region[cite: 81].
+The world is a canvas first and a structure second. Each arena exists because color behaves differently in that specific region.
 
-* [cite_start]**Neon City**: A hub of engineered dominance where systems are highly responsive[cite: 82].
-* [cite_start]**Volcanic Island**: Raw, unstable energy that can shift the tide of battle at any moment[cite: 83].
-* [cite_start]**Frozen Realm**: Energy is suppressed here, requiring more effort to maintain control[cite: 84].
-* [cite_start]**Rainbow Maze**: Experimental distortion zones where your eyes might deceive you[cite: 85].
+* **Neon City**: A hub of engineered dominance where systems are highly responsive.
+* **Volcanic Island**: Raw, unstable energy that can shift the tide of battle at any moment.
+* **Frozen Realm**: Energy is suppressed here, requiring more effort to maintain control.
+* **Rainbow Maze**: Experimental distortion zones where your eyes might deceive you.
+
+![Chromatic Regions](https://placehold.co/800x400/001a0d/6ee7b7?text=Chromatic+Regions+Map)
 
 ### Environmental Escalation
-[cite_start]As the match crescendos, the arenas respond to the chromatic saturation[cite: 30, 91]. You can expect:
-1.  [cite_start]**Moving Platforms**: New paths open as more paint is applied[cite: 92].
-2.  [cite_start]**Emerging Hazards**: The environment fights back against the players[cite: 93].
-3.  [cite_start]**Shifting Visibility**: Saturation levels change how you see the world[cite: 94].
 
-> [cite_start]"The arena is constantly asking: Who was here last? Who is active right now?" [cite: 41, 42, 43]
+As the match crescendos, the arenas respond to the chromatic saturation. You can expect:
+
+1. **Moving Platforms**: New paths open as more paint is applied.
+2. **Emerging Hazards**: The environment fights back against the players.
+3. **Shifting Visibility**: Saturation levels change how you see the world.
+
+![Environmental Escalation](https://placehold.co/800x400/001a0d/a7f3d0?text=Environmental+Escalation)
+
+> "The arena is constantly asking: Who was here last? Who is active right now?"
 
 ---

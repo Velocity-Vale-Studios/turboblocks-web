@@ -22,6 +22,10 @@ bgAccent: "bg-orange-500/10"
 
 Every week we pick the best moments from server life. This issue focuses on the incredible architectural projects created by our players.
 
-> "We didn't expect the TurboBlocks building system to allow this level of detail!" — **Team K8BUS**.
+![Community Builds](https://placehold.co/800x400/1a0d00/fb923c?text=Community+Builds+%2342)
+
+> "We didn't expect the TurboBlocks building system to allow this level of detail!" — **Team K8BUS**
+
+![Community Moments](https://placehold.co/800x400/1a0d00/fbbf24?text=Best+Moments+of+the+Week)
 
 Check our Discord channel to submit your own recordings and screenshots for the next edition!
