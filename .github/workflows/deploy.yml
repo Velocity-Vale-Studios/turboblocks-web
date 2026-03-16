@@ -1,0 +1,25 @@
+name: Deploy Turboblocks to VPS
+
+# Robot odpala się tylko, gdy robisz "push" na gałąź master
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Łączenie z serwerem i aktualizacja
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          # To są komendy, które robot wpisze za Ciebie w konsoli:
+          script: |
+            cd /webpage/frontend
+            git fetch --all
+            git reset --hard origin/master
+            cd ..
+            docker compose up --build -d
