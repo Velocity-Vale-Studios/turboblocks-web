@@ -4,7 +4,9 @@ name: Deploy Turboblocks to VPS
 on:
   push:
     branches:
+      - main
       - master
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -18,16 +20,23 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           # To są komendy, które robot wpisze za Ciebie w konsoli:
           script: |
-            set -e
+            set -eu
+            echo "[deploy] start"
             cd /webpage/frontend
             git fetch --all
-            git reset --hard origin/master
+            git reset --hard origin/${{ github.ref_name }}
             # Kopiujemy pliki piętro wyżej
             cp docker-compose.yml ../
             cp Caddyfile ../
             cd ..
+            echo "[deploy] validate compose"
+            sudo docker compose config -q
             # Build bez cache + wymuszone odtworzenie kontenerów
             sudo docker compose build --no-cache frontend
             sudo docker compose up -d --force-recreate --remove-orphans
+            echo "[deploy] status"
+            sudo docker compose ps
+            sudo docker compose logs --tail=120 frontend caddy || true
             # Lekki cleanup dangling images po wdrożeniu
-            sudo docker image prune -f
+            sudo docker image prune -f || true
+            echo "[deploy] done"
