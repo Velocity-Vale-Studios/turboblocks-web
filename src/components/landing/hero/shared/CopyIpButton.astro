@@ -9,7 +9,9 @@ const animClasses = "transition-all duration-300 hover:scale-105 active:scale-95
 
 <button
         id="heroCopyBtn"
+        type="button"
         data-ip={ip}
+        aria-label="Copy server IP address"
         class={`relative flex items-center justify-center px-8 py-4 md:px-12 md:py-5 bg-cyan-500/10 backdrop-blur-md rounded-2xl text-cyan-400 font-bold font-sans text-base md:text-xl tracking-widest uppercase ring-1 ring-inset ring-cyan-400/30 hover:ring-cyan-400/60 hover:bg-cyan-500/20 hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] overflow-hidden group ${animClasses}`}
 >
     <div class="relative z-10 grid place-items-center w-full">
@@ -31,9 +33,28 @@ const animClasses = "transition-all duration-300 hover:scale-105 active:scale-95
     const defaultColors = ["bg-cyan-500/10", "text-cyan-400"];
     const activeColors = ["bg-gradient-to-r", "from-cyan-500", "to-blue-600", "text-white", "shadow-[0_0_30px_rgba(34,211,238,0.6)]"];
 
-    heroBtn?.addEventListener('click', () => {
+    async function copyText(value) {
+        if (!value) return;
+        try {
+            await navigator.clipboard.writeText(value);
+        } catch {
+            const helper = document.createElement('textarea');
+            helper.value = value;
+            helper.setAttribute('readonly', '');
+            helper.style.position = 'absolute';
+            helper.style.left = '-9999px';
+            document.body.appendChild(helper);
+            helper.select();
+            document.execCommand('copy');
+            document.body.removeChild(helper);
+        }
+    }
+
+    if (heroBtn && !heroBtn.dataset.copyBound) {
+        heroBtn.dataset.copyBound = 'true';
+        heroBtn.addEventListener('click', async () => {
         const ip = heroBtn.getAttribute('data-ip') || '';
-        navigator.clipboard.writeText(ip);
+        await copyText(ip);
 
         heroBtn.classList.remove(...defaultColors);
         heroBtn.classList.add(...activeColors);
@@ -51,5 +72,6 @@ const animClasses = "transition-all duration-300 hover:scale-105 active:scale-95
             heroTextCopied?.classList.replace('opacity-100', 'opacity-0');
             heroTextCopied?.classList.replace('scale-100', 'scale-90');
         }, 1500);
-    });
+        });
+    }
 </script>

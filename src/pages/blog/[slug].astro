@@ -14,6 +14,27 @@ const { entry } = Astro.props;
 
 const { Content } = await entry.render();
 const post = entry.data;
+
+const accentPalette: Record<string, string> = {
+    fuchsia: '#e879f9',
+    pink: '#f472b6',
+    rose: '#fb7185',
+    orange: '#fb923c',
+    yellow: '#facc15',
+    amber: '#fbbf24',
+    emerald: '#34d399',
+    teal: '#2dd4bf',
+    cyan: '#22d3ee',
+    sky: '#38bdf8',
+    blue: '#60a5fa',
+    violet: '#a78bfa',
+    purple: '#c084fc',
+    indigo: '#818cf8',
+    lime: '#a3e635',
+};
+
+const accentToken = post.accent.match(/text-([a-z]+)-\d+/)?.[1];
+const postAccentColor = (accentToken && accentPalette[accentToken]) || '#ffffff';
 ---
 
 <style is:global>
@@ -40,14 +61,25 @@ const post = entry.data;
         cursor: pointer;
         user-select: none;
         margin-bottom: 0.75rem;
+        text-decoration: none;
 
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
         background: color-mix(in srgb, var(--post-accent-color), transparent 92%);
         box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--post-accent-color), transparent 75%);
         color: var(--post-accent-color);
     }
 
+    .toc-pill:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.4);
+        outline: 2px solid color-mix(in srgb, var(--post-accent-color), white 20%);
+        outline-offset: 2px;
+    }
+
     .toc-pill:hover,
     .toc-pill.active {
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24), 0 0 20px rgba(255, 255, 255, 0.08);
         background: color-mix(in srgb, var(--post-accent-color), transparent 85%);
         box-shadow:
                 inset 0 0 0 1px color-mix(in srgb, var(--post-accent-color), transparent 40%),
@@ -148,11 +180,7 @@ const post = entry.data;
 <Layout title={post.title}>
     <div
         class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-28 sm:pt-32 pb-16 md:pb-32 relative min-h-screen"
-        style={`--post-accent-color: ${
-            post.accent.includes('pink') ? '#f472b6' :
-            post.accent.includes('cyan') ? '#22d3ee' :
-            post.accent.includes('orange') ? '#fbbf24' : '#ffffff'
-        };`}
+        style={`--post-accent-color: ${postAccentColor};`}
     >
         {/* Ambient glow — fixed żeby nie ucinało i nie powodowało overflow */}
         <div class="fixed inset-0 -z-10 pointer-events-none">
@@ -182,13 +210,13 @@ const post = entry.data;
         {/* ===== MOBILE TOC (widoczny tylko <lg) ===== */}
         <section id="mobile-toc-wrapper" class="lg:hidden mb-8 hidden">
             <div class={`p-5 rounded-[2rem] border backdrop-blur-3xl bg-gradient-to-br from-white/5 to-white/[0.02] ${post.borderColorClass}`}>
-                <button id="mobile-toc-toggle" class="flex items-center justify-between w-full">
+                <button id="mobile-toc-toggle" class="flex items-center justify-between w-full" aria-expanded="false" aria-controls="mobile-toc">
                     <span class="text-[10px] font-black uppercase tracking-[0.3em] italic" style="color: var(--post-accent-color);">Navigation //</span>
                     <svg id="toc-chevron" class="w-4 h-4 text-white/40 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <nav id="mobile-toc" class="flex flex-col mt-4 hidden">
+                <nav id="mobile-toc" class="flex flex-col mt-4 hidden" aria-label="Table of contents mobile">
                 </nav>
             </div>
         </section>
@@ -202,12 +230,12 @@ const post = entry.data;
                     <h4 class="text-[10px] font-black uppercase tracking-[0.3em] mb-6 italic border-b border-white/5 pb-4" style="color: var(--post-accent-color);">
                         Navigation //
                     </h4>
-                    <nav id="desktop-toc" class="flex flex-col">
+                    <nav id="desktop-toc" class="flex flex-col" aria-label="Table of contents desktop">
                     </nav>
                 </div>
 
                 {/* Discord CTA */}
-                <a href="https://discord.gg/turboblocks" target="_blank"
+                <a href="https://discord.gg/turboblocks" target="_blank" rel="noopener noreferrer"
                    class="group relative block w-full rounded-[2rem] bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 p-6 backdrop-blur-3xl transition-all duration-500 hover:border-indigo-500/50 overflow-hidden">
                     <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/10 blur-3xl group-hover:bg-indigo-500/20 transition-colors"></div>
                     <div class="relative flex items-center gap-4">
@@ -256,6 +284,37 @@ const post = entry.data;
 </Layout>
 
 <script>
+    function slugify(value) {
+        return value
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-') || 'section';
+    }
+
+    function scrollToHeading(targetId) {
+        const target = document.getElementById(targetId);
+        if (!target) return;
+
+        const y = target.getBoundingClientRect().top + window.pageYOffset - 120;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+
+    function createTocLink(heading, level) {
+        const link = document.createElement('a');
+        link.className = 'toc-pill';
+        link.dataset.level = level;
+        link.dataset.target = heading.id;
+        link.href = `#${heading.id}`;
+
+        const text = document.createElement('span');
+        text.textContent = heading.innerText;
+        link.appendChild(text);
+
+        return link;
+    }
+
     function buildTOC() {
         const content = document.querySelector('.blog-prose');
         const desktopToc = document.getElementById('desktop-toc');
@@ -264,38 +323,108 @@ const post = entry.data;
         const headings = content?.querySelectorAll('h2, h3') as NodeListOf<HTMLElement> | undefined;
 
         if (!headings || headings.length === 0) return;
+        const headingList = Array.from(headings);
+
+        // Guard against duplicate TOC entries on client-side transitions.
+        if (desktopToc) desktopToc.innerHTML = '';
+        if (mobileToc) mobileToc.innerHTML = '';
 
         // Pokaż mobilny wrapper
         if (mobileTocWrapper) mobileTocWrapper.classList.remove('hidden');
 
-        headings.forEach((heading, index) => {
-            heading.id = `section-${index}`;
+        const usedIds = new Set<string>();
+        const idCounters = new Map<string, number>();
+
+        headingList.forEach((heading) => {
+            const baseId = heading.id || slugify(heading.innerText) || 'section';
+            let sequence = idCounters.get(baseId) ?? 0;
+            let finalId = sequence === 0 ? baseId : `${baseId}-${sequence}`;
+
+            while (usedIds.has(finalId)) {
+                sequence += 1;
+                finalId = `${baseId}-${sequence}`;
+            }
+
+            idCounters.set(baseId, sequence + 1);
+            heading.id = finalId;
+            usedIds.add(finalId);
             const level = heading.tagName === 'H3' ? '3' : '2';
 
-            const pillHTML = `<div class="toc-pill" data-level="${level}" data-target="section-${index}"><span>${heading.innerText}</span></div>`;
-
-            if (desktopToc) desktopToc.insertAdjacentHTML('beforeend', pillHTML);
-            if (mobileToc) mobileToc.insertAdjacentHTML('beforeend', pillHTML);
+            if (desktopToc) desktopToc.appendChild(createTocLink(heading, level));
+            if (mobileToc) mobileToc.appendChild(createTocLink(heading, level));
         });
 
-        // Click handler
+        // Click handler with smooth scroll and optional mobile close.
         document.querySelectorAll('.toc-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
+            pill.addEventListener('click', (event) => {
+                event.preventDefault();
                 const targetId = pill.getAttribute('data-target');
-                const target = document.getElementById(targetId);
-                if (!target) return;
-                const y = target.getBoundingClientRect().top + window.pageYOffset - 120;
-                window.scrollTo({ top: y, behavior: 'smooth' });
+                if (!targetId) return;
+
+                scrollToHeading(targetId);
+                history.replaceState(null, '', `#${targetId}`);
+
+                if (mobileToc && !mobileToc.classList.contains('hidden')) {
+                    mobileToc.classList.add('hidden');
+                    document.getElementById('toc-chevron')?.classList.remove('rotate-180');
+                    document.getElementById('mobile-toc-toggle')?.setAttribute('aria-expanded', 'false');
+                }
             });
         });
+
+        const tocLinks = document.querySelectorAll('.toc-pill');
+        const setActiveTocLink = (activeId) => {
+            tocLinks.forEach(link => {
+                const isActive = link.getAttribute('data-target') === activeId;
+                link.classList.toggle('active', isActive);
+            });
+        };
+
+        const openMobileToc = () => {
+            const toggle = document.getElementById('mobile-toc-toggle');
+            const chevron = document.getElementById('toc-chevron');
+            if (!mobileToc || !toggle) return;
+
+            mobileToc.classList.remove('hidden');
+            chevron?.classList.add('rotate-180');
+            toggle.setAttribute('aria-expanded', 'true');
+        };
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+
+                    const activeId = entry.target.id;
+                    setActiveTocLink(activeId);
+                });
+            },
+            { rootMargin: '-35% 0px -55% 0px', threshold: [0, 1] }
+        );
+
+        headingList.forEach(heading => observer.observe(heading));
+
+        const rawHash = window.location.hash ? window.location.hash.slice(1) : '';
+        const decodedHash = rawHash ? decodeURIComponent(rawHash) : '';
+        if (decodedHash && headingList.some(heading => heading.id === decodedHash)) {
+            setActiveTocLink(decodedHash);
+            if (window.matchMedia('(max-width: 1023px)').matches) {
+                openMobileToc();
+            }
+            requestAnimationFrame(() => scrollToHeading(decodedHash));
+        } else if (headingList[0]) {
+            setActiveTocLink(headingList[0].id);
+        }
 
         // Mobile toggle
         const toggle = document.getElementById('mobile-toc-toggle');
         const chevron = document.getElementById('toc-chevron');
-        if (toggle && mobileToc) {
+        if (toggle && mobileToc && !toggle.dataset.tocBound) {
+            toggle.dataset.tocBound = 'true';
             toggle.addEventListener('click', () => {
                 mobileToc.classList.toggle('hidden');
                 chevron?.classList.toggle('rotate-180');
+                const expanded = !mobileToc.classList.contains('hidden');
+                toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             });
         }
     }

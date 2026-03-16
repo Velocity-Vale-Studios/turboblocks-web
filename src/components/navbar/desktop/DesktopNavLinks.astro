@@ -19,10 +19,10 @@ const isCurrent = (path: string) => {
 };
 ---
 
-<div class="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center gap-4">
+<nav class="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center gap-4" aria-label="Main navigation">
     {config.links.map((link: any) => (
-            <a href={link.href} class={`h-10 ${baseLayoutClasses} ${isCurrent(link.href) ? activeLinkClasses : inactiveLinkClasses}`}>
+            <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined} class={`h-10 ${baseLayoutClasses} ${isCurrent(link.href) ? activeLinkClasses : inactiveLinkClasses}`}>
                 {link.name}
             </a>
     ))}
-</div>
+</nav>
