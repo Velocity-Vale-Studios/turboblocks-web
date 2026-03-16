@@ -9,3 +9,145 @@ html {
 body {
     overflow-x: clip;
 }
+
+/* Blog post TOC and prose styles are kept in global CSS so they are always present in prod builds. */
+.blog-post-page .toc-pill {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    height: 2.75rem;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0.75rem;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    background: color-mix(in srgb, var(--post-accent-color), transparent 92%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--post-accent-color), transparent 75%);
+    color: var(--post-accent-color, #22d3ee);
+}
+
+.blog-post-page .toc-pill:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline: 2px solid color-mix(in srgb, var(--post-accent-color), white 20%);
+    outline-offset: 2px;
+}
+
+.blog-post-page .toc-pill:hover,
+.blog-post-page .toc-pill.active {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24), 0 0 20px rgba(255, 255, 255, 0.08);
+    background: color-mix(in srgb, var(--post-accent-color), transparent 85%);
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--post-accent-color), transparent 40%),
+        0 0 20px color-mix(in srgb, var(--post-accent-color), transparent 85%);
+    color: white;
+    text-shadow: 0 0 10px var(--post-accent-color, #22d3ee);
+    transform: scale(1.02);
+}
+
+.blog-post-page .toc-pill::before {
+    content: "//";
+    margin-right: 0.75rem;
+    opacity: 0.3;
+    font-size: 8px;
+}
+
+.blog-post-page .toc-pill[data-level="3"] {
+    height: 2.25rem;
+    font-size: 8px;
+    opacity: 0.5;
+}
+
+.blog-post-page .toc-pill[data-level="3"]::before {
+    content: "-";
+}
+
+.blog-post-page .blog-prose h2 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    color: white;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
+}
+
+@media (min-width: 768px) {
+    .blog-post-page .blog-prose h2 { font-size: 1.875rem; }
+}
+
+.blog-post-page .blog-prose h3 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.25;
+}
+
+@media (min-width: 768px) {
+    .blog-post-page .blog-prose h3 { font-size: 1.5rem; }
+}
+
+.blog-post-page .blog-prose p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .blog-post-page .blog-prose p { font-size: 1.125rem; }
+}
+
+.blog-post-page .blog-prose strong {
+    color: white;
+    font-weight: 900;
+}
+
+.blog-post-page .blog-prose ul,
+.blog-post-page .blog-prose ol {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .blog-post-page .blog-prose ul,
+    .blog-post-page .blog-prose ol { font-size: 1.125rem; }
+}
+
+.blog-post-page .blog-prose li {
+    margin-bottom: 0.5rem;
+}
+
+.blog-post-page .blog-prose blockquote {
+    border-left: 4px solid rgba(255, 255, 255, 0.1);
+    padding-left: 1.5rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
