@@ -37,6 +37,16 @@ const accentPalette: Record<string, string> = {
 
 const accentToken = post.accent.match(/text-([a-z]+)-\d+/)?.[1];
 const postAccentColor = (accentToken && accentPalette[accentToken]) || '#ffffff';
+
+const hexToRgb = (hex: string) => {
+    const normalized = hex.replace('#', '');
+    if (normalized.length !== 6) return null;
+    const value = Number.parseInt(normalized, 16);
+    if (Number.isNaN(value)) return null;
+    return `${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}`;
+};
+
+const postAccentRgb = hexToRgb(postAccentColor) || '34, 211, 238';
 ---
 
 <style is:global>
@@ -213,7 +223,7 @@ const postAccentColor = (accentToken && accentPalette[accentToken]) || '#ffffff'
         <section id="mobile-toc-wrapper" class={`lg:hidden mb-8 ${hasToc ? '' : 'hidden'}`}>
             <div class={`p-5 rounded-[2rem] border backdrop-blur-3xl bg-gradient-to-br from-white/5 to-white/[0.02] ${post.borderColorClass}`}>
                 <button id="mobile-toc-toggle" class="flex items-center justify-between w-full" aria-expanded="false" aria-controls="mobile-toc">
-                    <span class="text-[10px] font-black uppercase tracking-[0.3em] italic" style="color: var(--post-accent-color);">Navigation //</span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.3em] italic" style={`color: ${postAccentColor};`}>Navigation //</span>
                     <svg id="toc-chevron" class="w-4 h-4 text-white/40 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                     </svg>
@@ -225,7 +235,7 @@ const postAccentColor = (accentToken && accentPalette[accentToken]) || '#ffffff'
                             data-level={String(heading.depth)}
                             data-target={heading.slug}
                             href={`#${heading.slug}`}
-                            style={`--post-accent-color: ${postAccentColor};`}
+                            style={`--post-accent-color: ${postAccentColor}; color: ${postAccentColor}; background: rgba(${postAccentRgb}, 0.08); box-shadow: inset 0 0 0 1px rgba(${postAccentRgb}, 0.24);`}
                         >
                             <span>{heading.text}</span>
                         </a>
@@ -240,7 +250,7 @@ const postAccentColor = (accentToken && accentPalette[accentToken]) || '#ffffff'
             <aside class="hidden lg:block w-[280px] shrink-0 sticky top-32 space-y-6">
                 <div class={`p-6 rounded-[2rem] bg-gradient-to-br from-white/5 to-white/[0.02] border backdrop-blur-3xl ${post.borderColorClass} ${post.glowClass} relative overflow-hidden`}>
                     <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
-                    <h4 class="text-[10px] font-black uppercase tracking-[0.3em] mb-6 italic border-b border-white/5 pb-4" style="color: var(--post-accent-color);">
+                    <h4 class="text-[10px] font-black uppercase tracking-[0.3em] mb-6 italic border-b border-white/5 pb-4" style={`color: ${postAccentColor};`}>
                         Navigation //
                     </h4>
                     <nav id="desktop-toc" class="flex flex-col" aria-label="Table of contents desktop" style={`--post-accent-color: ${postAccentColor};`}>
@@ -250,7 +260,7 @@ const postAccentColor = (accentToken && accentPalette[accentToken]) || '#ffffff'
                                 data-level={String(heading.depth)}
                                 data-target={heading.slug}
                                 href={`#${heading.slug}`}
-                                style={`--post-accent-color: ${postAccentColor};`}
+                                style={`--post-accent-color: ${postAccentColor}; color: ${postAccentColor}; background: rgba(${postAccentRgb}, 0.08); box-shadow: inset 0 0 0 1px rgba(${postAccentRgb}, 0.24);`}
                             >
                                 <span>{heading.text}</span>
                             </a>
