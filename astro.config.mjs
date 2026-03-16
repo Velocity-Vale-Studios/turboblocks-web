@@ -7,13 +7,12 @@ export default defineConfig({
     qwikdev(),
     unocss({ injectReset: true }),
   ],
-  // TĘ CZĘŚĆ MUSISZ DOPISAĆ:
   vite: {
     server: {
-      allowedHosts: true
+      allowedHosts: ['turboblocks.eu', 'www.turboblocks.eu', '.turboblocks.eu', 'all']
     },
     preview: {
-      allowedHosts: true
+      allowedHosts: ['turboblocks.eu', 'www.turboblocks.eu', '.turboblocks.eu', 'all']
     }
   }
 });
