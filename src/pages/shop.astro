@@ -210,22 +210,25 @@ const classicChunks  = chunkItems(classicCollection.items);
                                 TURBO COINS
                             </span>
                             <h2 class="text-3xl sm:text-4xl md:text-7xl font-black italic text-white uppercase tracking-tighter mb-4">Coin Packs</h2>
-                            <p class="text-white/50 max-w-xl text-sm md:text-lg font-medium">Fixed Turbo Coins bundles — no carousel, just pick & buy.</p>
+                            <p class="text-white/50 max-w-xl text-sm md:text-lg font-medium">Pick & buy. Come on show'em your style</p>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
-                        {turboCoinPacks.map((pack: any) => (
+                        {turboCoinPacks.map((pack: any, index: number) => (
                             <div class={`group/item relative border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ease-out ${getRarityStyles(pack.rarity)} cursor-pointer item-card flex flex-col h-full hover:scale-[1.03]`}
                                  data-item={JSON.stringify(pack)}>
                                 <div class="flex justify-between items-start mb-4 md:mb-6 w-full">
                                     <div class="text-3xl md:text-5xl group-hover/item:scale-110 transition-transform">{pack.icon}</div>
                                     <span class="text-[8px] md:text-[10px] font-black uppercase tracking-widest border border-current px-2 py-1 rounded-lg opacity-80">{pack.rarity}</span>
                                 </div>
-                                <div class="text-xl md:text-3xl font-black italic text-white uppercase tracking-tighter mb-1">{pack.price}</div>
-                                <div class="text-[10px] md:text-xs text-white/60 font-black uppercase tracking-[0.25em] mb-4">YOU GET</div>
+                                <div class="text-xl md:text-3xl font-black italic text-white uppercase tracking-tighter mb-1">{typeof pack.tcAmount === 'number' ? `${pack.tcAmount} TC` : pack.price}</div>
+                                <div class="text-[10px] md:text-xs text-white/60 font-black uppercase tracking-[0.25em] mb-2">YOU GET</div>
+                                {index > 0 && (
+                                    <div class="inline-flex items-center self-start mb-4 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-amber-400/15 border border-amber-400/35 text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.25)]">{pack.bonus}</div>
+                                )}
                                 <div class="mt-auto w-full flex flex-col md:flex-row justify-between items-center pt-4 border-t border-white/5 gap-2 md:gap-3">
-                                    <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-full ${getRarityPricePill(pack.rarity)}`}>ZA {pack.cashPrice}</span>
+                                    <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-full ${getRarityPricePill(pack.rarity)}`}>FOR {pack.cashPrice}</span>
                                     <button type="button" aria-label={`Add ${pack.name} to cart`} class="add-to-cart-btn w-full md:w-10 h-8 md:h-10 bg-white text-black rounded-xl font-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform text-sm">+</button>
                                 </div>
                             </div>
@@ -403,10 +406,13 @@ const classicChunks  = chunkItems(classicCollection.items);
                 const s = rarityStyles(data.rarity);
                 const isCoinPack = data.type === 'Coin Pack';
                 const modalPriceText = isCoinPack && data.cashPrice ? data.cashPrice : data.price;
+                const coinAmount = typeof data.amountTc === 'number'
+                    ? data.amountTc
+                    : (typeof data.tcAmount === 'number' ? data.tcAmount : (parseInt(String(data.price || '').replace(/[^0-9]/g, ''), 10) || 0));
                 const modalDescText = isCoinPack && data.cashPrice
-                    ? (data.price + ' za ' + data.cashPrice)
+                    ? ((data.bonus ? (data.bonus + ' • ') : '') + 'You get ' + coinAmount + ' TC for ' + data.cashPrice)
                     : data.desc;
-                const modalTypeText = isCoinPack ? ('Coin Pack • ' + data.price) : data.type;
+                const modalTypeText = isCoinPack ? 'Coin Pack' : data.type;
 
                 document.getElementById('modal-icon').textContent = data.icon;
                 document.getElementById('modal-title').textContent = data.name;
@@ -466,13 +472,38 @@ const classicChunks  = chunkItems(classicCollection.items);
             });
 
             // + button adds directly
+            const parseTc = (value) => parseInt(String(value || '').replace(/[^0-9]/g, ''), 10) || 0;
+            const parsePln = (value) => {
+                const normalized = String(value || '').replace(',', '.');
+                const matched = normalized.match(/[0-9]+(?:\.[0-9]+)?/);
+                return matched ? parseFloat(matched[0]) : 0;
+            };
+
+            const normalizeCartItem = (raw) => {
+                const item = Object.assign({}, raw);
+                const isCoinPack = raw.type === 'Coin Pack';
+                const amountTc = typeof raw.amountTc === 'number'
+                    ? raw.amountTc
+                    : (typeof raw.tcAmount === 'number' ? raw.tcAmount : parseTc(raw.price));
+                item.isCoinPack = isCoinPack;
+                item.amountTc = amountTc;
+                item.priceTc = isCoinPack ? 0 : (typeof raw.priceTc === 'number' ? raw.priceTc : parseTc(raw.price));
+                item.pricePln = typeof raw.pricePln === 'number'
+                    ? raw.pricePln
+                    : (typeof raw.cashPricePln === 'number' ? raw.cashPricePln : parsePln(raw.cashPrice));
+                if (typeof item.pricePln === 'number' && item.pricePln > 0) {
+                    item.cashPrice = item.pricePln.toFixed(2) + ' zł';
+                }
+                return item;
+            };
+
             document.addEventListener('click', (e) => {
                 const btn = e.target.closest('.add-to-cart-btn');
                 if (!btn) return;
                 const card = btn.closest('.item-card');
                 if (card && card.dataset.item) {
                     try {
-                        const item = JSON.parse(card.dataset.item);
+                        const item = normalizeCartItem(JSON.parse(card.dataset.item));
                         window.dispatchEvent(new CustomEvent('shop:add', { detail: item }));
                     } catch(err) {}
                 }
@@ -482,7 +513,7 @@ const classicChunks  = chunkItems(classicCollection.items);
             if (addBtn) {
                 addBtn.addEventListener('click', () => {
                     if (currentItem) {
-                        window.dispatchEvent(new CustomEvent('shop:add', { detail: currentItem }));
+                        window.dispatchEvent(new CustomEvent('shop:add', { detail: normalizeCartItem(currentItem) }));
                         closeModal();
                     }
                 });
