@@ -20,8 +20,8 @@ jobs:
           script: |
             git config --global --add safe.directory /webpage/frontend
             cd /webpage/frontend
-            git fetch origin master
-            git reset --hard origin/master
+            sudo git fetch origin master
+            sudo git reset --hard origin/master
             sudo docker compose -f ../docker-compose.yml down
             sudo docker compose -f ../docker-compose.yml up -d --build --no-cache
             sudo docker system prune -f
