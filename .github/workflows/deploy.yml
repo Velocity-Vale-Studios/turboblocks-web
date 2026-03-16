@@ -25,6 +25,6 @@ jobs:
             cp docker-compose.yml ../
             cp Caddyfile ../
             cd ..
-            # Odpalamy Dockera z nową konfiguracją
-            docker compose down
-            docker compose up --build -d
+            # Odpalamy Dockera z prawami admina (sudo)
+            sudo docker compose down
+            sudo docker compose up --build -d
