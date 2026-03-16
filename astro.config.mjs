@@ -13,7 +13,9 @@ export default defineConfig({
   vite: {
     // UnoCSS musi być też tutaj jako plugin Vite,
     // żeby Qwik widział wygenerowane klasy podczas budowania wysp
-    plugins: [],
+    plugins: [
+        unocss(),
+        ],
     server: {
       allowedHosts: ['turboblocks.eu', 'www.turboblocks.eu', '.turboblocks.eu', 'all']
     },
