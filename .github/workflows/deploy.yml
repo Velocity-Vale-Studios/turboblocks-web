@@ -18,10 +18,23 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           # To są komendy, które robot wpisze za Ciebie w konsoli:
           script: |
-            cd /webpage/frontend
-            git fetch origin master
-            git reset --hard origin/master
-            sudo docker compose down
-            sudo docker image prune -f
-            sudo docker compose build --no-cache
-            sudo docker compose up -d
+            # 1. Wejdź tam, gdzie jest kod i repozytorium GIT
+                            cd /webpage/frontend
+            
+            # 2. Pobierz realnie nowe pliki z GitHub
+                            git fetch origin master
+                            git reset --hard origin/master
+            
+            # 3. Zamiast kopiować pliki "wyżej", odpalimy Dockera bezpośrednio stąd, 
+            # wskazując mu plik compose, który jest piętro wyżej
+                            sudo docker compose -f ../docker-compose.yml down
+            
+            # 4. KLUCZ: Budujemy frontend, wymuszając brak cache
+            # Upewnij się, że w docker-compose.yml ścieżka do buildu frontendu to "." lub "./frontend"
+                            sudo docker compose -f ../docker-compose.yml build --no-cache
+            
+            # 5. Start wszystkiego
+                            sudo docker compose -f ../docker-compose.yml up -d
+            
+            # 6. Czyszczenie śmieci (opcjonalnie, by nie zapchać VPS)
+                            sudo docker image prune -f
