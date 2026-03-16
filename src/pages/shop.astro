@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ShopSafelist from '../components/shop/ShopSafelist.astro';
-import { shopCollections } from '../data/shop';
+import { shopCollections, turboCoinPacks } from '../data/shop';
 
 // ═══════════════════════════════════════════════════════════════
 // 🔧 SHOP CONFIG — zmień ID żeby podmienić kolekcje na stronie
@@ -196,6 +196,44 @@ const classicChunks  = chunkItems(classicCollection.items);
                 </div>
             </div>
         </section>
+
+        {/* TURBO COINS PACKS - static grid (no carousel) */}
+        <section>
+            <div class="relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-amber-400/40 transition-all duration-700 shadow-[0_0_60px_rgba(245,158,11,0.3)] hover:shadow-[0_0_100px_rgba(245,158,11,0.5)] group">
+                <div class="absolute inset-0 bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 opacity-10 group-hover:opacity-20 transition-opacity duration-700 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden pointer-events-none"></div>
+                <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-400/60 to-transparent"></div>
+
+                <div class="relative z-10">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 gap-6 text-center md:text-left">
+                        <div>
+                            <span class="px-4 py-1.5 bg-amber-400/20 border border-amber-400/40 rounded-xl text-amber-300 text-[10px] md:text-xs font-black uppercase tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.4)] inline-block mb-4">
+                                TURBO COINS
+                            </span>
+                            <h2 class="text-3xl sm:text-4xl md:text-7xl font-black italic text-white uppercase tracking-tighter mb-4">Coin Packs</h2>
+                            <p class="text-white/50 max-w-xl text-sm md:text-lg font-medium">Fixed Turbo Coins bundles — no carousel, just pick & buy.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
+                        {turboCoinPacks.map((pack: any) => (
+                            <div class={`group/item relative border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ease-out ${getRarityStyles(pack.rarity)} cursor-pointer item-card flex flex-col h-full hover:scale-[1.03]`}
+                                 data-item={JSON.stringify(pack)}>
+                                <div class="flex justify-between items-start mb-4 md:mb-6 w-full">
+                                    <div class="text-3xl md:text-5xl group-hover/item:scale-110 transition-transform">{pack.icon}</div>
+                                    <span class="text-[8px] md:text-[10px] font-black uppercase tracking-widest border border-current px-2 py-1 rounded-lg opacity-80">{pack.rarity}</span>
+                                </div>
+                                <div class="text-xl md:text-3xl font-black italic text-white uppercase tracking-tighter mb-1">{pack.price}</div>
+                                <div class="text-[10px] md:text-xs text-white/60 font-black uppercase tracking-[0.25em] mb-4">YOU GET</div>
+                                <div class="mt-auto w-full flex flex-col md:flex-row justify-between items-center pt-4 border-t border-white/5 gap-2 md:gap-3">
+                                    <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-full ${getRarityPricePill(pack.rarity)}`}>ZA {pack.cashPrice}</span>
+                                    <button type="button" aria-label={`Add ${pack.name} to cart`} class="add-to-cart-btn w-full md:w-10 h-8 md:h-10 bg-white text-black rounded-xl font-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform text-sm">+</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     {/* ITEM DETAIL MODAL */}
@@ -226,7 +264,7 @@ const classicChunks  = chunkItems(classicCollection.items);
 
                 {/* Description + Price */}
                 <div class="px-8 pb-8">
-                    <p id="modal-desc" class="text-white/50 text-sm italic leading-relaxed text-center mb-8 border-l-4 border-white/10 pl-4 text-left">Opis...</p>
+                    <p id="modal-desc" class="text-white/50 text-sm italic leading-relaxed text-center mb-8 border-l-4 border-white/10 pl-4 text-left">Description...</p>
 
                     <div class="flex justify-between items-center mb-5 px-1">
                         <span class="text-[9px] font-black text-white/30 uppercase tracking-[0.2em]">Price</span>
@@ -363,12 +401,18 @@ const classicChunks  = chunkItems(classicCollection.items);
             const openModal = (data) => {
                 currentItem = data;
                 const s = rarityStyles(data.rarity);
+                const isCoinPack = data.type === 'Coin Pack';
+                const modalPriceText = isCoinPack && data.cashPrice ? data.cashPrice : data.price;
+                const modalDescText = isCoinPack && data.cashPrice
+                    ? (data.price + ' za ' + data.cashPrice)
+                    : data.desc;
+                const modalTypeText = isCoinPack ? ('Coin Pack • ' + data.price) : data.type;
 
                 document.getElementById('modal-icon').textContent = data.icon;
                 document.getElementById('modal-title').textContent = data.name;
-                document.getElementById('modal-type').textContent = data.type;
-                document.getElementById('modal-desc').textContent = data.desc;
-                document.getElementById('modal-price').textContent = data.price;
+                document.getElementById('modal-type').textContent = modalTypeText;
+                document.getElementById('modal-desc').textContent = modalDescText;
+                document.getElementById('modal-price').textContent = modalPriceText;
 
                 // Price pill
                 const priceEl = document.getElementById('modal-price');

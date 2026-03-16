@@ -345,3 +345,46 @@ export const shopCollections = [
     },
 ];
 
+export const turboCoinPacks = [
+    {
+        name: "Starter Boost",
+        type: "Coin Pack",
+        price: "600 TC",
+        cashPrice: "23.99 PLN",
+        icon: "🪙",
+        rarity: "Legendary",
+        desc: "Small top-up for quick upgrades.",
+        bonus: "",
+    },
+    {
+        name: "Pro Boost",
+        type: "Coin Pack",
+        price: "1 400 TC",
+        cashPrice: "47.99 PLN",
+        icon: "💰",
+        rarity: "Legendary",
+        desc: "Great value for regular players.",
+        bonus: "+16% BONUS",
+    },
+    {
+        name: "Ultra Vault",
+        type: "Coin Pack",
+        price: "3200 TC",
+        cashPrice: "94.99 PLN",
+        icon: "⚡",
+        rarity: "Legendary",
+        desc: "Best pick for unlocking premium cosmetics.",
+        bonus: "+33% BONUS",
+    },
+    {
+        name: "Legendary Hoard",
+        type: "Coin Pack",
+        price: "8000 TC",
+        cashPrice: "214.99 PLN",
+        icon: "👑",
+        rarity: "Legendary",
+        desc: "Maximum top-up with the highest bonus.",
+        bonus: "+48% BONUS",
+    },
+];
+
