@@ -16,7 +16,7 @@ const { active, team } = Astro.props;
         <h5 id="m-name" class="text-3xl lg:text-5xl font-black text-white uppercase italic tracking-tighter mb-2 pr-4">{active.name}</h5>
         <p id="m-role" class={`${active.textClass} font-black text-[10px] lg:text-xs uppercase tracking-[0.3em] mb-4 lg:mb-8`}>{active.role}</p>
         <div class="min-h-[4.5rem] lg:min-h-[5.5rem] flex items-center">
-            <p id="m-quote" class={`text-white/60 text-base lg:text-lg italic font-medium border-l-4 ${active.borderClass} pl-4 lg:pl-6 max-w-lg leading-relaxed line-clamp-2 lg:line-clamp-3`}>
+            <p id="m-quote" class={`text-white/60 text-base lg:text-lg italic font-medium border-l-4 ${active.borderClass} pl-4 lg:pl-6 max-w-lg leading-relaxed line-clamp-6 lg:line-clamp-8`}>
                 "{active.quote}"
             </p>
         </div>

@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import qwikdev from '@qwikdev/astro'; // Czasem to: import { qwikdev } from '@qwikdev/astro';
+import qwikdev from '@qwikdev/astro';
 import unocss from 'unocss/astro';
 
 export default defineConfig({
@@ -7,4 +7,13 @@ export default defineConfig({
     qwikdev(),
     unocss({ injectReset: true }),
   ],
+  // TĘ CZĘŚĆ MUSISZ DOPISAĆ:
+  vite: {
+    server: {
+      allowedHosts: true
+    },
+    preview: {
+      allowedHosts: true
+    }
+  }
 });
