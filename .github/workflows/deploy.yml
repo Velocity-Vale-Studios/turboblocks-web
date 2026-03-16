@@ -18,6 +18,7 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           # To są komendy, które robot wpisze za Ciebie w konsoli:
           script: |
+            set -e
             cd /webpage/frontend
             git fetch --all
             git reset --hard origin/master
@@ -25,6 +26,8 @@ jobs:
             cp docker-compose.yml ../
             cp Caddyfile ../
             cd ..
-            # Odpalamy Dockera z prawami admina (sudo)
-            sudo docker compose down
-            sudo docker compose up --build -d
+            # Build bez cache + wymuszone odtworzenie kontenerów
+            sudo docker compose build --no-cache frontend
+            sudo docker compose up -d --force-recreate --remove-orphans
+            # Lekki cleanup dangling images po wdrożeniu
+            sudo docker image prune -f
