@@ -21,5 +21,10 @@ jobs:
             cd /webpage/frontend
             git fetch --all
             git reset --hard origin/master
+            # Kopiujemy pliki piętro wyżej
+            cp docker-compose.yml ../
+            cp Caddyfile ../
             cd ..
+            # Odpalamy Dockera z nową konfiguracją
+            docker compose down
             docker compose up --build -d

@@ -1,0 +1,3 @@
+turboblocks.eu, www.turboblocks.eu {
+    reverse_proxy frontend:4321
+}
