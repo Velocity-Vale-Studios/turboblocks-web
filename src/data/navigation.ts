@@ -10,7 +10,7 @@ export const navConfig = {
     },
     server: {
         ip: 'PLAY.TURBOBLOCKS.EU',
-        discord: 'https://discord.gg/vuG3EQtV4',
+        discord: 'https://discord.gg/VhUVP3d5SC',
     },
     cart: {
         href: '/cart',
