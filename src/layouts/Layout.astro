@@ -15,7 +15,17 @@ const { title = "TurboBlocks" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
 </head>
-<body class="bg-[#050505] text-white antialiased selection:bg-cyan-500/30 selection:text-cyan-400">
+<body class="bg-[#07030F] text-white antialiased selection:bg-fuchsia-500/30 selection:text-fuchsia-300">
+
+<!-- Synthwave ambient — fixed, spans full scroll -->
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <!-- fuchsia blob lewy górny -->
+    <div class="absolute -top-60 -left-60 w-[600px] h-[600px] rounded-full blur-[180px] animate-pulse" style="background: rgba(255, 0, 204, 0.10);"></div>
+    <!-- cyan blob prawy środek -->
+    <div class="absolute top-[35%] -right-40 w-[500px] h-[500px] rounded-full blur-[160px] animate-pulse" style="background: rgba(0, 225, 253, 0.08); animation-delay: 3s;"></div>
+    <!-- violet blob dolny środek -->
+    <div class="absolute bottom-0 left-1/3 w-[500px] h-[500px] rounded-full blur-[150px] animate-pulse" style="background: rgba(124, 58, 237, 0.07); animation-delay: 6s;"></div>
+</div>
 <Navbar />
 <main>
     <slot />

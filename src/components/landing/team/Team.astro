@@ -5,43 +5,50 @@ import TeamVisual from './shared/TeamVisual.astro';
 // W przyszłości zamienisz to po prostu na fetch z API
 import rawTeamData from 'src/data/team.json';
 
-// Słownik stylów: dzięki temu Tailwind widzi całe nazwy klas i poprawnie je buduje
+// Mapujemy nazwy kolorów na nazwy gradientów z gradients.js
+// (wybór gradientów to przybliżenie - możesz dostosować do gustu)
 const colorStyles = {
     pink: {
-        theme: 'from-pink-500/40 via-purple-500/40 to-cyan-500/40',
-        textClass: 'text-pink-500', borderClass: 'border-pink-500', borderColorClass: 'border-pink-500/30',
-        bgClass: 'bg-pink-500', ringClass: 'ring-pink-500', shadowClass: 'shadow-pink-500/40',
-        glowClass: 'shadow-[0_0_40px_rgba(236,72,153,0.2)]'
+        gradient: 'fuchsia_pulse',
+        textClass: 'text-[#FF00CC]', borderClass: 'border-[#FF00CC]', borderColorClass: 'border-[#FF00CC]/40',
+        bgClass: 'bg-[#FF00CC]', ringClass: 'ring-[#FF00CC]', shadowClass: 'shadow-[#FF00CC]/40',
+        glowClass: 'shadow-[0_0_50px_rgba(255,0,204,0.3)]',
+        hex: '#FF00CC', rgb: '255,0,204'
     },
     blue: {
-        theme: 'from-blue-600/40 via-indigo-500/40 to-cyan-400/40',
-        textClass: 'text-blue-500', borderClass: 'border-blue-500', borderColorClass: 'border-blue-500/30',
-        bgClass: 'bg-blue-500', ringClass: 'ring-blue-500', shadowClass: 'shadow-blue-500/40',
-        glowClass: 'shadow-[0_0_40px_rgba(37,99,235,0.2)]'
+        gradient: 'pulsar',
+        textClass: 'text-[#00E1FD]', borderClass: 'border-[#00E1FD]', borderColorClass: 'border-[#00E1FD]/40',
+        bgClass: 'bg-[#00E1FD]', ringClass: 'ring-[#00E1FD]', shadowClass: 'shadow-[#00E1FD]/40',
+        glowClass: 'shadow-[0_0_50px_rgba(0,225,253,0.3)]',
+        hex: '#00E1FD', rgb: '0,225,253'
     },
     emerald: {
-        theme: 'from-emerald-500/40 via-teal-500/40 to-lime-400/40',
-        textClass: 'text-emerald-500', borderClass: 'border-emerald-500', borderColorClass: 'border-emerald-500/30',
-        bgClass: 'bg-emerald-500', ringClass: 'ring-emerald-500', shadowClass: 'shadow-emerald-500/40',
-        glowClass: 'shadow-[0_0_40px_rgba(16,185,129,0.2)]'
+        gradient: 'deep_space',
+        textClass: 'text-[#39FF14]', borderClass: 'border-[#39FF14]', borderColorClass: 'border-[#39FF14]/40',
+        bgClass: 'bg-[#39FF14]', ringClass: 'ring-[#39FF14]', shadowClass: 'shadow-[#39FF14]/40',
+        glowClass: 'shadow-[0_0_50px_rgba(57,255,20,0.25)]',
+        hex: '#39FF14', rgb: '57,255,20'
     },
     orange: {
-        theme: 'from-orange-500/40 via-red-500/40 to-yellow-400/40',
-        textClass: 'text-orange-500', borderClass: 'border-orange-500', borderColorClass: 'border-orange-500/30',
-        bgClass: 'bg-orange-500', ringClass: 'ring-orange-500', shadowClass: 'shadow-orange-500/40',
-        glowClass: 'shadow-[0_0_40px_rgba(249,115,22,0.2)]'
+        gradient: 'inferno',
+        textClass: 'text-[#FF6B00]', borderClass: 'border-[#FF6B00]', borderColorClass: 'border-[#FF6B00]/40',
+        bgClass: 'bg-[#FF6B00]', ringClass: 'ring-[#FF6B00]', shadowClass: 'shadow-[#FF6B00]/40',
+        glowClass: 'shadow-[0_0_50px_rgba(255,107,0,0.3)]',
+        hex: '#FF6B00', rgb: '255,107,0'
     },
     violet: {
-        theme: 'from-violet-500/40 via-fuchsia-500/40 to-rose-400/40',
-        textClass: 'text-violet-500', borderClass: 'border-violet-500', borderColorClass: 'border-violet-500/30',
-        bgClass: 'bg-violet-500', ringClass: 'ring-violet-500', shadowClass: 'shadow-violet-500/40',
-        glowClass: 'shadow-[0_0_40px_rgba(139,92,246,0.2)]'
+        gradient: 'twilight',
+        textClass: 'text-[#BF00FF]', borderClass: 'border-[#BF00FF]', borderColorClass: 'border-[#BF00FF]/40',
+        bgClass: 'bg-[#BF00FF]', ringClass: 'ring-[#BF00FF]', shadowClass: 'shadow-[#BF00FF]/40',
+        glowClass: 'shadow-[0_0_50px_rgba(191,0,255,0.3)]',
+        hex: '#BF00FF', rgb: '191,0,255'
     },
     red: {
-        theme: 'from-red-500/40 via-rose-500/40 to-white-400/40',
-        textClass: 'text-red-500', borderClass: 'border-red-500', borderColorClass: 'border-red-500/30',
-        bgClass: 'bg-red-500', ringClass: 'ring-red-500', shadowClass: 'shadow-red-500/40',
-        glowClass: 'shadow-[0_0_40px_rgba(239,68,68,0.2)]'
+        gradient: 'sangria',
+        textClass: 'text-[#FF0040]', borderClass: 'border-[#FF0040]', borderColorClass: 'border-[#FF0040]/40',
+        bgClass: 'bg-[#FF0040]', ringClass: 'ring-[#FF0040]', shadowClass: 'shadow-[#FF0040]/40',
+        glowClass: 'shadow-[0_0_50px_rgba(255,0,64,0.3)]',
+        hex: '#FF0040', rgb: '255,0,64'
     }
 };
 
@@ -54,16 +61,27 @@ const team = rawTeamData.map(member => ({
 const active = team[0];
 ---
 
-<section id="team" class="max-w-7xl mx-auto px-8 py-24 relative">
+<section id="team" class="max-w-7xl mx-auto px-8 py-24 relative" style={`--team-hex: ${active.hex}; --team-rgb: ${active.rgb}; --team-gradient: ${active.gradient}`}>
 
+    <!-- Arcade ambient blobs -->
     <div class="absolute inset-0 pointer-events-none -z-10">
-        <div class="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/10 blur-[120px] animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-cyan-500/10 blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/4 left-0 w-96 h-96 blur-[120px] animate-pulse bg-gradient-fuchsia_pulse-diag opacity-20"></div>
+        <div class="absolute bottom-1/4 right-0 w-96 h-96 blur-[120px] animate-pulse bg-gradient-pulsar-diag opacity-20" style="animation-delay: 2s;"></div>
     </div>
 
+    <!-- Scanlines overlay całej sekcji -->
+    <div class="absolute inset-0 pointer-events-none -z-10 opacity-[0.025]" style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,1) 3px, rgba(255,255,255,1) 4px);"></div>
+
     <div class="mb-12 flex flex-col items-center md:items-start relative z-10">
-        <h2 class="text-[10px] font-black uppercase tracking-[0.8em] text-cyan-400 mb-2 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">Color Clash Season</h2>
-        <h3 class="text-6xl font-black italic text-white uppercase tracking-tighter">Meet the <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 pr-4 drop-shadow-[0_0_30px_rgba(236,72,153,0.3)]">Creators</span></h3>
+        <!-- Arcade label -->
+        <div class="flex items-center gap-3 mb-3">
+                <div id="header-left-line" class="h-px w-8 transition-colors duration-700" style={`background: ${active.hex};`}></div>
+                    <span id="header-label" class="text-[9px] font-black uppercase tracking-[0.6em] transition-colors duration-700" style={`color: ${active.hex};`}>SEASON 1 // PLAYER SELECT</span>
+                    <div id="header-right-line" class="h-px w-8 transition-colors duration-700" style={`background: ${active.hex};`}></div>
+        </div>
+            <h3 class="text-5xl md:text-6xl font-black italic text-white uppercase tracking-tighter leading-none">
+            THE <span id="header-crew" class="text-transparent bg-clip-text pr-4 transition-all duration-700" style={`background-image: linear-gradient(to right, var(--team-hex, ${active.hex}), #7C3AED, #00E1FD); -webkit-background-clip: text; background-clip: text;`}>CREW</span>
+        </h3>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch min-h-[600px] relative z-10">
@@ -77,6 +95,43 @@ const active = team[0];
 <style is:global>
     @keyframes slideIn { from { opacity: 0; transform: translateX(30px); filter: blur(10px); } to { opacity: 1; transform: translateX(0); filter: blur(0); } }
     .slide-anim { animation: slideIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+
+    /* Crew header shimmer - animates gradient across the text using the same --team-hex color */
+    @keyframes crewShimmer {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    /* support both the team header id and a reusable class for other sections */
+    #header-crew, .header-crew {
+        display: inline-block;
+        background-size: 200% 100%;
+        background-position: 0% 50%;
+        -webkit-text-fill-color: transparent;
+        animation: crewShimmer 3.5s linear infinite;
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+
+    /* subtle glow pulse for the crew word */
+    @keyframes crewGlow {
+        0% { text-shadow: 0 0 0 rgba(255,255,255,0); }
+        50% { text-shadow: 0 6px 30px rgba(0,0,0,0.25); }
+        100% { text-shadow: 0 0 0 rgba(255,255,255,0); }
+    }
+    #header-crew, .header-crew { animation: crewShimmer 3.5s linear infinite, crewGlow 6s ease-in-out infinite; }
+
+    /* accent-change - short animation when team color changes */
+    @keyframes accentPulse {
+        /* Subtle visual pulse WITHOUT vertical movement - affects brightness, saturation and glow only */
+        0% { filter: brightness(0.92) saturate(0.95); box-shadow: none; }
+        50% { filter: brightness(1.12) saturate(1.08); }
+        100% { filter: none; box-shadow: none; }
+    }
+    .accent-change {
+        animation: accentPulse 0.7s cubic-bezier(0.2,0.9,0.2,1) both;
+    }
+
     html { scroll-behavior: smooth; }
 </style>
 

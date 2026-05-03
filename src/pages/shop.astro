@@ -6,8 +6,8 @@ import { shopCollections, turboCoinPacks } from '../data/shop';
 // ═══════════════════════════════════════════════════════════════
 // 🔧 SHOP CONFIG — zmień ID żeby podmienić kolekcje na stronie
 // ═══════════════════════════════════════════════════════════════
-const FEATURED_COLLECTION_ID = "astral-void";      // sekcja Featured (górna, z opisem)
-const CLASSIC_COLLECTION_ID  = "magma-flow";          // sekcja Classic  (dolna, bez opisu)
+const FEATURED_COLLECTION_ID = "cryo-neon";      // sekcja Featured (górna, z opisem)
+const CLASSIC_COLLECTION_ID  = "neon-hazard";          // sekcja Classic  (dolna, bez opisu)
 // ═══════════════════════════════════════════════════════════════
 // Dostępne ID (11 kolekcji):
 //   "winter-festive", "solar-flare", "neon-genesis", "chromatic-riot",
@@ -77,7 +77,7 @@ const classicChunks  = chunkItems(classicCollection.items);
         {/* FEATURED COLLECTION */}
         <section class="mb-16 md:mb-32">
             <div class={`relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${featuredCollection.borderColorClass} ${featuredCollection.glowClass} group`}>
-                <div class={`absolute inset-0 bg-gradient-to-br ${featuredCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden pointer-events-none`}></div>
+                <div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-700 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden pointer-events-none" style={`background-image: ${featuredCollection.gradientCss}`}></div>
                 <div class={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${featuredCollection.lineColor} to-transparent`}></div>
 
                 <div class="relative z-10">
@@ -140,7 +140,7 @@ const classicChunks  = chunkItems(classicCollection.items);
         {/* CLASSIC COLLECTION */}
         <section class="mb-16 md:mb-32">
             <div class={`relative rounded-[2rem] md:rounded-[3.5rem] p-6 md:p-12 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${classicCollection.borderColorClass} ${classicCollection.glowClass} group`}>
-                <div class={`absolute inset-0 bg-gradient-to-br ${classicCollection.gradient} opacity-10 group-hover:opacity-20 transition-opacity duration-700 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden pointer-events-none`}></div>
+                <div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-700 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden pointer-events-none" style={`background-image: ${classicCollection.gradientCss}`}></div>
                 <div class={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${classicCollection.lineColor} to-transparent`}></div>
 
                 <div class="relative z-10">

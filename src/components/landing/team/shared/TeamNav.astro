@@ -2,30 +2,50 @@
 const { team, active } = Astro.props;
 ---
 
-<div class="flex flex-col items-center gap-4 mt-auto pt-6 lg:pt-8 border-t border-white/5 relative z-10 w-full">
-    <div class="flex items-center justify-center w-full gap-4">
-        <button id="prev-btn" type="button" aria-label="Previous team member" class="hidden md:flex text-white/20 hover:text-white hover:scale-125 transition-all cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+<div class="flex flex-col gap-4 mt-auto pt-6 lg:pt-8 border-t border-white/5 relative z-10 w-full">
+
+    <!-- Label -->
+    <div class="flex items-center gap-2">
+        <span class="text-[8px] font-black uppercase tracking-[0.5em] text-white/20">SELECT PLAYER</span>
+    </div>
+
+    <div class="flex items-center gap-3 w-full">
+
+        <button id="prev-btn" type="button" aria-label="Previous" class="hidden md:flex w-8 h-8 items-center justify-center rounded-lg border border-white/10 text-white/30 hover:text-white hover:border-white/30 hover:scale-110 transition-all cursor-pointer flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
         </button>
 
-        <div class="flex items-center justify-center gap-3 py-2 px-3 bg-white/[0.02] rounded-xl border border-white/5 mx-auto md:mx-0">
+        <!-- Avatar grid - arcade character select -->
+        <div class="flex items-center gap-2 flex-1 flex-wrap">
             {team.map((member, index) => (
                     <button
                             type="button"
-                            aria-label={`Show profile of ${member.name}`}
-                            class={`team-trigger relative w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg overflow-hidden transition-all duration-300 opacity-40 grayscale data-[active=true]:opacity-100 data-[active=true]:grayscale-0 data-[active=true]:ring-2 data-[active=true]:scale-110 ${index === 0 ? active.ringClass : ''}`}
+                            aria-label={`Select ${member.name}`}
+                            class={`team-trigger relative group/av flex-shrink-0 transition-all duration-300`}
                             data-member={JSON.stringify(member)}
                             data-active={index === 0 ? "true" : "false"}
+                            style={index === 0 ? `outline: 2px solid ${active.hex}; outline-offset: 2px; box-shadow: 0 0 12px ${active.hex};` : ''}
                     >
-                        <img src={`https://mc-heads.net/avatar/${member.name}/100`} alt={member.name} class="w-full h-full object-cover" />
+                        <!-- Avatar frame -->
+                        <div class={`w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-xl overflow-hidden transition-all duration-300 ${index !== 0 ? 'opacity-40 grayscale hover:opacity-70 hover:grayscale-0' : 'opacity-100 grayscale-0'}`}>
+                            <img
+                                    src={`https://mc-heads.net/avatar/${member.name}/100`}
+                                    alt={member.name}
+                                    class="w-full h-full object-cover"
+                            />
+                        </div>
+                        <!-- Numer nad avatarem -->
+                        <div class="absolute -top-1.5 -left-1.5 w-4 h-4 rounded bg-black border border-white/10 flex items-center justify-center">
+                            <span class="text-[7px] font-black text-white/40">{String(index + 1).padStart(2,'0')}</span>
+                        </div>
                     </button>
             ))}
         </div>
 
-        <button id="next-btn" type="button" aria-label="Next team member" class="hidden md:flex text-white/20 hover:text-white hover:scale-125 transition-all cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
+        <button id="next-btn" type="button" aria-label="Next" class="hidden md:flex w-8 h-8 items-center justify-center rounded-lg border border-white/10 text-white/30 hover:text-white hover:border-white/30 hover:scale-110 transition-all cursor-pointer flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3.5 h-3.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
         </button>
