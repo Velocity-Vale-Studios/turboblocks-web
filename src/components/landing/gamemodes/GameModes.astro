@@ -2,11 +2,16 @@
 // src/components/landing/GameModes/GameModes.astro
 import modesData from 'src/data/modes.json';
 import ModeCard from './shared/ModeCard.astro';
+import { gradients } from 'src/components/gradients.js';
+
+const modesGradient = gradients.aurora.cssAnimated;
+const modesBlobL    = gradients.fuchsia_pulse.cssNeon;
+const modesBlobR    = gradients.aurora.cssNeon;
 ---
 
 <section id="modes" class="max-w-7xl mx-auto px-8 py-16 md:py-24 relative">
-    <div class="absolute top-1/4 -left-10 w-[200px] md:w-[500px] h-[200px] md:h-[500px] blur-[80px] md:blur-[130px] -z-10 pointer-events-none animate-pulse" style="background: rgba(255, 0, 204, 0.12);"></div>
-    <div class="absolute bottom-1/4 -right-10 w-[200px] md:w-[500px] h-[200px] md:h-[500px] blur-[80px] md:blur-[130px] -z-10 pointer-events-none animate-pulse" style="background: rgba(0, 225, 253, 0.09); animation-delay: 2s;"></div>
+    <div class="absolute top-1/4 -left-10 w-[200px] md:w-[500px] h-[200px] md:h-[500px] blur-[80px] md:blur-[130px] -z-10 pointer-events-none neon-bg-animated opacity-20" style={`background: ${modesBlobL};`}></div>
+    <div class="absolute bottom-1/4 -right-10 w-[200px] md:w-[500px] h-[200px] md:h-[500px] blur-[80px] md:blur-[130px] -z-10 pointer-events-none neon-bg-animated opacity-15" style={`background: ${modesBlobR}; animation-delay: 2s;`}></div>
 
     <div style="--team-hex: #FF00CC; --team-rgb: 255,0,204;" class="mb-10 md:mb-16 flex flex-col items-center md:items-start text-center md:text-left relative z-10">
         <div class="flex items-center gap-3 mb-3">
@@ -15,7 +20,7 @@ import ModeCard from './shared/ModeCard.astro';
             <div class="h-px w-8 transition-colors duration-700 header-right-line" style="background: var(--team-hex);"></div>
         </div>
         <h3 class="text-3xl sm:text-4xl md:text-6xl font-black italic text-white uppercase tracking-tighter leading-none">
-            THE <span class="text-transparent bg-clip-text pr-4 header-crew" style="background-image: linear-gradient(to right, var(--team-hex), #7C3AED, #00E1FD); -webkit-background-clip: text; background-clip: text;">MODES</span>
+            THE <span class="neon-text-animated pr-4 header-crew" style={`background-image: ${modesGradient};`}>MODES</span>
         </h3>
     </div>
 

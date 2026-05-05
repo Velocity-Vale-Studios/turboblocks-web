@@ -1,6 +1,36 @@
 @unocss;
 :root { color-scheme: dark; }
 
+/* ── Neon gradient animations ────────────────────────────── */
+
+/* Text shimmer — smooth back-and-forth (good for headings) */
+@keyframes gradientShimmer {
+    0%   { background-position: 0%   50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0%   50%; }
+}
+
+/* Background slide — strict left-to-right, seamless loop */
+@keyframes gradientSlide {
+    0%   { background-position: 0%   50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* Animated gradient on text — use with inline background-image */
+.neon-text-animated {
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShimmer 4s ease infinite;
+}
+
+/* Animated gradient on backgrounds — left-to-right slide */
+.neon-bg-animated {
+    background-size: 200% auto;
+    animation: gradientSlide 3s linear infinite;
+}
+
 html {
     scroll-behavior: smooth;
     overflow-x: clip;
