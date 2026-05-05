@@ -3,9 +3,9 @@ const currentYear = new Date().getFullYear();
 import { gradients } from 'src/components/gradients.js';
 
 // kolorystyka dla footeru (tylko wygląd — układ bez zmian)
-const ambient = gradients['pulsar']?.cssDiag ?? gradients['aurora']?.cssDiag ?? 'linear-gradient(135deg,#00E1FD,#7C3AED,#400080)';
-const titleGradient = gradients['fuchsia_pulse']?.css ?? gradients['aurora']?.css ?? 'linear-gradient(to right,#FF00CC,#7C3AED,#1A001A)';
-const headerLine = gradients['aurora']?.primary ?? '#00D4FF';
+const ambient       = gradients['pulsar']?.cssNeon     ?? gradients['aurora']?.cssNeon     ?? 'linear-gradient(135deg,#00E1FD,#7C3AED,#FF00FF)';
+const titleGradient = gradients['fuchsia_pulse']?.cssAnimated ?? gradients['aurora']?.cssAnimated ?? 'linear-gradient(to right,#FF00CC,#BF00FF,#00E1FD,#BF00FF,#FF00CC)';
+const headerLine    = gradients['aurora']?.primary ?? '#00D4FF';
 ---
 
 <footer class="relative mt-20 pb-12">
@@ -22,7 +22,7 @@ const headerLine = gradients['aurora']?.primary ?? '#00D4FF';
                 <div class="lg:col-span-5 space-y-6">
                     <h2 class="text-3xl font-black italic uppercase tracking-tighter text-white leading-none">
                         <span class="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">TURBO</span>
-                        <span class="text-transparent bg-clip-text pr-2" style={`background-image: ${titleGradient}; -webkit-background-clip: text; background-clip: text;`}>BLOCKS</span>
+                        <span class="neon-text-animated pr-2" style={`background-image: ${titleGradient};`}>BLOCKS</span>
                     </h2>
                     <p class="text-white/40 text-sm leading-relaxed max-w-sm font-medium">
                         Top-tier minigames with a <span class="text-cyan-400 drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">neon-futuristic</span> vibe.

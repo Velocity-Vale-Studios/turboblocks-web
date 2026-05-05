@@ -2,22 +2,27 @@
 // src/components/landing/Hero/Hero.astro
 import heroData from '/src/data/hero.json';
 import CopyIpButton from 'src/components/landing/hero/shared/CopyIpButton.astro';
+import { gradients } from 'src/components/gradients.js';
 
 const { badge, titleFirst, titleSecond, description, serverIP, ctaPrimary } = heroData;
+
+const titleGradient   = gradients.fuchsia_pulse.cssAnimated;
+const badgeColor      = gradients.fuchsia_pulse.primary;   // #FF00CC
+const badgeGlow       = 'rgba(255,0,204,0.22)';
 ---
 
 <section class="relative min-h-[60vh] md:min-h-[90vh] flex items-center justify-center pt-24 pb-10 md:pt-10 md:pb-0">
 
     <!-- Synthwave blobs -->
-    <div class="absolute top-1/4 -left-10 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px] blur-[60px] md:blur-[150px] animate-pulse pointer-events-none" style="background: rgba(255, 0, 204, 0.22);"></div>
+    <div class="absolute top-1/4 -left-10 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px] blur-[60px] md:blur-[150px] animate-pulse pointer-events-none" style={`background: ${badgeGlow};`}></div>
     <div class="absolute bottom-1/4 -right-10 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px] blur-[60px] md:blur-[150px] animate-pulse pointer-events-none" style="background: rgba(0, 225, 253, 0.18); animation-delay: 2s;"></div>
 
 
 
     <div class="relative z-10 text-center px-8 max-w-7xl mx-auto">
 
-        <div class="inline-block px-3 py-1 md:px-4 md:py-1.5 mb-4 md:mb-8 rounded-full backdrop-blur-md animate-fade-in-up" style="background: rgba(255, 0, 204, 0.08); box-shadow: inset 0 0 0 1px rgba(255, 0, 204, 0.30), 0 0 20px rgba(255, 0, 204, 0.2);">
-            <span class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] block leading-none" style="color: #FF00CC;">
+        <div class="inline-block px-3 py-1 md:px-4 md:py-1.5 mb-4 md:mb-8 rounded-full backdrop-blur-md animate-fade-in-up" style={`background: rgba(255, 0, 204, 0.10); box-shadow: inset 0 0 0 1px rgba(255, 0, 204, 0.40), 0 0 30px rgba(255, 0, 204, 0.25), 0 0 60px rgba(255, 0, 204, 0.10);`}>
+            <span class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] block leading-none" style={`color: ${badgeColor}; text-shadow: 0 0 10px ${badgeColor}88;`}>
                 {badge}
             </span>
         </div>
@@ -26,7 +31,7 @@ const { badge, titleFirst, titleSecond, description, serverIP, ctaPrimary } = he
             <span class="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.1)] md:drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
                 {titleFirst}
             </span>
-            <span class="text-transparent bg-clip-text md:pr-4" style="background-image: linear-gradient(to right, #FF00CC, #7C3AED, #00E1FD); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 0 30px rgba(255,0,204,0.4));">
+            <span class="neon-text-animated md:pr-4" style={`background-image: ${titleGradient}; filter: drop-shadow(0 0 40px rgba(255,0,204,0.55)) drop-shadow(0 0 80px rgba(0,225,253,0.25));`}>
                 {titleSecond}
             </span>
         </h1>
@@ -42,21 +47,27 @@ const { badge, titleFirst, titleSecond, description, serverIP, ctaPrimary } = he
             </div>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 w-full sm:w-auto">
-                <a href="#modes" class="w-full sm:w-auto px-10 py-3 md:py-4 bg-white/5 border border-white/10 text-white font-black uppercase text-[10px] tracking-[0.3em] rounded-xl backdrop-blur-xl hover:bg-white/10 hover:border-[#00E1FD]/50 transition-all duration-300 hover:scale-105 flex items-center justify-center group"
+
+                <a href="#modes"
+                   class="w-full sm:w-auto flex items-center justify-center px-10 py-3 md:py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.3em] text-white transition-transform duration-300 hover:scale-105 group"
+                   style={`background: ${gradients.maritime.cssNeon}; box-shadow: 0 0 18px rgba(65,105,225,0.4), 0 0 40px rgba(0,191,255,0.15);`}
                 >
                     EXPLORE MODES
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 ml-2 group-hover:translate-y-1 transition-transform" style="color: #00E1FD;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
                     </svg>
                 </a>
 
-                <a href="#team" class="w-full sm:w-auto px-10 py-3 md:py-4 bg-white/5 border border-white/10 text-white font-black uppercase text-[10px] tracking-[0.3em] rounded-xl backdrop-blur-xl hover:bg-white/10 hover:border-[#FF00CC]/50 transition-all duration-300 hover:scale-105 flex items-center justify-center group"
+                <a href="#team"
+                   class="w-full sm:w-auto flex items-center justify-center px-10 py-3 md:py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.3em] text-white transition-transform duration-300 hover:scale-105 group"
+                   style={`background: ${gradients.fuchsia_pulse.cssNeon}; box-shadow: 0 0 18px rgba(255,0,204,0.35), 0 0 40px rgba(255,0,204,0.1);`}
                 >
                     MEET THE TEAM
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 ml-2 group-hover:translate-y-1 transition-transform" style="color: #FF00CC;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 ml-2 group-hover:translate-y-0.5 transition-transform">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
                     </svg>
                 </a>
+
             </div>
         </div>
     </div>

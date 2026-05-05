@@ -23,7 +23,7 @@ const { team, active } = Astro.props;
                     <button
                             type="button"
                             aria-label={`Select ${member.name}`}
-                            class={`team-trigger relative group/av flex-shrink-0 transition-all duration-300`}
+                            class={`team-trigger relative group/av flex-shrink-0 rounded-xl transition-all duration-300`}
                             data-member={JSON.stringify(member)}
                             data-active={index === 0 ? "true" : "false"}
                             style={index === 0 ? `outline: 2px solid ${active.hex}; outline-offset: 2px; box-shadow: 0 0 12px ${active.hex};` : ''}
