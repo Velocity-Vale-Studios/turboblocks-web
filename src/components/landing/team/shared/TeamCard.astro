@@ -4,9 +4,14 @@ import TeamNav from './TeamNav.astro';
 const { active, team } = Astro.props;
 const memberIndex = team.findIndex(m => m.name === active.name);
 const racingNumber = String(memberIndex + 1).padStart(2, '0');
+
 ---
 
 <div id="info-window" class={`lg:col-span-7 bg-gradient-to-br from-white/5 to-white/[0.02] border ${active.borderColorClass} rounded-[2rem] lg:rounded-[3.5rem] p-6 lg:p-12 backdrop-blur-3xl flex flex-col justify-center relative overflow-hidden group ${active.glowClass} transition-all duration-700`}>
+
+    <!-- Bloom -->
+    <div class="absolute -inset-[60px] rounded-[3.5rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000"
+         style={`background-image: var(--bg-gradient-${active.gradient}-diag); opacity: 0.15;`}></div>
 
     <!-- Ambient glow blob -->
     <div id="ambient-glow" class={`absolute -top-24 -right-24 w-96 h-96 bg-gradient-${active.gradient}-diag blur-[100px] opacity-20 transition-all duration-1000 pointer-events-none`}></div>
@@ -45,7 +50,7 @@ const racingNumber = String(memberIndex + 1).padStart(2, '0');
             <div class="flex gap-4 lg:gap-5 items-stretch">
                 <div id="v-line-1" class="w-1 lg:w-1.5 rounded-full flex-shrink-0 min-h-full transition-all duration-700" style={`background: linear-gradient(to bottom, var(--team-hex, ${active.hex}), transparent);`}></div>
                 <p id="m-quote" class="text-white/50 text-sm lg:text-base font-medium italic max-w-lg leading-relaxed line-clamp-4 lg:line-clamp-7">
-                    "{active.quote}"
+                    {active.quote}
                 </p>
             </div>
         </div>
@@ -55,3 +60,4 @@ const racingNumber = String(memberIndex + 1).padStart(2, '0');
     <div id="v-line-2" class="hidden"></div>
 
     <TeamNav team={team} active={active} />
+</div>

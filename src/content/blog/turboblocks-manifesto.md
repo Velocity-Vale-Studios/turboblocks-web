@@ -7,15 +7,15 @@ icon: "⚡"
 desc: "Before the modes, before the maps, before the matches — there is a vision. Here is exactly who Velocity Vale Studios is, what TurboBlocks stands for, and why we are building it the way we are."
 
 # STYLIZACJA
-gradient: "from-teal-500 via-emerald-500 to-green-400"
-borderColorClass: "border-teal-500/30"
-glowClass: "shadow-[0_0_40px_rgba(20,184,166,0.15)] hover:shadow-[0_0_80px_rgba(20,184,166,0.3)]"
-accent: "text-teal-400"
-btnHoverAccent: "hover:bg-teal-500"
-textHoverAccent: "group-hover:text-teal-400"
-shadowAccent: "hover:shadow-[0_0_40px_rgba(20,184,166,0.5)]"
-borderAccent: "border-teal-500/50"
-bgAccent: "bg-teal-500/10"
+gradient: "from-blue-900 via-blue-700 to-cyan-500"
+borderColorClass: "border-blue-600/30"
+glowClass: "shadow-[0_0_40px_rgba(30,60,114,0.15)] hover:shadow-[0_0_80px_rgba(30,60,114,0.3)]"
+accent: "text-blue-400"
+btnHoverAccent: "hover:bg-blue-600"
+textHoverAccent: "group-hover:text-blue-400"
+shadowAccent: "hover:shadow-[0_0_40px_rgba(30,60,114,0.5)]"
+borderAccent: "border-blue-600/50"
+bgAccent: "bg-blue-600/10"
 ---
 
 ## We Said It From the Start

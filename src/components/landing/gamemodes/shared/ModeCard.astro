@@ -22,74 +22,63 @@ const btnGradient = btnGradientMap[mode.colorKey] ?? btnGradientMap.pink;
 ---
 
 <div style={`--mode-hex: ${color.hex}; --mode-rgb: ${color.rgb};`} class:list={[
+    // Na mobilce p-6 i mniejsze zaokrąglenie, na md wracamy do p-14 i rounded-4rem
     "group relative p-6 md:p-14 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl transition-all duration-700 flex flex-col h-full bg-gradient-to-br from-white/5 to-white/[0.02]",
     "border-[rgba(var(--mode-rgb),0.3)] hover:border-[rgba(var(--mode-rgb),0.6)]",
     "shadow-[0_0_50px_rgba(var(--mode-rgb),0.3)] hover:shadow-[0_0_80px_rgba(var(--mode-rgb),0.45)]"
 ]}>
-    
-    <!-- Bloom effect wokół karty -->
+
+    <!-- Bloom i tła - przywrócone oryginalne wartości md: -->
     <div class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000" style={`background-image: ${gradients[mode.colorKey === 'cyan' ? 'pulsar' : 'fuchsia_pulse'].cssDiag}; opacity: 0.15; ${mode.colorKey === 'cyan' ? 'animation-delay: 2s;' : ''}`}></div>
 
-    <div class="absolute inset-0 rounded-[2.5rem] md:rounded-[4rem] overflow-hidden pointer-events-none">
-        <!-- subtelny tint zawsze widoczny -->
-        <div class="absolute inset-0 transition-opacity duration-700 opacity-100 group-hover:opacity-0" style={`background: linear-gradient(135deg, rgba(var(--mode-rgb),0.06) 0%, rgba(124,58,237,0.03) 50%, transparent 100%)`}></div>
-        <!-- bogaty overlay na hover -->
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={`background: linear-gradient(135deg, rgba(var(--mode-rgb),0.14) 0%, rgba(124,58,237,0.10) 50%, rgba(0,225,253,0.04) 100%)`}></div>
-
-        {mode.status === 'future' && (
-                <div class="absolute top-4 right-4 md:top-12 md:right-12 text-white/5 rotate-12">
-                    <svg class="w-16 h-16 md:w-32 md:h-32" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1v-3a5 5 0 0 0-5-5zm-3 5a3 3 0 0 1 6 0v3H9V7zm3 11a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-                    </svg>
-                </div>
-        )}
-    </div>
-
     <div class="relative z-10 flex flex-col h-full">
-        <div class="flex justify-between items-start mb-10 md:mb-14">
+        <div class="flex justify-between items-start mb-6 md:mb-14"> <!-- mb-6 na mobile, mb-14 na desktop -->
             <div class:list={[
-                "w-14 h-14 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] border border-white/10 flex items-center justify-center text-2xl md:text-5xl shadow-2xl transition-all duration-500 ease-out",
-                // Klasy dla animacji na hover całej karty (group)
+                "w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] border border-white/10 flex items-center justify-center text-3xl md:text-5xl shadow-2xl transition-all duration-500 ease-out",
                 "group-hover:scale-110 group-hover:border-[rgba(var(--mode-rgb),0.5)] group-hover:shadow-[0_0_30px_rgba(var(--mode-rgb),0.4)]",
                 isActive ? "bg-white/5" : "bg-black/20"
-            ]}>
+                ]}>
                 <div class="w-10 h-10 md:w-16 md:h-16 rounded-xl flex items-center justify-center text-2xl md:text-4xl transition-all duration-500"
                      style={`background: linear-gradient(135deg, rgba(var(--mode-rgb),0.08), rgba(124,58,237,0.04)); box-shadow: 0 0 28px rgba(var(--mode-rgb),0.18), inset 0 0 6px rgba(var(--mode-rgb),0.06); border: 1px solid rgba(var(--mode-rgb),0.15);`}>
                     <span class="transform-gpu" aria-hidden="true">{mode.icon}</span>
                 </div>
             </div>
 
-            <span class="text-[8px] md:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 md:py-3 md:px-6 rounded-xl border border-white/10 shadow-2xl"
+            <span class="text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 md:py-3 md:px-6 rounded-xl border border-white/10 shadow-2xl"
                   style={isActive ? `color: var(--mode-hex); background: rgba(var(--mode-rgb), 0.08); box-shadow: inset 0 0 0 1px rgba(var(--mode-rgb),0.25);` : ("" )}
             >{mode.tag}</span>
         </div>
 
         <h4 class:list={[
-            "text-3xl md:text-6xl font-black italic uppercase tracking-tighter mb-4 md:mb-8 leading-[0.85] neon-text-animated",
+            "text-3xl md:text-6xl font-black italic uppercase tracking-tighter mb-4 md:mb-8 leading-none neon-text-animated",
             isActive ? "" : "opacity-40"
-        ]}
+            ]}
             style={`background-image: ${btnGradient}; filter: drop-shadow(0 0 20px rgba(var(--mode-rgb),0.35));`}
         >
             {mode.name}
         </h4>
 
-        <p class="text-white/60 text-sm md:text-xl font-medium italic border-l-4 border-white/10 pl-6 md:pl-10 leading-relaxed mb-10 md:mb-16">
+        <!-- Opis: Zmniejszony interlinia i margines dolny TYLKO na mobilce -->
+        <p class="text-white/60 text-[13px] md:text-xl font-medium italic border-l-4 border-white/10 pl-6 md:pl-10 leading-snug md:leading-relaxed mb-6 md:mb-16">
             {mode.desc}
         </p>
 
-        <div class="mt-auto flex flex-wrap items-center gap-4">
+        <!-- Stopka: Przyciski obok siebie na mobilce, flex-col na desktopie (żeby zachować Twój styl) -->
+        <div class="mt-auto flex flex-row md:flex-wrap items-center gap-3 md:gap-4">
             {isActive ? (
                     <>
-                        <a href={mode.url} class="flex-1 sm:flex-none text-center px-8 py-4 text-white font-black uppercase text-[10px] md:text-xs tracking-widest rounded-2xl transition-all duration-300 hover:scale-110 hover:brightness-125" style={`background: var(--mode-hex); box-shadow: 0 0 20px rgba(var(--mode-rgb),0.45), 0 0 40px rgba(var(--mode-rgb),0.15);`}>
+                        <a href={mode.url} class="flex-[2] md:flex-none text-center px-4 md:px-8 py-3.5 md:py-4 text-white font-black uppercase text-[10px] md:text-xs tracking-widest rounded-2xl transition-all duration-300 hover:scale-110" style={`background: var(--mode-hex); box-shadow: 0 0 20px rgba(var(--mode-rgb),0.45), 0 0 40px rgba(var(--mode-rgb),0.15);`}>
                             {mode.btnText}
                         </a>
-                        <div class="flex items-center justify-center px-5 py-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
-                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-3 shadow-[0_0_15px_#22c55e]"></div>
-                            <span class="text-white/60 font-black text-[10px] md:text-xs uppercase tracking-widest whitespace-nowrap">{mode.onlineCount || '0'} ONLINE</span>
+                        <div class="flex-1 md:flex-none flex items-center justify-center px-3 md:px-5 py-3.5 md:py-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2 md:mr-3 shadow-[0_0_15px_#22c55e]"></div>
+                            <span class="text-white/60 font-black text-[9px] md:text-xs uppercase tracking-widest whitespace-nowrap">
+                                {mode.onlineCount || '0'} <span class="hidden md:inline">ONLINE</span>
+                            </span>
                         </div>
                     </>
             ) : (
-                    <div class="flex items-center justify-center px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white/20 font-black uppercase text-[10px] md:text-xs tracking-widest italic cursor-not-allowed">
+                    <div class="w-full flex items-center justify-center px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white/20 font-black uppercase text-[10px] md:text-xs tracking-widest italic cursor-not-allowed">
                         {mode.btnText}
                     </div>
             )}
