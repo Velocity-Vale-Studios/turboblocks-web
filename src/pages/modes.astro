@@ -1,62 +1,94 @@
 ---
-import Layout from '../../src/layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro';
+import { gradients } from 'src/components/gradients.js';
+
+// Color Clash Mode Colors
+const activeHex = '#FF00CC';
+const activeRgb = '255,0,204';
+const btnGradientActive = 'linear-gradient(to right, #FF00CC, #FF69B4, #FF00CC)';
+
+// Rocky Raceway Mode Colors
+const upcomingHex = '#00E1FD';
+const upcomingRgb = '0,225,253';
+const btnGradientUpcoming = 'linear-gradient(to right, #00E1FD, #00BFFF, #00E1FD)';
+
+const modesGradient = gradients.aurora.cssAnimated;
+const pulseDiag = gradients.fuchsia_pulse.cssDiag;
+const pulsarDiag = gradients.pulsar.cssDiag;
 ---
 
 <Layout title="Game Modes">
-    {/* Kontener główny - zwiększony padding md:px-20, żeby poświaty nie dotykały krawędzi okna */}
     <div class="max-w-7xl mx-auto px-8 pt-32 pb-16 md:pt-48 md:pb-32 relative">
 
         {/* HEADER */}
-        <div class="mb-12 md:mb-24 flex flex-col items-center md:items-start text-center md:text-left relative">
+        <div style={`--theme-hex: #00E1FD; --theme-rgb: 0,225,253;`} class="mb-10 md:mb-16 flex flex-col items-center md:items-start text-center md:text-left relative z-10">
             <div class="absolute -top-10 md:-top-20 -left-10 md:-left-20 w-64 md:w-96 h-64 md:h-96 bg-purple-500/20 blur-[100px] md:blur-[150px] -z-10"></div>
-            <h2 class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] md:tracking-[0.8em] text-cyan-400 mb-4">Ready to Play?</h2>
-            <h1 class="text-5xl md:text-7xl lg:text-9xl font-black italic text-white uppercase tracking-tighter leading-none">
-                CURRENT <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 pr-4 md:pr-10">MODE</span>
+            
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-px w-8 transition-colors duration-700" style="background: var(--theme-hex);"></div>
+                <span class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] sm:tracking-[0.6em] transition-colors duration-700" style="color: var(--theme-hex);">READY TO PLAY</span>
+                <div class="h-px w-8 transition-colors duration-700" style="background: var(--theme-hex);"></div>
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-black italic text-white uppercase tracking-tighter leading-none">
+                CURRENT <span class="neon-text-animated pr-4 md:pr-10" style={`background-image: ${modesGradient}; filter: drop-shadow(0 0 20px rgba(0,225,253,0.3));`}>MODE</span>
             </h1>
         </div>
 
-        {/* AKTUALNY TRYB - BUFOR DLA GLOW (-m-12 p-12) */}
-        <section class="relative group -m-4 md:-m-12 p-4 md:p-12">
-            {/* Zewnętrzna poświata - teraz ma miejsce żeby się rozmyć */}
-            <div class="absolute -inset-2 md:-inset-4 bg-gradient-to-r from-pink-500/20 to-purple-600/20 blur-[60px] md:blur-[120px] rounded-[4rem] opacity-50 group-hover:opacity-100 transition-opacity duration-1000"></div>
-
-            <div class="relative min-h-[400px] md:min-h-[500px] flex items-center bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-pink-500/30 rounded-[2.5rem] md:rounded-[3.5rem] p-6 md:p-16 overflow-hidden shadow-[0_0_60px_rgba(236,72,153,0.2)] hover:shadow-[0_0_100px_rgba(236,72_153,0.4)] transition-all duration-500">
-                <div class="flex flex-col lg:flex-row items-center gap-10 md:gap-16 w-full text-center lg:text-left">
-
-                    {/* IKONA TRYBU */}
-                    <div class="relative shrink-0">
-                        <div class="w-48 h-48 md:w-64 md:h-64 bg-gradient-to-br from-pink-500/20 to-purple-600/20 border border-pink-500/30 rounded-[2.5rem] md:rounded-[3rem] flex items-center justify-center text-6xl md:text-8xl shadow-[0_0_50px_rgba(236,72,153,0.3)] rotate-3 group-hover:rotate-6 transition-transform duration-700 backdrop-blur-md">
-                            🎨
-                            <div class="absolute -bottom-2 -right-2 md:-bottom-4 md:-right-4 bg-white text-black px-3 py-1.5 md:px-4 md:py-2 rounded-lg md:rounded-xl text-[8px] md:text-xs font-black uppercase tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-                                BETA
-                            </div>
+        {/* AKTUALNY TRYB */}
+        <section class="mb-16 md:mb-24">
+            <div style={`--mode-hex: ${activeHex}; --mode-rgb: ${activeRgb};`} class:list={[
+                "group relative p-6 md:p-14 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl transition-all duration-700 flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-16 bg-gradient-to-br from-white/5 to-white/[0.02]",
+                "border-[rgba(var(--mode-rgb),0.3)] hover:border-[rgba(var(--mode-rgb),0.6)]",
+                "shadow-[0_0_50px_rgba(var(--mode-rgb),0.3)] hover:shadow-[0_0_80px_rgba(var(--mode-rgb),0.45)]"
+            ]}>
+                
+                {/* Bloom */}
+                <div class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15" style={`background-image: ${pulseDiag};`}></div>
+                
+                {/* IKONA */}
+                <div class="relative shrink-0 mt-2 md:mt-0">
+                    <div class:list={[
+                        "w-24 h-24 md:w-32 md:h-32 rounded-[2rem] md:rounded-[2.5rem] border border-white/10 flex items-center justify-center text-4xl md:text-6xl shadow-2xl transition-all duration-500 ease-out",
+                        "group-hover:scale-110 group-hover:border-[rgba(var(--mode-rgb),0.5)] group-hover:shadow-[0_0_40px_rgba(var(--mode-rgb),0.4)]",
+                        "bg-white/5 rotate-3 group-hover:rotate-6"
+                    ]}>
+                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl flex items-center justify-center text-3xl md:text-5xl transition-all duration-500"
+                             style={`background: linear-gradient(135deg, rgba(var(--mode-rgb),0.08), rgba(124,58,237,0.04)); box-shadow: 0 0 28px rgba(var(--mode-rgb),0.18), inset 0 0 6px rgba(var(--mode-rgb),0.06); border: 1px solid rgba(var(--mode-rgb),0.15);`}>
+                            <span class="transform-gpu" aria-hidden="true">🎨</span>
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 md:-bottom-4 md:-right-4 bg-white text-black px-3 py-1.5 md:px-4 md:py-2 rounded-lg md:rounded-xl text-[8px] md:text-xs font-black uppercase tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                            BETA
                         </div>
                     </div>
+                </div>
 
-                    {/* TREŚĆ */}
-                    <div class="flex-grow w-full">
-                        <div class="flex items-center justify-center lg:justify-start gap-3 md:gap-4 mb-4 md:mb-6">
-                            <span class="text-orange-400 font-black text-[9px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] drop-shadow-[0_0_10px_rgba(251,146,60,0.5)]">Version 1.21.1+</span>
-                            <div class="w-1.5 h-1.5 bg-white/20 rounded-full"></div>
-                            <span class="text-white/40 font-black text-[9px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em]">PVP / Minigame</span>
-                        </div>
+                {/* TREŚĆ */}
+                <div class="flex-grow w-full text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-4 mb-6 md:mb-10">
+                        <span class="text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 md:py-3 md:px-6 rounded-xl border border-white/10 shadow-2xl"
+                              style={`color: var(--mode-hex); background: rgba(var(--mode-rgb), 0.08); box-shadow: inset 0 0 0 1px rgba(var(--mode-rgb),0.25);`}>
+                            VERSION 1.21.1+
+                        </span>
+                        <div class="w-1.5 h-1.5 bg-white/20 rounded-full"></div>
+                        <span class="text-white/40 font-black text-[9px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.3em]">PVP / Minigame</span>
+                    </div>
 
-                        <h2 class="text-4xl md:text-6xl lg:text-8xl font-black italic text-white uppercase tracking-tighter leading-none mb-6 md:mb-8">
-                            COLOR <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 pr-2 md:pr-6">CLASH</span>
-                        </h2>
+                    <h2 class="text-4xl md:text-6xl lg:text-8xl font-black italic uppercase tracking-tighter mb-6 md:mb-8 leading-none neon-text-animated"
+                        style={`background-image: ${btnGradientActive}; filter: drop-shadow(0 0 20px rgba(var(--mode-rgb),0.35));`}>
+                        COLOR CLASH
+                    </h2>
 
-                        <p class="text-white/60 text-sm md:text-lg leading-relaxed max-w-2xl mb-8 md:mb-12 font-medium italic border-l-2 md:border-l-4 border-white/10 pl-4 md:pl-6 text-left mx-auto lg:mx-0 line-clamp-4 md:line-clamp-none">
-                            Paint the arena in your team's colors, eliminate opponents, and seize control of strategic points. The most dynamic mode of the season!
-                        </p>
+                    <p class="text-white/60 text-[13px] md:text-xl font-medium italic border-l-4 border-white/10 pl-6 md:pl-10 leading-snug md:leading-relaxed mb-8 md:mb-12 max-w-2xl mx-auto md:mx-0">
+                        Paint the arena in your team's colors, eliminate opponents, and seize control of strategic points. The most dynamic mode of the season!
+                    </p>
 
-                        <div class="flex">
-                            <a
-                                    href="/modes/color-clash"
-                                    class="w-full lg:w-auto flex items-center justify-center px-10 py-4 bg-white text-black font-black uppercase text-[10px] md:text-xs tracking-widest rounded-xl md:rounded-2xl hover:scale-105 hover:bg-pink-500 hover:text-white transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(236,72,153,0.5)]"
-                            >
-                                Explore Mode
-                            </a>
-                        </div>
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <a href="/modes/color-clash" 
+                           class="w-full md:w-auto text-center px-8 md:px-10 py-4 text-white font-black uppercase text-[10px] md:text-xs tracking-widest rounded-2xl transition-all duration-300 hover:scale-110" 
+                           style={`background: var(--mode-hex); box-shadow: 0 0 20px rgba(var(--mode-rgb),0.45), 0 0 40px rgba(var(--mode-rgb),0.15);`}>
+                            Explore Mode
+                        </a>
                     </div>
                 </div>
             </div>
@@ -69,35 +101,53 @@ import Layout from '../../src/layouts/Layout.astro';
             <div class="h-[1px] w-16 md:w-32 bg-gradient-to-l from-transparent to-white/10"></div>
         </div>
 
-        {/* COMING SOON CARD - Zwiększony margines dla glow */}
-        <section class="relative -m-4 md:-m-12 p-4 md:p-12 opacity-80 hover:opacity-100 transition-opacity duration-700">
-            <div class="relative bg-gradient-to-br from-white/5 to-white/[0.01] backdrop-blur-3xl border border-cyan-500/20 rounded-[2.5rem] md:rounded-[3.5rem] p-6 md:p-12 overflow-hidden group hover:border-cyan-500/40 hover:shadow-[0_0_60px_rgba(6,182,212,0.15)] transition-all duration-500">
-
-                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent opacity-50"></div>
-
-                <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-10 text-center md:text-left">
-                    <div class="flex flex-col md:flex-row items-center gap-6 md:gap-10">
-
-                        {/* IKONA Z POPRAWIONYM OBROTEM: rotate-6 (w prawo, połowa wcześniejszej siły) */}
-                        <div class="w-24 h-24 md:w-32 md:h-32 bg-cyan-500/10 border border-cyan-500/20 rounded-[1.5rem] md:rounded-3xl flex items-center justify-center text-4xl md:text-5xl grayscale group-hover:grayscale-0 transition-all duration-700 shadow-lg shadow-cyan-500/10 group-hover:rotate-6 group-hover:scale-105">
-                            🏎️
-                        </div>
-
-                        <div>
-                            <div class="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-cyan-400/10 border border-cyan-400/20 rounded-xl text-[8px] md:text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-2 md:mb-3 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
-                                COMING SOON // FUTURE
-                            </div>
-                            <h3 class="text-3xl md:text-5xl font-black italic text-white uppercase tracking-tighter leading-none">
-                                ROCKY <span class="text-cyan-400 pr-2">RACEWAY</span>
-                            </h3>
-                            <p class="text-white/40 text-xs md:text-sm italic mt-2 font-medium max-w-sm">
-                                Extreme block-physics racing. Coming soon.
-                            </p>
+        {/* COMING SOON CARD */}
+        <section class="opacity-80 hover:opacity-100 transition-opacity duration-700">
+            <div style={`--mode-hex: ${upcomingHex}; --mode-rgb: ${upcomingRgb};`} class:list={[
+                "group relative p-6 md:p-14 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl transition-all duration-700 flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-16 bg-gradient-to-br from-white/5 to-white/[0.02]",
+                "border-[rgba(var(--mode-rgb),0.3)] hover:border-[rgba(var(--mode-rgb),0.6)]",
+                "shadow-[0_0_50px_rgba(var(--mode-rgb),0.3)] hover:shadow-[0_0_80px_rgba(var(--mode-rgb),0.45)]"
+            ]}>
+                
+                {/* Bloom */}
+                <div class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15" style={`background-image: ${pulsarDiag}; animation-delay: 2s;`}></div>
+                
+                {/* IKONA */}
+                <div class="relative shrink-0 mt-2 md:mt-0">
+                    <div class:list={[
+                        "w-24 h-24 md:w-32 md:h-32 rounded-[2rem] md:rounded-[2.5rem] border border-white/10 flex items-center justify-center text-4xl md:text-6xl shadow-2xl transition-all duration-500 ease-out",
+                        "group-hover:scale-110 group-hover:border-[rgba(var(--mode-rgb),0.5)] group-hover:shadow-[0_0_40px_rgba(var(--mode-rgb),0.4)]",
+                        "bg-black/20 grayscale group-hover:grayscale-0 group-hover:rotate-6"
+                    ]}>
+                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl flex items-center justify-center text-3xl md:text-5xl transition-all duration-500"
+                             style={`background: linear-gradient(135deg, rgba(var(--mode-rgb),0.08), rgba(124,58,237,0.04)); box-shadow: 0 0 28px rgba(var(--mode-rgb),0.18), inset 0 0 6px rgba(var(--mode-rgb),0.06); border: 1px solid rgba(var(--mode-rgb),0.15);`}>
+                            <span class="transform-gpu" aria-hidden="true">🏎️</span>
                         </div>
                     </div>
+                </div>
 
-                    <div class="w-full md:w-auto flex items-center justify-center px-8 py-4 bg-white/5 border border-white/10 rounded-xl md:rounded-2xl text-white/20 font-black text-[10px] md:text-xs uppercase tracking-widest italic cursor-not-allowed">
-                        Coming Soon...
+                {/* TREŚĆ */}
+                <div class="flex-grow w-full text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-4 mb-6 md:mb-10">
+                        <span class="text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 md:py-3 md:px-6 rounded-xl border border-white/10 shadow-2xl"
+                              style={`color: var(--mode-hex); background: rgba(var(--mode-rgb), 0.08); box-shadow: inset 0 0 0 1px rgba(var(--mode-rgb),0.25);`}>
+                            FUTURE UPDATE
+                        </span>
+                    </div>
+
+                    <h2 class="text-4xl md:text-6xl lg:text-8xl font-black italic uppercase tracking-tighter mb-6 md:mb-8 leading-none neon-text-animated opacity-40 group-hover:opacity-100 transition-opacity duration-700"
+                        style={`background-image: ${btnGradientUpcoming}; filter: drop-shadow(0 0 20px rgba(var(--mode-rgb),0.35));`}>
+                        ROCKY RACEWAY
+                    </h2>
+
+                    <p class="text-white/60 text-[13px] md:text-xl font-medium italic border-l-4 border-white/10 pl-6 md:pl-10 leading-snug md:leading-relaxed mb-8 md:mb-12 max-w-2xl mx-auto md:mx-0">
+                        Extreme block-physics racing. Coming soon.
+                    </p>
+
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        <div class="w-full md:w-auto text-center px-8 md:px-10 py-4 bg-white/5 border border-white/10 rounded-2xl text-white/20 font-black uppercase text-[10px] md:text-xs tracking-widest italic cursor-not-allowed">
+                            Coming Soon...
+                        </div>
                     </div>
                 </div>
             </div>

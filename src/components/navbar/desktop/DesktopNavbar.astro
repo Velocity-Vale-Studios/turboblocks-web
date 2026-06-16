@@ -13,7 +13,7 @@ interface Props {
 const { config, currentPath } = Astro.props;
 
 const animClasses = "transition-all duration-300 hover:scale-105 active:scale-95 transform-gpu";
-const shopGradient = gradients.fuchsia_pulse.cssNeon;
+const purpleGradient = "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:shadow-[0_0_30px_rgba(236,72,153,0.6)]";
 ---
 
 <header class="hidden lg:block fixed top-4 left-0 right-0 mx-auto w-[94%] max-w-7xl z-50 bg-white/[0.02] backdrop-blur-2xl border border-white/10 py-4 rounded-[2rem]"
@@ -29,8 +29,7 @@ const shopGradient = gradients.fuchsia_pulse.cssNeon;
 
         <div class="flex items-center gap-1.5 sm:gap-4">
             <a href={config.shop.href} aria-label="Open shop page"
-               class={`relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 lg:w-auto lg:px-6 rounded-2xl text-white overflow-hidden group ${animClasses}`}
-               style={`background: ${shopGradient}; box-shadow: 0 0 20px rgba(255,0,204,0.35), 0 0 40px rgba(255,0,204,0.12);`}
+               class={`relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 lg:w-auto lg:px-6 rounded-2xl text-white overflow-hidden group ${purpleGradient} ${animClasses}`}
             >
                 <div class="absolute inset-0 rounded-2xl bg-white/0 group-hover:bg-white/10 transition-colors duration-300 pointer-events-none"></div>
                 <svg class="relative z-10 w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

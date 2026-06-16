@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import { gradients } from 'src/components/gradients.js';
 
 // Pobieramy wszystkie posty z folderu content/blog
 const allPosts = await getCollection('blog');
@@ -11,107 +12,88 @@ const posts = allPosts.map(post => ({
     url: `/blog/${post.slug}` // URL tworzy się automatycznie z nazwy pliku .md
 }));
 
-// Logika wyboru featured pozostaje bez zmian
-const featuredPost = posts.find(p => p.featured);
-const otherPosts = posts.filter(p => !p.featured);
+// Sortuj po datach (opcjonalnie, zależy od potrzeb) albo użyj jak leci
+const headerGradient = gradients.aurora.cssAnimated;
+const modesBlobL     = gradients.fuchsia_pulse.cssNeon;
+const modesBlobR     = gradients.aurora.cssNeon;
 ---
 <Layout title="Insides">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-28 sm:pt-32 pb-16 md:pt-48 md:pb-32 relative">
+    <section class="max-w-7xl mx-auto px-8 py-16 md:py-24 relative mt-16 md:mt-24">
+        
+        {/* Background Ambient Glows */}
+        <div class="absolute top-1/4 -left-10 w-[200px] md:w-[500px] h-[200px] md:h-[500px] blur-[80px] md:blur-[130px] -z-10 pointer-events-none neon-bg-animated opacity-20" style={`background: ${modesBlobL};`}></div>
+        <div class="absolute bottom-1/4 -right-10 w-[200px] md:w-[500px] h-[200px] md:h-[500px] blur-[80px] md:blur-[130px] -z-10 pointer-events-none neon-bg-animated opacity-15" style={`background: ${modesBlobR}; animation-delay: 2s;`}></div>
 
-        <div class="mb-12 md:mb-24 flex flex-col items-center md:items-start text-center md:text-left relative">
-            <div class="absolute -top-10 md:-top-20 -left-10 md:-left-20 w-64 md:w-96 h-64 md:h-96 bg-purple-500/20 blur-[100px] md:blur-[150px] -z-10"></div>
-            <h2 class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] md:tracking-[0.8em] text-cyan-400 mb-4">Devlog & News</h2>
-            <h1 class="text-5xl md:text-7xl lg:text-9xl font-black italic text-white uppercase tracking-tighter leading-none">
-                INSIDES <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400 pr-4 md:pr-8">FEED</span>
-            </h1>
+        {/* HEADER */}
+        <div style="--team-hex: #22d3ee; --team-rgb: 34,211,238;" class="mb-10 md:mb-16 flex flex-col items-center md:items-start text-center md:text-left relative z-10">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-px w-8 transition-colors duration-700 header-left-line" style="background: var(--team-hex);"></div>
+                <span class="text-[9px] font-black uppercase tracking-[0.6em] header-label transition-colors duration-700" style="color: var(--team-hex);">DEVLOG & NEWS</span>
+                <div class="h-px w-8 transition-colors duration-700 header-right-line" style="background: var(--team-hex);"></div>
+            </div>
+            <h3 class="text-4xl sm:text-5xl md:text-7xl font-black italic text-white uppercase tracking-tighter leading-none">
+                INSIDES <span class="neon-text-animated pr-4 header-crew" style={`background-image: ${headerGradient}; filter: drop-shadow(0 0 20px rgba(34,211,238,0.3));`}>FEED</span>
+            </h3>
         </div>
 
-        {featuredPost && (
-                <div class="mb-16 md:mb-32">
-                    <div class="-m-4 md:-m-12 p-4 md:p-12">
-                        <article class={`group relative w-full rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl transition-all duration-700 ${featuredPost.borderColorClass} ${featuredPost.glowClass} flex flex-col overflow-hidden`}>
+        {/* POSTS GRID */}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-4 items-stretch relative z-10">
+            {posts.map((post) => (
+                <div class={`m-0 md:-m-12 p-0 md:p-12 ${post.featured ? 'lg:col-span-2' : ''}`}>
+                    <div class:list={[
+                        "group relative p-6 md:p-14 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl transition-all duration-700 flex flex-col h-full bg-gradient-to-br from-white/5 to-white/[0.02]",
+                        post.borderColorClass, post.glowClass
+                    ]}>
+                        
+                        {/* Bloom i tła */}
+                        <div class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15 group-hover:opacity-25" style="background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));" class:list={[post.gradient]}></div>
 
-                            <div class="absolute inset-0 pointer-events-none">
-                                <div class={`absolute inset-0 bg-gradient-to-br ${featuredPost.gradient} opacity-20 group-hover:opacity-40 transition-opacity duration-700`}></div>
-                                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/70 to-[#0a0a0a]"></div>
-                                <div class="absolute -top-10 -right-10 text-[250px] md:text-[500px] opacity-10 rotate-12 group-hover:rotate-6 transition-all duration-1000 select-none">
-                                    {featuredPost.icon}
-                                </div>
-                            </div>
-
-                            <div class="relative p-8 md:p-20 z-10">
-                                <div class="flex items-center gap-4 mb-8 md:mb-16">
-                                <span class={`px-4 py-2 rounded-xl border backdrop-blur-md text-[9px] md:text-xs font-black tracking-[0.3em] uppercase ${featuredPost.bgAccent} ${featuredPost.borderAccent} ${featuredPost.accent}`}>
-                                    {featuredPost.tag}
-                                </span>
-                                    <span class="text-[10px] md:text-xs font-bold text-white/60 uppercase tracking-widest">{featuredPost.date}</span>
-                                </div>
-
-                                <h2 class="text-4xl md:text-7xl lg:text-8xl font-black italic text-white uppercase tracking-tighter mb-8 md:mb-12 leading-[0.85] max-w-5xl">
-                                    {featuredPost.title}
-                                </h2>
-
-                                <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-10">
-                                    <p class="text-white/70 text-sm md:text-xl lg:text-2xl leading-relaxed max-w-3xl font-medium border-l-4 border-white/20 pl-6 md:pl-10">
-                                        {featuredPost.desc}
-                                    </p>
-
-                                    <a href={featuredPost.url} class={`w-full md:w-auto shrink-0 flex items-center justify-center px-8 md:px-10 py-4 bg-white text-black font-black uppercase text-[10px] md:text-xs tracking-widest rounded-xl md:rounded-2xl transition-all duration-500 hover:scale-105 ${featuredPost.btnHoverAccent} ${featuredPost.shadowAccent} hover:text-white`}>
-                                        READ MORE
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-        )}
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            {otherPosts.map(post => (
-                    <div class="h-full"> {/* Usunięto ujemne marginesy, które mogły psuć box-sizing */}
-                        <article class={`group relative p-8 md:p-12 h-full rounded-[2rem] md:rounded-[3.5rem] bg-gradient-to-br from-white/5 to-white/[0.02] border backdrop-blur-3xl transition-all duration-500 ${post.borderColorClass} ${post.glowClass} flex flex-col`}>
-
-                            <div class="absolute inset-0 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden pointer-events-none -z-10">
-                                <div class={`absolute -top-10 -right-10 md:-top-20 md:-right-20 w-48 md:w-80 h-48 md:h-80 bg-gradient-to-br ${post.gradient} blur-[60px] md:blur-[100px] opacity-20 group-hover:opacity-40 transition-opacity duration-500`}></div>
-                            </div>
-
-                            {/* GÓRA: Ikona i Tag obok siebie */}
-                            <div class="flex flex-wrap justify-between items-start gap-4 mb-8">
-                                <div class="flex items-center gap-4">
-                                    <div class={`w-12 h-12 md:w-16 md:h-16 rounded-xl border ${post.borderAccent} ${post.bgAccent} flex items-center justify-center text-xl md:text-3xl shadow-lg shrink-0`}>
-                                        {post.icon}
+                        <div class="relative z-10 flex flex-col h-full">
+                            
+                            {/* TOP ROW: Icon Box + Tag */}
+                            <div class="flex justify-between items-start mb-6 md:mb-14">
+                                
+                                <div class:list={[
+                                    "w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] border flex items-center justify-center text-3xl md:text-5xl shadow-2xl transition-all duration-500 ease-out",
+                                    "group-hover:scale-110 group-hover:border-current group-hover:shadow-current", post.borderAccent, post.bgAccent, post.accent
+                                ]}>
+                                    <div class="w-10 h-10 md:w-16 md:h-16 rounded-xl flex items-center justify-center text-2xl md:text-4xl transition-all duration-500 bg-white/5 border border-white/10 shadow-inner group-hover:border-current group-hover:shadow-[inset_0_0_15px_currentColor]">
+                                        <span class="transform-gpu group-hover:animate-pulse text-white" aria-hidden="true">{post.icon}</span>
                                     </div>
-                                    <span class={`px-3 py-1.5 rounded-lg border backdrop-blur-md text-[8px] md:text-[9px] font-black tracking-[0.2em] uppercase ${post.bgAccent} ${post.borderAccent} ${post.accent} whitespace-nowrap`}>
-                            {post.tag}
-                        </span>
                                 </div>
-                                <span class="text-[8px] md:text-[10px] font-bold text-white/30 uppercase tracking-widest pt-1">
-                        {post.date}
-                    </span>
+
+                                <span class={`text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 md:py-3 md:px-6 rounded-xl border shadow-2xl ${post.accent} ${post.bgAccent} ${post.borderAccent}`}>
+                                    {post.tag}
+                                </span>
                             </div>
 
-                            {/* TYTUŁ */}
-                            <h3 class={`text-2xl md:text-4xl font-black italic text-white uppercase tracking-tighter leading-tight mb-4 transition-colors duration-300 ${post.textHoverAccent}`}>
+                            {/* TITLE */}
+                            <h4 class={`text-3xl md:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter mb-4 md:mb-8 leading-none neon-text-animated transition-colors duration-300 group-hover:text-transparent ${post.textHoverAccent}`}>
                                 {post.title}
-                            </h3>
+                            </h4>
 
-                            {/* OPIS: KLUCZOWA ZMIANA - usunięto line-clamp-3 i dodano flex-grow */}
-                            <p class="text-white/40 text-xs md:text-sm leading-relaxed mb-8 flex-grow font-medium">
+                            {/* DESCRIPTION */}
+                            <p class={`text-white/60 text-[13px] md:text-xl font-medium italic border-l-4 border-white/10 pl-6 md:pl-10 leading-snug md:leading-relaxed mb-6 md:mb-16 flex-grow ${post.featured ? 'max-w-4xl' : ''}`}>
                                 {post.desc}
                             </p>
 
-                            {/* PRZYCISK */}
-                            <div class="mt-auto pt-4">
-                                <a href={post.url} class={`inline-flex items-center gap-3 text-[9px] md:text-[11px] font-black uppercase tracking-widest text-white transition-colors ${post.textHoverAccent}`}>
-                                    <span class="border-b border-white/20 pb-1 group-hover:border-current transition-colors">Read article</span>
-                                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                    </svg>
+                            {/* FOOTER */}
+                            <div class="mt-auto flex flex-row md:flex-wrap items-center gap-3 md:gap-4">
+                                <a href={post.url} class={`flex-[2] md:flex-none text-center px-4 md:px-8 py-3.5 md:py-4 text-white font-black uppercase text-[10px] md:text-xs tracking-widest rounded-2xl transition-all duration-300 hover:scale-110 bg-white/5 border border-white/10 hover:text-white hover:border-transparent ${post.btnHoverAccent} ${post.shadowAccent}`}>
+                                    READ ARTICLE
                                 </a>
+                                
+                                <div class="flex-1 md:flex-none flex items-center justify-center px-3 md:px-5 py-3.5 md:py-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+                                    <div class="w-2 h-2 rounded-full mr-2 md:mr-3 border border-white/30 bg-white/10"></div>
+                                    <span class="text-white/60 font-black text-[9px] md:text-xs uppercase tracking-widest whitespace-nowrap">
+                                        {post.date}
+                                    </span>
+                                </div>
                             </div>
-                        </article>
+                        </div>
                     </div>
+                </div>
             ))}
         </div>
-    </div>
+    </section>
 </Layout>

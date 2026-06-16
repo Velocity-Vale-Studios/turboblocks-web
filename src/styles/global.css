@@ -23,6 +23,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: gradientShimmer 4s ease infinite;
+    padding-right: 0.25em;
 }
 
 /* Animated gradient on backgrounds — left-to-right slide */

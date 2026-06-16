@@ -7,57 +7,58 @@ const racingNumber = String(memberIndex + 1).padStart(2, '0');
 
 ---
 
-<div id="info-window" class={`lg:col-span-7 bg-gradient-to-br from-white/5 to-white/[0.02] border ${active.borderColorClass} rounded-[2rem] lg:rounded-[3.5rem] p-6 lg:p-12 backdrop-blur-3xl flex flex-col justify-center relative overflow-hidden group ${active.glowClass} transition-all duration-700`}>
+<div id="info-window" class={`lg:col-span-7 bg-gradient-to-br from-white/5 to-white/[0.02] border-[rgba(var(--team-rgb,${active.rgb}),0.3)] hover:border-[rgba(var(--team-rgb,${active.rgb}),0.6)] shadow-[0_0_50px_rgba(var(--team-rgb,${active.rgb}),0.3)] hover:shadow-[0_0_80px_rgba(var(--team-rgb,${active.rgb}),0.45)] rounded-[2.5rem] lg:rounded-[4rem] p-6 lg:p-14 backdrop-blur-3xl flex flex-col justify-center relative group transition-all duration-700`}>
 
-    <!-- Bloom -->
-    <div class="absolute -inset-[60px] rounded-[3.5rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000"
-         style={`background-image: var(--bg-gradient-${active.gradient}-diag); opacity: 0.15;`}></div>
+    <!-- Bloom (ModeCard style) -->
+    <div class="absolute -inset-[60px] rounded-[2.5rem] lg:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15"
+         style={`background-image: var(--bg-gradient-${active.gradient}-diag);`}></div>
 
-    <!-- Ambient glow blob -->
-    <div id="ambient-glow" class={`absolute -top-24 -right-24 w-96 h-96 bg-gradient-${active.gradient}-diag blur-[100px] opacity-20 transition-all duration-1000 pointer-events-none`}></div>
-
-    <!-- Racing stripe lewy bok -->
-    <div id="left-stripe" class="absolute left-0 top-0 bottom-0 w-1 lg:w-1.5 rounded-l-[2rem] lg:rounded-l-[3.5rem] transition-all duration-700" style={`background: linear-gradient(to bottom, var(--team-hex, ${active.hex}), transparent, var(--team-hex, ${active.hex})); opacity: 0.7;`}></div>
-
-    <!-- Gigantyczny numer wyścigowy -->
-    <div id="m-number" class="absolute -bottom-4 -right-2 lg:-right-4 text-[120px] lg:text-[180px] font-black italic leading-none pointer-events-none select-none transition-all duration-700" style={`color: rgba(var(--team-rgb, ${active.rgb}), 0.07); line-height: 1;`}>
+    <!-- Tło ze zgaszonym numerem -->
+    <div id="m-number" class="absolute -bottom-4 -right-2 lg:-right-4 text-[120px] lg:text-[180px] font-black italic leading-none pointer-events-none select-none transition-all duration-700 opacity-20" style={`color: rgba(var(--team-rgb, ${active.rgb}), 0.1); line-height: 1;`}>
         {racingNumber}
     </div>
 
-    <!-- Scanlines wewnątrz karty -->
-    <div class="absolute inset-0 rounded-[2rem] lg:rounded-[3.5rem] pointer-events-none opacity-[0.03]" style="background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,1) 3px, rgba(255,255,255,1) 4px);"></div>
-
-    <!-- Arcade badge górny lewy -->
-        <div class="absolute top-5 lg:top-10 left-6 lg:left-12 flex items-center gap-2">
-        <div id="arcade-dot" class="w-1.5 h-1.5 rounded-full animate-pulse transition-all duration-700" style={`background: var(--team-hex, ${active.hex}); box-shadow: 0 0 6px var(--team-hex, ${active.hex});`}></div>
-        <span id="arcade-label" class="text-[8px] lg:text-[9px] font-black uppercase tracking-[0.3em] text-white/30 transition-colors duration-700">PLAYER PROFILE</span>
-    </div>
-
     <!-- Główna treść -->
-    <div id="text-anim-target" class="mt-12 lg:mt-6 mb-6 lg:mb-8 relative z-10 slide-anim">
-
-        <!-- Rola racing style -->
-            <div class="flex items-center gap-3 mb-3">
-            <div id="m-line" class="h-px w-5 transition-colors duration-700" style={`background: var(--team-hex, ${active.hex});`}></div>
-            <p id="m-role" class="font-black text-[9px] lg:text-[11px] uppercase tracking-[0.4em] transition-colors duration-700" style={`color: var(--team-hex, ${active.hex});`}>{active.role}</p>
+    <div class="relative z-10 flex flex-col h-full">
+        <div class="flex justify-between items-start mb-6 lg:mb-8">
+            
+            <div class="flex items-center gap-2">
+                <div id="arcade-dot" class="w-2 h-2 rounded-full animate-pulse transition-all duration-700" style={`background: var(--team-hex, ${active.hex}); box-shadow: 0 0 10px var(--team-hex, ${active.hex});`}></div>
+                <span id="arcade-label" class="text-[9px] lg:text-[11px] font-black uppercase tracking-[0.3em] transition-colors duration-700 text-white/50">PLAYER PROFILE</span>
+            </div>
+            
+            <!-- Rola jako ModeCard Pill badge -->
+            <span id="m-role" class="text-[9px] lg:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 lg:py-3 lg:px-6 rounded-xl border border-white/10 shadow-2xl transition-colors duration-700"
+                  style={`color: var(--team-hex, ${active.hex}); background: rgba(var(--team-rgb, ${active.rgb}), 0.08); box-shadow: inset 0 0 0 1px rgba(var(--team-rgb, ${active.rgb}),0.25);`}
+            >
+                {active.role}
+            </span>
         </div>
 
-        <!-- Nazwa gracza -->
-        <h5 id="m-name" class="text-4xl lg:text-6xl font-black text-white uppercase italic tracking-tighter mb-6 lg:mb-8 leading-none">{active.name}</h5>
+        <!-- Animating wrapper -->
+        <div id="text-anim-target" class="slide-anim flex-grow">
+            <!-- Nazwa gracza -->
+            <h4 id="m-name" class="text-3xl lg:text-4xl xl:text-5xl font-black text-white uppercase italic tracking-tighter mb-4 lg:mb-6 leading-none transition-colors duration-700 truncate"
+                style={`filter: drop-shadow(0 0 20px rgba(var(--team-rgb, ${active.rgb}),0.35));`}>
+                {active.name}
+            </h4>
 
-        <!-- Cytat -->
-        <div class="min-h-[5rem] lg:min-h-[6rem] flex items-start">
-            <div class="flex gap-4 lg:gap-5 items-stretch">
-                <div id="v-line-1" class="w-1 lg:w-1.5 rounded-full flex-shrink-0 min-h-full transition-all duration-700" style={`background: linear-gradient(to bottom, var(--team-hex, ${active.hex}), transparent);`}></div>
-                <p id="m-quote" class="text-white/50 text-sm lg:text-base font-medium italic max-w-lg leading-relaxed line-clamp-4 lg:line-clamp-7">
-                    {active.quote}
-                </p>
-            </div>
+            <!-- Cytat z lewym borderem w stylu ModeCard -->
+            <p id="m-quote" class="text-white/60 text-[13px] lg:text-lg font-medium italic border-l-4 pl-5 lg:pl-8 leading-snug lg:leading-relaxed mb-6 lg:mb-10 transition-colors duration-700 min-h-[5rem] lg:min-h-[6rem]"
+               style={`border-color: rgba(var(--team-rgb, ${active.rgb}), 0.5);`}>
+                {active.quote}
+            </p>
+        </div>
+
+        <div class="mt-auto">
+            <TeamNav team={team} active={active} />
         </div>
     </div>
 
-    <!-- Ukryty element dla JS kompatybilności -->
+    <!-- Ukryte elementy dla kompatybilności wstecznej ze skryptem js -->
+    <div id="v-line-1" class="hidden"></div>
     <div id="v-line-2" class="hidden"></div>
-
-    <TeamNav team={team} active={active} />
+    <div id="m-line" class="hidden"></div>
+    <div id="ambient-glow" class="hidden"></div>
+    <div id="left-stripe" class="hidden"></div>
 </div>
