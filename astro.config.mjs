@@ -22,10 +22,10 @@ export default defineConfig({
         unocss(),
         ],
     server: {
-      allowedHosts: ['turboblocks.eu', 'www.turboblocks.eu', '.turboblocks.eu', 'all']
+      allowedHosts: ['turboblocks.eu', 'www.turboblocks.eu', '.turboblocks.eu']
     },
     preview: {
-      allowedHosts: ['turboblocks.eu', 'www.turboblocks.eu', '.turboblocks.eu', 'all']
+      allowedHosts: ['turboblocks.eu', 'www.turboblocks.eu', '.turboblocks.eu']
     }
   }
 });

@@ -1,9 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
 ---
 
 <Layout title="Checkout — TurboShop">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pt-28 sm:pt-32 pb-24 md:pb-48 relative min-h-screen">
+    <div id="checkout-app" class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pt-28 sm:pt-32 pb-24 md:pb-48 relative min-h-screen" data-api-url={apiUrl}>
 
         {/* Ambient glow */}
         <div class="fixed inset-0 -z-10 pointer-events-none">
@@ -92,7 +93,7 @@ import Layout from '../layouts/Layout.astro';
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-white/50 font-medium italic">Zniżka</span>
-                            <span class="text-sm font-black text-green-400">-0 TC</span>
+                            <span id="ck-discount-amount" class="text-sm font-black text-green-400">-0 TC</span>
                         </div>
                         <div class="h-[1px] bg-white/10"></div>
                         <div class="flex justify-between items-center pt-2">
@@ -107,8 +108,8 @@ import Layout from '../layouts/Layout.astro';
 
                     {/* Discount code */}
                     <div class="flex gap-2">
-                        <input type="text" aria-label="Kod zniżkowy" placeholder="Kod zniżkowy" class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-xs font-bold placeholder-white/20 focus:outline-none focus:border-cyan-500/30 transition-colors" />
-                        <button type="button" class="px-5 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black text-white/50 uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all">
+                        <input type="text" id="discount-code-input" aria-label="Kod zniżkowy" placeholder="Kod zniżkowy" class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-xs font-bold placeholder-white/20 focus:outline-none focus:border-cyan-500/30 transition-colors" />
+                        <button type="button" id="apply-discount-btn" class="px-5 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black text-white/50 uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all">
                             OK
                         </button>
                     </div>
@@ -171,6 +172,8 @@ import Layout from '../layouts/Layout.astro';
 <script is:inline>
     const CART_KEY = 'turbo_cart_v1';
     let selectedMethod = null;
+    let activeCreatorCode = null;
+    let activeDiscountPercent = 0;
 
     function getCart() {
         return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
@@ -195,6 +198,7 @@ import Layout from '../layouts/Layout.astro';
         const subtotalPlnEl = document.getElementById('ck-subtotal-pln');
         const totalEl = document.getElementById('ck-total');
         const totalPlnEl = document.getElementById('ck-total-pln');
+        const discountAmountEl = document.getElementById('ck-discount-amount');
         if (!list) return;
 
         const parseTc = (item) => {
@@ -281,6 +285,22 @@ import Layout from '../layouts/Layout.astro';
             list.appendChild(el);
         });
 
+        if (activeDiscountPercent > 0) {
+            const tcDiscount = Math.floor(totalTc * (activeDiscountPercent / 100));
+            const fiatDiscount = totalFiat * (activeDiscountPercent / 100);
+            
+            totalTc -= tcDiscount;
+            totalFiat -= fiatDiscount;
+            
+            if (discountAmountEl) {
+                discountAmountEl.innerText = `-${activeDiscountPercent}% (-${tcDiscount} TC / -${fiatDiscount.toFixed(2)} ${sym})`;
+            }
+        } else {
+            if (discountAmountEl) {
+                discountAmountEl.innerText = '-0 TC';
+            }
+        }
+
         if (subtotalEl) subtotalEl.innerText = totalTc + ' TC';
         if (totalEl) totalEl.innerText = totalTc + ' TC';
         if (subtotalPlnEl) subtotalPlnEl.innerText = totalFiat.toFixed(2) + ' ' + sym;
@@ -343,6 +363,53 @@ import Layout from '../layouts/Layout.astro';
     renderCheckout();
     initPaymentMethods();
 
+    const discountInput = document.getElementById('discount-code-input');
+    const applyDiscountBtn = document.getElementById('apply-discount-btn');
+    if (applyDiscountBtn && discountInput) {
+        applyDiscountBtn.addEventListener('click', async () => {
+            const code = discountInput.value.trim();
+            if (!code) {
+                activeCreatorCode = null;
+                activeDiscountPercent = 0;
+                discountInput.classList.remove('border-green-500', 'border-red-500');
+                renderCheckout();
+                return;
+            }
+            
+            applyDiscountBtn.disabled = true;
+            applyDiscountBtn.innerText = '...';
+
+            const checkoutApp = document.getElementById('checkout-app');
+            const apiUrl = checkoutApp ? checkoutApp.dataset.apiUrl : "http://localhost:8000";
+
+            try {
+                const res = await fetch(`${apiUrl}/creators/codes/validate?code=${code}`);
+                const data = await res.json();
+                
+                if (data.valid) {
+                    activeCreatorCode = code.toUpperCase();
+                    activeDiscountPercent = data.discount;
+                    discountInput.classList.remove('border-red-500');
+                    discountInput.classList.add('border-green-500');
+                    alert(`Zastosowano kod! Otrzymujesz ${data.discount}% zniżki.`);
+                    renderCheckout();
+                } else {
+                    activeCreatorCode = null;
+                    activeDiscountPercent = 0;
+                    discountInput.classList.remove('border-green-500');
+                    discountInput.classList.add('border-red-500');
+                    alert(data.message || 'Kod jest nieprawidłowy.');
+                    renderCheckout();
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                applyDiscountBtn.disabled = false;
+                applyDiscountBtn.innerText = 'OK';
+            }
+        });
+    }
+
     const currencySelect = document.getElementById('checkout-currency');
     if (currencySelect) {
         currencySelect.addEventListener('change', renderCheckout);
@@ -357,8 +424,23 @@ import Layout from '../layouts/Layout.astro';
             payBtn.disabled = true;
             payBtn.innerHTML = '<span>Przetwarzanie...</span>';
 
-            const apiUrl = "http://localhost:8000";
+            // TODO: Ensure server-side price validation is implemented
+            const checkoutApp = document.getElementById('checkout-app');
+            const apiUrl = checkoutApp ? checkoutApp.dataset.apiUrl : "http://localhost:8000";
             const activeCurrency = currencySelect ? currencySelect.value : 'PLN';
+            
+            // SECURITY: Get auth token
+            const getAuthToken = () => {
+                const match = document.cookie.match(/(?:^|;\s*)auth_token=([^;]*)/);
+                return match ? match[1] : null;
+            };
+            const token = getAuthToken();
+            if (!token) {
+                alert("Wymagane logowanie aby dokonać zakupu.");
+                payBtn.disabled = false;
+                payBtn.innerHTML = '<span>Spróbuj ponownie</span>';
+                return;
+            }
             
             const promises = cart.map(item => {
                 let amount = 0;
@@ -378,13 +460,17 @@ import Layout from '../layouts/Layout.astro';
 
                 return fetch(`${apiUrl}/shop/transactions/`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
                     body: JSON.stringify({
-                        player_username: "DemoPlayer", // hardcoded for demo
+                        // player_username: "DemoPlayer", // removed due to auth
                         item_name: item.name,
                         amount: amount,
                         currency: currency,
-                        payment_method: selectedMethod
+                        payment_method: selectedMethod,
+                        creator_code: activeCreatorCode
                     })
                 });
             });

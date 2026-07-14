@@ -1,3 +1,11 @@
-turboblocks.eu, www.turboblocks.eu {
+http://localhost, http://www.localhost {
     reverse_proxy frontend:4321
+}
+
+http://dashboard.localhost, http://www.dashboard.localhost {
+    reverse_proxy dashboard:4321
+}
+
+http://api.localhost {
+    reverse_proxy backend:8000
 }

@@ -88,6 +88,20 @@ const findCollection = (id: string) => shopCollections.find(c => c.id === id) ||
 const featuredCollection = findCollection(shopLayout.featured_collection_id);
 const classicCollection  = findCollection(shopLayout.classic_collection_id);
 
+function hexToRgb(hex: string) {
+    if (!hex) return "255, 255, 255";
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? 
+        `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+        "255, 255, 255";
+}
+
+const featuredThemeColor = featuredCollection?.theme_color || '#ff0044';
+const featuredThemeRgb = hexToRgb(featuredThemeColor);
+
+const classicThemeColor = classicCollection?.theme_color || '#0044ff';
+const classicThemeRgb = hexToRgb(classicThemeColor);
+
 const getRarityStyles = (rarity: string) => {
     switch(rarity) {
         case 'Legendary': return 'border-yellow-500/50 bg-gradient-to-br from-yellow-500/10 via-amber-500/5 to-transparent hover:from-yellow-500/20 hover:via-amber-500/10 shadow-[0_0_20px_rgba(234,179,8,0.15)] hover:shadow-[0_0_50px_rgba(234,179,8,0.4)] text-yellow-400 hover:border-yellow-500/70';
@@ -146,14 +160,14 @@ const classicChunks  = chunkItems(classicCollection.items);
 
         {/* FEATURED COLLECTION */}
         <section class="mb-16 md:mb-32">
-            <div class={`relative rounded-[2.5rem] md:rounded-[4rem] p-6 md:p-14 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${featuredCollection.borderColorClass} ${featuredCollection.glowClass} group`}>
-                <div class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15 group-hover:opacity-25" style={`background-image: ${featuredCollection.gradientCss}`}></div>
-                <div class={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${featuredCollection.lineColor} to-transparent`}></div>
+            <div class="relative rounded-[2.5rem] md:rounded-[4rem] p-6 md:p-14 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border transition-all duration-700 group" style={`border-color: rgba(${featuredThemeRgb}, 0.2); box-shadow: 0 0 40px rgba(${featuredThemeRgb}, 0.1); hover:box-shadow: 0 0 60px rgba(${featuredThemeRgb}, 0.2);`}>
+                <div class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15 group-hover:opacity-25" style={`background-image: radial-gradient(circle, rgba(${featuredThemeRgb}, 0.4) 0%, transparent 70%);`}></div>
+                <div class="absolute top-0 left-0 w-full h-[1px] opacity-30" style={`background-image: linear-gradient(to right, transparent, ${featuredThemeColor}, transparent);`}></div>
 
                 <div class="relative z-10">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 gap-6 text-center md:text-left">
                         <div>
-                            <span class={`px-4 py-1.5 ${featuredCollection.badgeBg} border ${featuredCollection.badgeBorder} rounded-xl ${featuredCollection.badgeText} text-[10px] md:text-xs font-black uppercase tracking-widest ${featuredCollection.badgeShadow} ${featuredCollection.badgeAnimate ? 'animate-pulse' : ''} inline-block mb-4`}>
+                            <span class={`px-4 py-1.5 border rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest ${featuredCollection.badgeAnimate ? 'animate-pulse' : ''} inline-block mb-4`} style={`color: ${featuredThemeColor}; border-color: rgba(${featuredThemeRgb}, 0.3); background-color: rgba(${featuredThemeRgb}, 0.1); box-shadow: 0 0 15px rgba(${featuredThemeRgb}, 0.15);`}>
                                 {featuredCollection.status}
                             </span>
                             <h2 class="text-3xl sm:text-4xl md:text-7xl font-black italic text-white uppercase tracking-tighter mb-4">{featuredCollection.name}</h2>
@@ -164,7 +178,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                     </div>
 
                     <div class="carousel-wrap relative py-4 md:py-12 -mx-4 md:-mx-8">
-                        <div id="track-featured" class="shop-track flex" data-carousel-track data-active-color={featuredCollection.activeCarouselColor}>
+                        <div id="track-featured" class="shop-track flex" data-carousel-track data-active-color={featuredCollection.theme_color}>
                             {featuredChunks.map((chunk: any[]) => (
                                 <div class="flex-shrink-0 px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
                                     {chunk.map((item: any) => (
@@ -205,7 +219,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                     </div>
 
                     <div class="flex items-center justify-center gap-6 mt-6 md:mt-8">
-                        <button type="button" data-carousel-prev="featured" class={`w-10 h-10 flex items-center justify-center ${featuredCollection.accent} hover:scale-125 transition-all`}>
+                        <button type="button" data-carousel-prev="featured" class="w-10 h-10 flex items-center justify-center hover:scale-125 transition-all" style={`color: ${featuredThemeColor};`}>
                             <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
                         </button>
                         <div class="flex items-center gap-2" data-carousel-dots="featured">
@@ -213,7 +227,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                                 <button type="button" aria-label={`Go to slide ${index + 1}`} class="dot-bullet" data-index={index}></button>
                             ))}
                         </div>
-                        <button type="button" data-carousel-next="featured" class={`w-10 h-10 flex items-center justify-center ${featuredCollection.accent} hover:scale-125 transition-all`}>
+                        <button type="button" data-carousel-next="featured" class="w-10 h-10 flex items-center justify-center hover:scale-125 transition-all" style={`color: ${featuredThemeColor};`}>
                             <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                         </button>
                     </div>
@@ -223,14 +237,14 @@ const classicChunks  = chunkItems(classicCollection.items);
 
         {/* CLASSIC COLLECTION */}
         <section class="mb-16 md:mb-32">
-            <div class={`relative rounded-[2.5rem] md:rounded-[4rem] p-6 md:p-14 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border border-white/10 transition-all duration-700 ${classicCollection.borderColorClass} ${classicCollection.glowClass} group`}>
-                <div class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15 group-hover:opacity-25" style={`background-image: ${classicCollection.gradientCss}`}></div>
-                <div class={`absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent ${classicCollection.lineColor} to-transparent`}></div>
+            <div class="relative rounded-[2.5rem] md:rounded-[4rem] p-6 md:p-14 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl border transition-all duration-700 group" style={`border-color: rgba(${classicThemeRgb}, 0.2); box-shadow: 0 0 40px rgba(${classicThemeRgb}, 0.1); hover:box-shadow: 0 0 60px rgba(${classicThemeRgb}, 0.2);`}>
+                <div class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15 group-hover:opacity-25" style={`background-image: radial-gradient(circle, rgba(${classicThemeRgb}, 0.4) 0%, transparent 70%);`}></div>
+                <div class="absolute top-0 left-0 w-full h-[1px] opacity-30" style={`background-image: linear-gradient(to right, transparent, ${classicThemeColor}, transparent);`}></div>
 
                 <div class="relative z-10">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-16 gap-6 text-center md:text-left">
                         <div>
-                            <span class={`px-4 py-1.5 ${classicCollection.badgeBg} border ${classicCollection.badgeBorder} rounded-xl ${classicCollection.badgeText} text-[10px] md:text-xs font-black uppercase tracking-widest ${classicCollection.badgeShadow} inline-block mb-4`}>
+                            <span class={`px-4 py-1.5 border rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest ${classicCollection.badgeAnimate ? 'animate-pulse' : ''} inline-block mb-4`} style={`color: ${classicThemeColor}; border-color: rgba(${classicThemeRgb}, 0.3); background-color: rgba(${classicThemeRgb}, 0.1); box-shadow: 0 0 15px rgba(${classicThemeRgb}, 0.15);`}>
                                 {classicCollection.status}
                             </span>
                             <h2 class="text-3xl sm:text-4xl md:text-7xl font-black italic text-white uppercase tracking-tighter mb-4">{classicCollection.name}</h2>
@@ -238,7 +252,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                     </div>
 
                     <div class="carousel-wrap relative py-4 md:py-12 -mx-4 md:-mx-8">
-                        <div id="track-classic" class="shop-track flex" data-carousel-track data-active-color={classicCollection.activeCarouselColor}>
+                        <div id="track-classic" class="shop-track flex" data-carousel-track data-active-color={classicCollection.theme_color}>
                             {classicChunks.map((chunk: any[]) => (
                                 <div class="flex-shrink-0 px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
                                     {chunk.map((item: any) => (
@@ -279,7 +293,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                     </div>
 
                     <div class="flex items-center justify-center gap-6 mt-6 md:mt-8">
-                        <button type="button" data-carousel-prev="classic" class={`w-10 h-10 flex items-center justify-center ${classicCollection.accent} hover:scale-125 transition-all`}>
+                        <button type="button" data-carousel-prev="classic" class="w-10 h-10 flex items-center justify-center hover:scale-125 transition-all" style={`color: ${classicThemeColor};`}>
                             <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
                         </button>
                         <div class="flex items-center gap-2" data-carousel-dots="classic">
@@ -287,7 +301,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                                 <button type="button" aria-label={`Go to slide ${index + 1}`} class="dot-bullet" data-index={index}></button>
                             ))}
                         </div>
-                        <button type="button" data-carousel-next="classic" class={`w-10 h-10 flex items-center justify-center ${classicCollection.accent} hover:scale-125 transition-all`}>
+                        <button type="button" data-carousel-next="classic" class="w-10 h-10 flex items-center justify-center hover:scale-125 transition-all" style={`color: ${classicThemeColor};`}>
                             <svg fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                         </button>
                     </div>

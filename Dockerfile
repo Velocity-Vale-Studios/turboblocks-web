@@ -8,6 +8,8 @@ RUN npm install
 COPY . .
 
 # Build the Astro project
+ARG PUBLIC_API_URL=http://backend:8000
+ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 RUN npm run build
 
 # Expose the default Astro preview port

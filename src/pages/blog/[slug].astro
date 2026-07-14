@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { marked } from "marked";
+import DOMPurify from "isomorphic-dompurify";
 
 export async function getStaticPaths() {
     return [];
@@ -32,7 +33,7 @@ if (localEntry) {
         const contentRes = await fetch(`${apiUrl}/news/${slug}/content`);
         if (contentRes.ok) {
             const rawMd = await contentRes.text();
-            ContentHtml = await marked.parse(rawMd);
+            ContentHtml = DOMPurify.sanitize(await marked.parse(rawMd));
             
             const headingRegex = /^(##|###)\s+(.+)$/gm;
             let match;
@@ -45,40 +46,13 @@ if (localEntry) {
             hasToc = tocHeadings.length > 0;
         }
         
-        post.gradient = "from-cyan-500 via-blue-500 to-indigo-500";
-        post.borderColorClass = "border-cyan-500/30";
-        post.glowClass = "shadow-[0_0_50px_rgba(6,182,212,0.15)] hover:shadow-[0_0_80px_rgba(6,182,212,0.3)]";
-        post.accent = "text-cyan-400";
-        post.bgAccent = "bg-cyan-500/10";
-        post.borderAccent = "border-cyan-500/30";
-        post.textHoverAccent = "group-hover:text-cyan-400";
         post.date = new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     } else {
         return Astro.redirect('/404');
     }
 }
 
-const accentPalette: Record<string, string> = {
-    fuchsia: "#e879f9",
-    pink: "#f472b6",
-    rose: "#fb7185",
-    orange: "#fb923c",
-    yellow: "#facc15",
-    amber: "#fbbf24",
-    emerald: "#34d399",
-    teal: "#2dd4bf",
-    cyan: "#22d3ee",
-    sky: "#38bdf8",
-    blue: "#60a5fa",
-    violet: "#a78bfa",
-    purple: "#c084fc",
-    indigo: "#818cf8",
-    lime: "#a3e635",
-};
-
-const accentToken = post.accent.match(/text-([a-z]+)-\d+/)?.[1];
-const postAccentColor =
-    (accentToken && accentPalette[accentToken]) || "#ffffff";
+const postAccentColor = post.theme_color || "#06b6d4";
 
 const hexToRgb = (hex: string) => {
     const normalized = hex.replace("#", "");
@@ -263,24 +237,26 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
         {/* Ambient glow */}
         <div class="fixed inset-0 -z-10 pointer-events-none">
             <div
-                class={`absolute top-[5%] left-0 w-[500px] h-[500px] bg-gradient-to-br ${post.gradient} blur-[160px] opacity-[0.12]`}
+                class="absolute top-[5%] left-0 w-[500px] h-[500px] blur-[160px] opacity-[0.12]"
+                style={`background-image: linear-gradient(135deg, ${postAccentColor}, transparent);`}
             >
             </div>
             <div
-                class={`absolute bottom-[10%] right-0 w-[400px] h-[400px] bg-gradient-to-br ${post.gradient} blur-[140px] opacity-[0.08]`}
+                class="absolute bottom-[10%] right-0 w-[400px] h-[400px] blur-[140px] opacity-[0.08]"
+                style={`background-image: linear-gradient(135deg, transparent, ${postAccentColor});`}
             >
             </div>
         </div>
 
         {/* ===== HEADER ===== */}
         <section
-            class={`group relative p-6 sm:p-8 md:p-16 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl bg-gradient-to-br from-white/5 to-white/[0.02] mb-8 md:mb-12 flex flex-col ${post.borderColorClass} ${post.glowClass}`}
+            class="group relative p-6 sm:p-8 md:p-16 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl bg-gradient-to-br from-white/5 to-white/[0.02] mb-8 md:mb-12 flex flex-col transition-all duration-700"
+            style={`border-color: rgba(${postAccentRgb}, 0.3); box-shadow: 0 0 50px rgba(${postAccentRgb}, 0.15);`}
         >
             {/* Bloom tła (z GameModes) */}
             <div
                 class="absolute -inset-[60px] rounded-[2.5rem] md:rounded-[4rem] blur-[80px] -z-10 pointer-events-none transition-all duration-1000 opacity-15"
-                style="background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));"
-                class:list={[post.gradient]}
+                style={`background-image: linear-gradient(135deg, ${postAccentColor}, transparent);`}
             >
             </div>
 
@@ -289,12 +265,8 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
                 class="flex justify-between items-start mb-6 md:mb-14 relative z-10"
             >
                 <div
-                    class:list={[
-                        "w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] border flex items-center justify-center text-3xl md:text-5xl shadow-2xl transition-all duration-500 ease-out",
-                        post.borderAccent,
-                        post.bgAccent,
-                        post.accent,
-                    ]}
+                    class="w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-[2rem] border flex items-center justify-center text-3xl md:text-5xl shadow-2xl transition-all duration-500 ease-out"
+                    style={`border-color: rgba(${postAccentRgb}, 0.3); background-color: rgba(${postAccentRgb}, 0.1); color: ${postAccentColor};`}
                 >
                     <div
                         class="w-10 h-10 md:w-16 md:h-16 rounded-xl flex items-center justify-center text-2xl md:text-4xl transition-all duration-500 bg-white/5 border border-white/10 shadow-inner"
@@ -308,7 +280,8 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
 
                 <div class="flex flex-col items-end gap-2">
                     <span
-                        class={`text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 md:py-3 md:px-6 rounded-xl border shadow-2xl ${post.accent} ${post.bgAccent} ${post.borderAccent}`}
+                        class="text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] py-2 px-4 md:py-3 md:px-6 rounded-xl border shadow-2xl"
+                        style={`color: ${postAccentColor}; background-color: rgba(${postAccentRgb}, 0.1); border-color: rgba(${postAccentRgb}, 0.3);`}
                     >
                         {post.tag}
                     </span>
@@ -320,7 +293,8 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
             </div>
 
             <h1
-                class={`text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black italic uppercase tracking-tighter mb-4 md:mb-8 leading-[0.85] bg-clip-text text-transparent bg-gradient-to-r ${post.gradient} ${post.textHoverAccent} relative z-10`}
+                class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black italic uppercase tracking-tighter mb-4 md:mb-8 leading-[0.85] bg-clip-text text-transparent relative z-10"
+                style={`background-image: linear-gradient(to right, #ffffff, ${postAccentColor});`}
             >
                 {post.title}
             </h1>
@@ -338,7 +312,8 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
             class={`lg:hidden mb-8 ${hasToc ? "" : "hidden"}`}
         >
             <div
-                class={`p-5 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl bg-gradient-to-br from-white/5 to-white/[0.02] ${post.borderColorClass}`}
+                class="p-5 rounded-[2.5rem] md:rounded-[4rem] border backdrop-blur-3xl bg-gradient-to-br from-white/5 to-white/[0.02]"
+                style={`border-color: rgba(${postAccentRgb}, 0.3);`}
             >
                 <button
                     id="mobile-toc-toggle"
@@ -393,10 +368,12 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
                 class="hidden lg:block w-[280px] shrink-0 sticky top-32 space-y-6"
             >
                 <div
-                    class={`p-6 md:p-10 rounded-[2.5rem] md:rounded-[4rem] bg-gradient-to-br from-white/5 to-white/[0.02] border backdrop-blur-3xl ${post.borderColorClass} ${post.glowClass} relative overflow-hidden`}
+                    class="p-6 md:p-10 rounded-[2.5rem] md:rounded-[4rem] bg-gradient-to-br from-white/5 to-white/[0.02] border backdrop-blur-3xl relative overflow-hidden"
+                    style={`border-color: rgba(${postAccentRgb}, 0.3); box-shadow: 0 0 50px rgba(${postAccentRgb}, 0.15);`}
                 >
                     <div
-                        class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"
+                        class="absolute top-0 left-0 w-full h-[1px] opacity-20"
+                        style={`background-image: linear-gradient(to right, transparent, ${postAccentColor}, transparent);`}
                     >
                     </div>
                     <h4
