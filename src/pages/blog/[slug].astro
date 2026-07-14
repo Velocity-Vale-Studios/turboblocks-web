@@ -1,23 +1,62 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import { marked } from "marked";
 
 export async function getStaticPaths() {
-    const blogEntries = await getCollection("blog");
-    return blogEntries.map((entry) => ({
-        params: { slug: entry.slug },
-        props: { entry },
-    }));
+    return [];
 }
 
-const { entry } = Astro.props;
+const { slug } = Astro.params;
+const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
 
-const { Content, headings } = await entry.render();
-const post = entry.data;
-const tocHeadings = headings.filter(
-    (heading) => heading.depth === 2 || heading.depth === 3,
-);
-const hasToc = tocHeadings.length > 0;
+let post: any = null;
+let ContentHtml = "";
+let tocHeadings: any[] = [];
+let hasToc = false;
+let ContentComponent = null;
+
+const allPosts = await getCollection("blog");
+const localEntry = allPosts.find((p) => p.slug === slug);
+
+if (localEntry) {
+    const { Content, headings } = await localEntry.render();
+    ContentComponent = Content;
+    post = localEntry.data;
+    tocHeadings = headings.filter((h: any) => h.depth === 2 || h.depth === 3);
+    hasToc = tocHeadings.length > 0;
+} else {
+    const res = await fetch(`${apiUrl}/news/${slug}`);
+    if (res.ok) {
+        post = await res.json();
+        const contentRes = await fetch(`${apiUrl}/news/${slug}/content`);
+        if (contentRes.ok) {
+            const rawMd = await contentRes.text();
+            ContentHtml = await marked.parse(rawMd);
+            
+            const headingRegex = /^(##|###)\s+(.+)$/gm;
+            let match;
+            while ((match = headingRegex.exec(rawMd)) !== null) {
+                const depth = match[1].length;
+                const text = match[2].trim();
+                const hSlug = text.toLowerCase().replace(/[^\w]+/g, '-');
+                tocHeadings.push({ depth, text, slug: hSlug });
+            }
+            hasToc = tocHeadings.length > 0;
+        }
+        
+        post.gradient = "from-cyan-500 via-blue-500 to-indigo-500";
+        post.borderColorClass = "border-cyan-500/30";
+        post.glowClass = "shadow-[0_0_50px_rgba(6,182,212,0.15)] hover:shadow-[0_0_80px_rgba(6,182,212,0.3)]";
+        post.accent = "text-cyan-400";
+        post.bgAccent = "bg-cyan-500/10";
+        post.borderAccent = "border-cyan-500/30";
+        post.textHoverAccent = "group-hover:text-cyan-400";
+        post.date = new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } else {
+        return Astro.redirect('/404');
+    }
+}
 
 const accentPalette: Record<string, string> = {
     fuchsia: "#e879f9",
@@ -281,7 +320,7 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
             </div>
 
             <h1
-                class={`text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black italic uppercase tracking-tighter mb-4 md:mb-8 leading-[0.85] neon-text-animated ${post.textHoverAccent} relative z-10`}
+                class={`text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black italic uppercase tracking-tighter mb-4 md:mb-8 leading-[0.85] bg-clip-text text-transparent bg-gradient-to-r ${post.gradient} ${post.textHoverAccent} relative z-10`}
             >
                 {post.title}
             </h1>
@@ -289,7 +328,7 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
             <p
                 class="text-white/60 text-sm sm:text-base md:text-xl font-medium italic leading-relaxed border-l-4 border-white/10 pl-6 md:pl-10 max-w-4xl relative z-10"
             >
-                {post.desc}
+                {post.description || post.desc}
             </p>
         </section>
 
@@ -440,7 +479,7 @@ const postAccentRgb = hexToRgb(postAccentColor) || "34, 211, 238";
                     >
                     </div>
                     <div class="blog-prose max-w-none">
-                        <Content />
+                        {ContentComponent ? <ContentComponent /> : <div set:html={ContentHtml} />}
                     </div>
                 </section>
 

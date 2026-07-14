@@ -1,12 +1,54 @@
 version: '3.8'
 
 services:
+  mariadb:
+    image: mariadb:latest
+    container_name: turboblocks-db
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: turboblocks_root
+      MARIADB_DATABASE: turboblocks
+      MARIADB_USER: turboblocks
+      MARIADB_PASSWORD: turboblocks_secret
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  backend:
+    build: ../Backend
+    container_name: turboblocks-backend
+    restart: always
+    depends_on:
+      - mariadb
+    expose:
+      - "8000"
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USER=turboblocks
+      - DB_PASSWORD=turboblocks_secret
+      - DB_DATABASE=turboblocks
+      - SECRET_KEY=super_secret_key_change_in_production
+      # - DISCORD_CLIENT_ID=...
+      # - DISCORD_CLIENT_SECRET=...
+      # - DISCORD_REDIRECT_URI=...
+
   frontend:
-    build: ./frontend
+    build: .
     container_name: turboblocks-web
+    restart: always
     expose:
       - "4321"
+    environment:
+      - PUBLIC_API_URL=http://backend:8000
+
+  dashboard:
+    build: ../Dashboard
+    container_name: turboblocks-dashboard
     restart: always
+    expose:
+      - "4321"
+    environment:
+      - PUBLIC_API_URL=http://backend:8000
 
   caddy:
     image: caddy:latest
@@ -19,7 +61,12 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
+    depends_on:
+      - frontend
+      - dashboard
+      - backend
 
 volumes:
   caddy_data:
   caddy_config:
+  mariadb_data:

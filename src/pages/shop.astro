@@ -1,24 +1,92 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ShopSafelist from '../components/shop/ShopSafelist.astro';
-import { shopCollections, turboCoinPacks } from '../data/shop';
+import { turboCoinPacks } from '../data/shop';
 
-// ═══════════════════════════════════════════════════════════════
-// 🔧 SHOP CONFIG — zmień ID żeby podmienić kolekcje na stronie
-// ═══════════════════════════════════════════════════════════════
-const FEATURED_COLLECTION_ID = "cryo-neon";      // sekcja Featured (górna, z opisem)
-const CLASSIC_COLLECTION_ID  = "neon-hazard";          // sekcja Classic  (dolna, bez opisu)
-// ═══════════════════════════════════════════════════════════════
-// Dostępne ID (11 kolekcji):
-//   "winter-festive", "solar-flare", "neon-genesis", "chromatic-riot",
-//   "cryo-neon", "magma-flow", "prism-shift", "system-override",
-//   "kinetic-surge", "neon-hazard", "astral-void"
-// ═══════════════════════════════════════════════════════════════
+const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
 
-const findCollection = (id: string) => shopCollections.find(c => c.id === id)!;
+let shopCollections = [];
+let dbTurboCoinPacks = null;
 
-const featuredCollection = findCollection(FEATURED_COLLECTION_ID);
-const classicCollection  = findCollection(CLASSIC_COLLECTION_ID);
+try {
+    const res = await fetch(`${apiUrl}/shop/collections/?limit=100`);
+    if (res.ok) {
+        const collectionsData = await res.json();
+        for (let c of collectionsData) {
+            const itemsRes = await fetch(`${apiUrl}/shop/collections/${c.id}/items`);
+            if (itemsRes.ok) {
+                const apiItems = await itemsRes.json();
+                
+                if (c.id === 'turbocoins') {
+                    dbTurboCoinPacks = apiItems.map((apiItem: any) => {
+                        const plnPrice = apiItem.prices.find((p:any) => p.currency === 'PLN')?.final_price || 0;
+                        const eurPrice = apiItem.prices.find((p:any) => p.currency === 'EUR')?.final_price || 0;
+                        const usdPrice = apiItem.prices.find((p:any) => p.currency === 'USD')?.final_price || 0;
+                        
+                        return {
+                            name: apiItem.item.name,
+                            type: "Coin Pack",
+                            price: `${apiItem.item.bundle_amount} TC`,
+                            cashPrice: `${plnPrice} zł`,
+                            tcAmount: apiItem.item.bundle_amount,
+                            cashPricePln: plnPrice,
+                            cashPriceEur: eurPrice,
+                            cashPriceUsd: usdPrice,
+                            icon: apiItem.item.icon,
+                            rarity: apiItem.item.rarity,
+                            desc: apiItem.item.description,
+                            bonus: ""
+                        };
+                    });
+                }
+                
+                c.items = apiItems.map((apiItem: any) => {
+                    const p = apiItem.prices.length > 0 ? apiItem.prices[0] : null;
+                    const currencyLabel = p ? (p.currency === 'TurboCoins' ? 'TC' : p.currency) : '';
+                    return {
+                        name: apiItem.item.name,
+                        type: apiItem.item.type,
+                        price: p ? (p.final_price === 0 ? "Free" : `${p.final_price} ${currencyLabel}`) : "Free",
+                        originalPrice: p && p.discount_percent > 0 ? `${p.original_price} ${currencyLabel}` : null,
+                        discountPercent: p ? p.discount_percent : 0,
+                        icon: apiItem.item.icon,
+                        rarity: apiItem.item.rarity,
+                        desc: apiItem.item.description,
+                        theme: apiItem.item.theme
+                    };
+                });
+            } else {
+                c.items = [];
+            }
+        }
+        shopCollections = collectionsData.filter(c => c.id !== 'turbocoins');
+    }
+} catch (e) {
+    console.error("Failed to fetch shop collections", e);
+}
+
+// Override with DB data if it exists
+const activeTurboCoinPacks = dbTurboCoinPacks && dbTurboCoinPacks.length > 0 ? dbTurboCoinPacks : turboCoinPacks;
+
+// Fallback do mocków, jeśli DB puste albo API nie odpowiada
+if (!shopCollections || shopCollections.length === 0) {
+    const local = await import('../data/shop');
+    shopCollections = local.shopCollections;
+}
+let shopLayout = { featured_collection_id: "cryo-neon", classic_collection_id: "neon-hazard" };
+try {
+    const layoutRes = await fetch(`${apiUrl}/shop/layout`);
+    if (layoutRes.ok) {
+        shopLayout = await layoutRes.json();
+    }
+} catch (e) {
+    console.error("Failed to fetch shop layout", e);
+}
+
+const findCollection = (id: string) => shopCollections.find(c => c.id === id) || shopCollections[0];
+
+const featuredCollection = findCollection(shopLayout.featured_collection_id);
+const classicCollection  = findCollection(shopLayout.classic_collection_id);
 
 const getRarityStyles = (rarity: string) => {
     switch(rarity) {
@@ -108,9 +176,23 @@ const classicChunks  = chunkItems(classicCollection.items);
                                                     <span class="text-[8px] md:text-[10px] font-black uppercase tracking-widest border border-current px-2 py-1 rounded-lg opacity-80">{item.rarity}</span>
                                                 </div>
                                                 <h3 class="text-[11px] md:text-xl font-black italic text-white uppercase tracking-tighter mb-1 line-clamp-1">{item.name}</h3>
-                                                <div class="mt-auto w-full flex flex-col md:flex-row justify-between items-center pt-4 border-t border-white/5 gap-2 md:gap-3">
-                                                    <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-full ${getRarityPricePill(item.rarity)}`}>{item.price}</span>
-                                                    <button type="button" aria-label={`Add ${item.name} to cart`} class="add-to-cart-btn w-full md:w-10 h-8 md:h-10 bg-white text-black rounded-xl font-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform text-sm">+</button>
+                                                <div class="mt-auto w-full pt-4 border-t border-white/5 flex flex-col gap-2">
+                                                    {item.discountPercent > 0 && (
+                                                        <div class="flex items-center gap-1.5 opacity-90">
+                                                            <span class="text-[9px] md:text-[10px] font-black bg-red-500 text-white px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm shadow-red-500/20">
+                                                                -{item.discountPercent}%
+                                                            </span>
+                                                            <span class="text-[10px] md:text-xs font-bold text-white/40 line-through decoration-red-500/50">
+                                                                {item.originalPrice}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                    <div class="flex justify-between items-center w-full gap-2">
+                                                        <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-lg ${getRarityPricePill(item.rarity)} ${item.discountPercent > 0 ? 'bg-red-500/10 text-red-400 border border-red-500/30' : ''}`}>
+                                                            {item.price}
+                                                        </span>
+                                                        <button type="button" aria-label={`Add ${item.name} to cart`} class="add-to-cart-btn shrink-0 w-8 h-8 md:w-10 md:h-10 bg-white text-black rounded-xl font-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform text-sm md:text-lg">+</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ) : (
@@ -168,9 +250,23 @@ const classicChunks  = chunkItems(classicCollection.items);
                                                     <span class="text-[8px] md:text-[10px] font-black uppercase tracking-widest border border-current px-2 py-1 rounded-lg opacity-80">{item.rarity}</span>
                                                 </div>
                                                 <h3 class="text-[11px] md:text-xl font-black italic text-white uppercase tracking-tighter mb-1 line-clamp-1">{item.name}</h3>
-                                                <div class="mt-auto w-full flex flex-col md:flex-row justify-between items-center pt-4 border-t border-white/5 gap-2 md:gap-3">
-                                                    <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-full ${getRarityPricePill(item.rarity)}`}>{item.price}</span>
-                                                    <button type="button" aria-label={`Add ${item.name} to cart`} class="add-to-cart-btn w-full md:w-10 h-8 md:h-10 bg-white text-black rounded-xl font-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform text-sm">+</button>
+                                                <div class="mt-auto w-full pt-4 border-t border-white/5 flex flex-col gap-2">
+                                                    {item.discountPercent > 0 && (
+                                                        <div class="flex items-center gap-1.5 opacity-90">
+                                                            <span class="text-[9px] md:text-[10px] font-black bg-red-500 text-white px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm shadow-red-500/20">
+                                                                -{item.discountPercent}%
+                                                            </span>
+                                                            <span class="text-[10px] md:text-xs font-bold text-white/40 line-through decoration-red-500/50">
+                                                                {item.originalPrice}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                    <div class="flex justify-between items-center w-full gap-2">
+                                                        <span class={`font-black text-xs md:text-sm px-2.5 py-1 rounded-lg ${getRarityPricePill(item.rarity)} ${item.discountPercent > 0 ? 'bg-red-500/10 text-red-400 border border-red-500/30' : ''}`}>
+                                                            {item.price}
+                                                        </span>
+                                                        <button type="button" aria-label={`Add ${item.name} to cart`} class="add-to-cart-btn shrink-0 w-8 h-8 md:w-10 md:h-10 bg-white text-black rounded-xl font-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform text-sm md:text-lg">+</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ) : (
@@ -217,7 +313,7 @@ const classicChunks  = chunkItems(classicCollection.items);
                     </div>
 
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 content-start">
-                        {turboCoinPacks.map((pack: any, index: number) => (
+                        {activeTurboCoinPacks.map((pack: any, index: number) => (
                             <div class={`group/item relative border backdrop-blur-md rounded-[1.5rem] md:rounded-[2.5rem] p-4 md:p-8 transition-all duration-500 ease-out ${getRarityStyles(pack.rarity)} cursor-pointer item-card flex flex-col h-full hover:scale-[1.03]`}
                                  data-item={JSON.stringify(pack)}>
                                 <div class="flex justify-between items-start mb-4 md:mb-6 w-full">
