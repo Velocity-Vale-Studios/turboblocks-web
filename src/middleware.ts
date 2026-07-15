@@ -8,6 +8,24 @@ export const onRequest = defineMiddleware(async (context, next) => {
         return next();
     }
 
+    const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
+    
+    // Check maintenance mode
+    try {
+        const settingsRes = await fetch(`${apiUrl}/settings/maintenance_mode`);
+        if (settingsRes.ok) {
+            const data = await settingsRes.json();
+            // If maintenance mode is NOT true, allow public access
+            if (data.value !== "true") {
+                return next();
+            }
+        }
+    } catch (e) {
+        console.error('Failed to fetch settings:', e);
+        // Fail open or closed on backend unreachable?
+        // For development, we fail closed (require auth), but if backend is down, auth also fails.
+    }
+
     const token = cookies.get("auth_token")?.value;
 
     if (!token) {
@@ -16,7 +34,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
     // Validate the token by calling the backend
     try {
-        const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
         const verifyRes = await fetch(`${apiUrl}/auth/me`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
