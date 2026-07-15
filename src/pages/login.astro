@@ -1,0 +1,169 @@
+---
+import 'virtual:uno.css';
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maintenance | TurboBlocks</title>
+</head>
+<body class="bg-[#07030F] text-white antialiased min-h-screen flex items-center justify-center relative overflow-hidden">
+
+    <!-- Synthwave ambient -->
+    <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div class="absolute -top-60 -left-60 w-[600px] h-[600px] rounded-full blur-[180px] animate-pulse" style="background: rgba(255, 0, 204, 0.10);"></div>
+        <div class="absolute top-[35%] -right-40 w-[500px] h-[500px] rounded-full blur-[160px] animate-pulse" style="background: rgba(0, 225, 253, 0.08); animation-delay: 3s;"></div>
+        <div class="absolute bottom-0 left-1/3 w-[500px] h-[500px] rounded-full blur-[150px] animate-pulse" style="background: rgba(124, 58, 237, 0.07); animation-delay: 6s;"></div>
+    </div>
+
+    <div class="relative z-10 max-w-xl mx-auto px-6 text-center">
+        
+        <!-- Maintenance Message -->
+        <div id="maintenance-view" class="space-y-8 transition-all duration-500">
+            <div class="w-24 h-24 mx-auto bg-fuchsia-500/10 rounded-2xl border border-fuchsia-500/20 flex items-center justify-center shadow-[0_0_50px_rgba(255,0,204,0.1)]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-fuchsia-400"><path d="m18 11-5.3 5.3a2 2 0 1 1-2.8-2.8L15.2 8.2"/><path d="m12 14-2.2 2.2a2 2 0 1 1-2.8-2.8l2.2-2.2"/><path d="M18 11h.01"/><path d="M15.2 8.2h.01"/><path d="m14 6 6-6"/><path d="m8.5 14.5-5 5a2 2 0 1 0 2.8 2.8l5-5"/></svg>
+            </div>
+            
+            <div class="space-y-4">
+                <h1 class="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 tracking-tight leading-tight">
+                    Rocky is working hard!
+                </h1>
+                <p class="text-neutral-400 text-lg md:text-xl leading-relaxed">
+                    Rocky now is hardworking on the server with the TB team. So he can't see over the webpage right now.
+                </p>
+            </div>
+
+            <div class="pt-8">
+                <button id="show-login-btn" class="text-sm text-neutral-600 hover:text-neutral-400 transition-colors bg-transparent border border-neutral-800 rounded-md px-4 py-2 hover:border-neutral-600">
+                    Admins
+                </button>
+            </div>
+        </div>
+
+        <!-- Login Form (Hidden by default) -->
+        <div id="login-view" class="hidden opacity-0 scale-95 transition-all duration-500 max-w-sm mx-auto">
+            <div class="bg-neutral-900/40 backdrop-blur-xl border border-white/5 p-8 rounded-2xl shadow-2xl">
+                <div class="mb-6 text-left">
+                    <h2 class="text-xl font-semibold text-white mb-1">Admin Login</h2>
+                    <p class="text-sm text-neutral-400">Restricted access area.</p>
+                </div>
+                
+                <form id="login-form" class="space-y-4 text-left">
+                    <div id="error-msg" class="hidden p-3 rounded-lg text-sm border bg-red-500/10 border-red-500/20 text-red-400"></div>
+                    
+                    <div class="space-y-1.5">
+                        <label for="email" class="text-sm font-medium text-neutral-300">Email</label>
+                        <input type="email" id="email" required placeholder="admin@turboblocks.eu" 
+                            class="w-full px-4 py-2.5 bg-black/40 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:outline-none focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50 transition-all" />
+                    </div>
+                    
+                    <div class="space-y-1.5">
+                        <label for="password" class="text-sm font-medium text-neutral-300">Password</label>
+                        <input type="password" id="password" required placeholder="••••••••" 
+                            class="w-full px-4 py-2.5 bg-black/40 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:outline-none focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50 transition-all" />
+                    </div>
+                    
+                    <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white font-medium py-2.5 rounded-lg transition-all shadow-lg shadow-fuchsia-500/20 mt-4 flex items-center justify-center">
+                        <span id="btn-text">Authenticate</span>
+                        <svg id="btn-spinner" class="hidden animate-spin ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <button id="hide-login-btn" class="text-xs text-neutral-500 hover:text-neutral-300 transition-colors">
+                        ← Back to maintenance
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
+
+        const maintenanceView = document.getElementById('maintenance-view');
+        const loginView = document.getElementById('login-view');
+        const showBtn = document.getElementById('show-login-btn');
+        const hideBtn = document.getElementById('hide-login-btn');
+        const loginForm = document.getElementById('login-form');
+        const errorMsg = document.getElementById('error-msg');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnSpinner = document.getElementById('btn-spinner');
+
+        // Toggle Views
+        showBtn?.addEventListener('click', () => {
+            maintenanceView?.classList.add('hidden');
+            loginView?.classList.remove('hidden');
+            // small delay to allow display:block to apply before animating opacity
+            setTimeout(() => {
+                loginView?.classList.remove('opacity-0', 'scale-95');
+                loginView?.classList.add('opacity-100', 'scale-100');
+            }, 10);
+        });
+
+        hideBtn?.addEventListener('click', () => {
+            loginView?.classList.add('opacity-0', 'scale-95');
+            loginView?.classList.remove('opacity-100', 'scale-100');
+            setTimeout(() => {
+                loginView?.classList.add('hidden');
+                maintenanceView?.classList.remove('hidden');
+            }, 500); // match duration-500
+        });
+
+        // Form Submission
+        loginForm?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = (document.getElementById('email') as HTMLInputElement).value;
+            const password = (document.getElementById('password') as HTMLInputElement).value;
+
+            // Loading state
+            if(submitBtn) (submitBtn as HTMLButtonElement).disabled = true;
+            btnText?.classList.add('opacity-50');
+            btnSpinner?.classList.remove('hidden');
+            errorMsg?.classList.add('hidden');
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append("username", email);
+                formData.append("password", password);
+
+                const response = await fetch(`${apiUrl}/auth/`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.detail || "Invalid credentials");
+                }
+
+                const data = await response.json();
+                
+                // Save token in cookie
+                document.cookie = `auth_token=${data.access_token}; path=/; max-age=86400; samesite=strict; secure`;
+                
+                // Redirect to homepage
+                window.location.href = "/";
+            } catch (err) {
+                if (errorMsg) {
+                    errorMsg.textContent = (err as Error).message;
+                    errorMsg.classList.remove('hidden');
+                }
+            } finally {
+                // Reset loading state
+                if(submitBtn) (submitBtn as HTMLButtonElement).disabled = false;
+                btnText?.classList.remove('opacity-50');
+                btnSpinner?.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
