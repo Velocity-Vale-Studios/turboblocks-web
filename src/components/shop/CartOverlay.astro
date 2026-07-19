@@ -6,25 +6,19 @@ const btnGradient = gradients.fuchsia_pulse.css;
 ---
 <div id="cart-drawer" class="hidden lg:flex fixed top-28 right-4 md:right-8 z-[9000] flex-col pointer-events-none opacity-0 translate-x-4 transition-all duration-500 ease-out w-[420px] max-h-[calc(100vh-140px)]">
 
-    <div style="--cart-hex: #FF00CC; --cart-rgb: 255,0,204;" class="w-full bg-[#0a0514]/70 backdrop-blur-[40px] border-[rgba(var(--cart-rgb),0.25)] border rounded-[2.5rem] shadow-[0_0_60px_rgba(var(--cart-rgb),0.15)] overflow-hidden flex flex-col relative group">
-        
-        {/* Soft background glow */}
-        <div class="absolute top-0 left-0 w-full h-[200px] bg-gradient-to-b from-[rgba(var(--cart-rgb),0.1)] to-transparent pointer-events-none"></div>
-
-        {/* Top glowing line */}
-        <div class="absolute top-0 left-0 w-full h-[2px] transition-all duration-700" style={`background: linear-gradient(90deg, transparent, var(--cart-hex), transparent);`}></div>
+    <div style="--cart-hex: #FF00CC; --cart-rgb: 255,0,204;" class="w-full bg-[#0a0514]/90 backdrop-blur-3xl border border-white/10 rounded-[2rem] overflow-hidden flex flex-col relative group">
 
         {/* Header */}
         <div class="px-8 py-7 flex justify-between items-start border-b border-white/5 shrink-0 relative z-10">
             <div class="flex flex-col items-start">
                 <div class="flex justify-between items-start mb-2">
-                    <span class="text-[9px] font-black uppercase tracking-[0.3em] py-1.5 px-3 rounded-xl border border-white/10 shadow-2xl"
+                    <span class="text-[9px] font-black uppercase tracking-[0.3em] py-1.5 px-3 rounded-xl border border-transparent shadow-2xl"
                           style={`color: var(--cart-hex); background: rgba(var(--cart-rgb), 0.08); box-shadow: inset 0 0 0 1px rgba(var(--cart-rgb),0.25);`}>
                         CART PREVIEW
                     </span>
                 </div>
                 <h2 class="text-3xl font-black italic text-white uppercase tracking-tighter leading-none mt-2">
-                    YOUR <span class="neon-text-animated pr-2" style={`background-image: ${cartGradient}; filter: drop-shadow(0 0 15px rgba(var(--cart-rgb),0.4));`}>CART</span>
+                    YOUR <span class="neon-text-animated pr-2" style={`background-image: ${cartGradient};`}>CART</span>
                 </h2>
             </div>
             <button
@@ -56,15 +50,14 @@ const btnGradient = gradients.fuchsia_pulse.css;
                 <div class="flex flex-col gap-1">
                     <span class="text-[9px] font-black text-white/40 uppercase tracking-[0.3em]">Total Value</span>
                     <div class="flex items-baseline gap-2">
-                        <span id="cart-total" class="text-2xl font-black italic text-transparent bg-clip-text tracking-tighter" style={`background-image: ${cartGradient};`}>0 TC</span>
+                        <span id="cart-total" class="text-2xl font-black italic text-cyan-400 tracking-tighter">0 TC</span>
                         <span id="cart-total-pln" class="text-xs font-black text-white/60 uppercase tracking-widest">0.00 zł</span>
                     </div>
                 </div>
                 <span id="cart-item-count" class="text-[9px] font-black py-1.5 px-3 rounded-lg bg-white/5 border border-white/10 text-white/40 uppercase tracking-widest">0 items</span>
             </div>
 
-            <a id="checkout-btn" href="/checkout" class="relative overflow-hidden w-full py-4 rounded-2xl text-white font-black uppercase tracking-[0.2em] text-[11px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 border border-transparent group/btn no-underline"
-               style={`background: ${btnGradient}; box-shadow: 0 0 20px rgba(var(--cart-rgb),0.4), inset 0 0 10px rgba(255,255,255,0.2);`}>
+            <a id="checkout-btn" href="/checkout" class="relative overflow-hidden w-full py-4 rounded-2xl text-white font-black uppercase tracking-[0.2em] text-[11px] transition-all duration-300 hover:bg-white/10 flex items-center justify-center gap-3 border border-white/10 group/btn no-underline bg-gradient-to-r from-fuchsia-600 to-purple-600">
                 <span class="relative z-10 transition-transform duration-300 group-hover/btn:translate-x-[-4px]">Proceed to Checkout</span>
                 <span class="relative z-10 opacity-70 transition-all duration-300 group-hover/btn:opacity-100 group-hover/btn:translate-x-[4px]">→</span>
             </a>
@@ -197,7 +190,7 @@ const btnGradient = gradients.fuchsia_pulse.css;
                 list.appendChild(el);
             });
             totalDisplay.innerText = totalTc + ' TC';
-            if (totalPlnDisplay) totalPlnDisplay.innerText = totalPln.toFixed(2) + ' zł';
+            if (totalPlnDisplay) { totalPlnDisplay.innerText = totalPln.toFixed(2) + ' zł'; totalPlnDisplay.style.display = totalPln > 0 ? '' : 'none'; }
             if (checkoutBtn) { checkoutBtn.style.pointerEvents = ''; checkoutBtn.style.opacity = ''; checkoutBtn.style.filter = ''; }
         }
     }

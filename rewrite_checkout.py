@@ -1,54 +1,41 @@
----
-import Layout from '../layouts/Layout.astro';
-const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
----
+import os
+import re
 
-<Layout title="Checkout — TurboShop">
-    <div id="checkout-app" class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pt-28 sm:pt-32 pb-24 md:pb-48 relative min-h-screen" data-api-url={apiUrl}>
+FILE_PATH = r"s:\turboblocks-web\src\pages\checkout.astro"
 
-        {/* Ambient glow */}
-        <div class="fixed inset-0 -z-10 pointer-events-none">
-            <div class="absolute top-[10%] left-0 w-[400px] h-[400px] bg-gradient-to-br from-pink-500/15 via-purple-500/10 to-transparent blur-[160px]"></div>
-            <div class="absolute bottom-[15%] right-0 w-[300px] h-[300px] bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-transparent blur-[140px]"></div>
-        </div>
+with open(FILE_PATH, "r", encoding="utf-8") as f:
+    content = f.read()
 
-        {/* Back link */}
-        <a href="/shop" class="inline-flex items-center gap-2 text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-8 hover:text-white transition-colors">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
-            Back to Shop
-        </a>
-
-        
-        
+new_header = """
         {/* Progress Bar Header */}
-        <div class="mb-10 md:mb-16 relative z-10 w-full max-w-3xl mx-auto hidden sm:block">
-            <div class="relative grid grid-cols-4 px-0 sm:px-4">
+        <div class="mb-10 md:mb-16 relative z-10 w-full max-w-4xl mx-auto hidden sm:block">
+            <div class="flex items-center justify-between relative">
                 <!-- Line background -->
-                <div class="absolute left-[12.5%] right-[12.5%] top-[11px] h-[2px] bg-white/5 -z-10 rounded-full"></div>
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-white/10 -z-10"></div>
                 <!-- Line progress -->
-                <div id="progress-line" class="absolute left-[12.5%] top-[11px] h-[2px] bg-gradient-to-r from-fuchsia-500 to-cyan-500 -z-10 transition-all duration-700 w-0 rounded-full shadow-[0_0_10px_rgba(217,70,239,0.5)]"></div>
+                <div id="progress-line" class="absolute left-0 top-1/2 -translate-y-1/2 h-px bg-fuchsia-500 -z-10 transition-all duration-500 w-0"></div>
                 
                 <!-- Steps -->
                 <div class="step-indicator flex flex-col items-center gap-3 relative z-10" data-step="0">
-                    <div class="step-circle w-[24px] h-[24px] rounded-full bg-fuchsia-500 border-2 border-black flex items-center justify-center text-black transition-all shadow-[0_0_15px_rgba(217,70,239,0.5)] scale-110">
-                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    <div class="step-circle w-8 h-8 rounded-full bg-fuchsia-500 border-2 border-black flex items-center justify-center text-black font-bold text-xs transition-colors shadow-[0_0_15px_rgba(217,70,239,0.5)]">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                     </div>
-                    <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-white">Koszyk</span>
+                    <span class="text-[10px] uppercase font-black tracking-widest text-white">Koszyk</span>
                 </div>
                 
                 <div class="step-indicator flex flex-col items-center gap-3 relative z-10" data-step="1">
-                    <div class="step-circle w-[24px] h-[24px] rounded-full bg-black border-2 border-white/20 flex items-center justify-center text-white/30 text-[10px] font-black transition-all">2</div>
-                    <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-white/30 text-center">Dane</span>
+                    <div class="step-circle w-8 h-8 rounded-full bg-black border-2 border-white/20 flex items-center justify-center text-white/50 font-bold text-xs transition-colors">2</div>
+                    <span class="text-[10px] uppercase font-black tracking-widest text-white/50 text-center max-w-[80px]">Dane gracza</span>
                 </div>
                 
                 <div class="step-indicator flex flex-col items-center gap-3 relative z-10" data-step="2">
-                    <div class="step-circle w-[24px] h-[24px] rounded-full bg-black border-2 border-white/20 flex items-center justify-center text-white/30 text-[10px] font-black transition-all">3</div>
-                    <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-white/30 text-center">Płatność</span>
+                    <div class="step-circle w-8 h-8 rounded-full bg-black border-2 border-white/20 flex items-center justify-center text-white/50 font-bold text-xs transition-colors">3</div>
+                    <span class="text-[10px] uppercase font-black tracking-widest text-white/50 text-center max-w-[80px]">Płatność</span>
                 </div>
                 
                 <div class="step-indicator flex flex-col items-center gap-3 relative z-10" data-step="3">
-                    <div class="step-circle w-[24px] h-[24px] rounded-full bg-black border-2 border-white/20 flex items-center justify-center text-white/30 text-[10px] font-black transition-all">4</div>
-                    <span class="text-[9px] uppercase font-bold tracking-[0.2em] text-white/30 text-center">Gotowe</span>
+                    <div class="step-circle w-8 h-8 rounded-full bg-black border-2 border-white/20 flex items-center justify-center text-white/50 font-bold text-xs transition-colors">4</div>
+                    <span class="text-[10px] uppercase font-black tracking-widest text-white/50 text-center max-w-[80px]">Gotowe</span>
                 </div>
             </div>
         </div>
@@ -59,42 +46,19 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
                 KOSZ<span class="neon-text-animated pr-4" style="background-image: linear-gradient(to right, #ec4899, #a855f7, #22d3ee); filter: drop-shadow(0 0 20px rgba(236,72,153,0.3));">YK</span>
             </h1>
         </div>
+"""
 
+content = re.sub(r'\{\/\* Header \*\/\}.*?<\/h1>\s*<\/div>', new_header, content, flags=re.DOTALL)
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
-
-            {/* ===== LEFT COLUMN: CART ===== */}
-            <div class="lg:col-span-7">
-
-                {/* Items list */}
-                <section id="cart-section" style="--theme-hex: #ec4899; --theme-rgb: 236,72,153;" class="group relative bg-gradient-to-b from-white/[0.05] to-transparent backdrop-blur-2xl rounded-3xl overflow-hidden border border-white/[0.05] shadow-2xl transition-all duration-700">
-                    
-                    {/* Bloom z ModeCard */}
-                    <div class="absolute -inset-[40px] rounded-[2.5rem] blur-[60px] -z-10 pointer-events-none transition-all duration-1000 opacity-10 group-hover:opacity-20" style={`background-image: linear-gradient(to bottom right, #ec4899, #a855f7);`}></div>
-                    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-                    
-                    <div class="px-8 py-6 border-b border-white/5 flex justify-between items-center bg-transparent">
-                        <h2 class="text-sm font-bold text-white uppercase tracking-widest">Twój Koszyk</h2>
-                        <span id="ck-count" class="text-[9px] font-black text-white/20 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/10">0</span>
-                    </div>
-                    
-                    <div id="ck-list" class="p-6 md:p-8 flex flex-col gap-4 max-h-[50vh] lg:max-h-[60vh] overflow-y-auto">
-                        <div class="flex flex-col items-center justify-center text-center opacity-40 py-12">
-                            <span class="text-5xl mb-4 grayscale">🛒</span>
-                            <p class="text-white italic uppercase text-[10px] font-black tracking-widest">Koszyk pusty</p>
-                            <a href="/shop" class="mt-4 text-[9px] font-black text-cyan-400 uppercase tracking-widest hover:text-white transition-colors">Przejdź do sklepu →</a>
-                        </div>
-                    </div>
-                </section>
-
+login_section = """
                 {/* Stage 1: Login / Details (Hidden by default) */}
-                <section id="login-section" style="--theme-hex: #a855f7; --theme-rgb: 168,85,247;" class="hidden group relative bg-gradient-to-b from-white/[0.05] to-transparent backdrop-blur-2xl rounded-3xl p-6 md:p-8 border border-white/[0.05] shadow-2xl transition-all duration-700">
+                <section id="login-section" style="--theme-hex: #a855f7; --theme-rgb: 168,85,247;" class="hidden group relative bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] p-6 md:p-8 border-[rgba(var(--theme-rgb),0.3)] shadow-[0_0_50px_rgba(var(--theme-rgb),0.2)] hover:shadow-[0_0_80px_rgba(var(--theme-rgb),0.3)] transition-all duration-700">
                     {/* Bloom */}
                     <div class="absolute -inset-[40px] rounded-[2.5rem] blur-[60px] -z-10 pointer-events-none transition-all duration-1000 opacity-10 group-hover:opacity-20" style={`background-image: linear-gradient(to bottom right, #a855f7, #ec4899);`}></div>
                     <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent"></div>
                     
-                    <h3 class="text-sm font-bold text-white uppercase tracking-widest mb-2 flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.8)]"></span> Twoje Dane</h3>
-                    <p class="text-xs text-white/40 font-medium mb-8">Podaj swój nick z gry oraz email, abyśmy mogli zrealizować zamówienie i przypisać je do Twojego konta.</p>
+                    <h2 class="text-xl font-black text-white uppercase italic tracking-tighter mb-2">Twoje Dane</h2>
+                    <p class="text-xs text-white/50 font-bold mb-6">Podaj swój nick z gry oraz email, abyśmy mogli zrealizować zamówienie i przypisać je do Twojego konta.</p>
                     
                     <div class="space-y-4">
                         <div class="space-y-1.5">
@@ -115,48 +79,8 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
                     </div>
                 </section>
                 
-                {/* Payment method (Hidden on Stage 0) */}
-                <section id="payment-method-section" style="--theme-hex: #a855f7; --theme-rgb: 168,85,247;" class="hidden group relative bg-gradient-to-b from-white/[0.05] to-transparent backdrop-blur-2xl rounded-3xl p-6 md:p-8 border border-white/[0.05] shadow-2xl transition-all duration-700">
-                    
-                    {/* Bloom */}
-                    <div class="absolute -inset-[40px] rounded-[2.5rem] blur-[60px] -z-10 pointer-events-none transition-all duration-1000 opacity-10 group-hover:opacity-20" style={`background-image: linear-gradient(to bottom right, #a855f7, #ec4899);`}></div>
-                    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/40 to-transparent"></div>
-                    
-                    {/* ModeCard tag style */}
-                    <h3 class="text-sm font-bold text-white uppercase tracking-widest mb-6 flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.8)]"></span> Metoda Płatności</h3>
-
-                    <div class="grid grid-cols-2 gap-3" id="payment-methods">
-                        {/* BLIK */}
-                        <button type="button" data-method="blik" class="pay-method group/pay relative flex flex-col items-center justify-center gap-2 p-4 bg-black/40 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-pink-500/30">
-                            <span class="text-2xl group-hover/pay:scale-110 transition-transform">🏦</span>
-                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest group-hover/pay:text-white transition-colors">BLIK</span>
-                        </button>
-
-                        {/* PayPal */}
-                        <button type="button" data-method="paypal" class="pay-method group/pay relative flex flex-col items-center justify-center gap-2 p-4 bg-black/40 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-blue-500/30">
-                            <svg class="w-7 h-7 text-[#00457C] group-hover/pay:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c1.684.015 3.108-.474 4.063-1.56.955-1.087 1.392-2.596 1.128-4.36C25.2 0 22.764 0 20.644 0H9.32a.856.856 0 0 0-.845.74L5.371 18.17a.642.642 0 0 0 .634.74h4.006l-.072.461c-.058.37.22.706.596.706h3.592c.457 0 .845-.33.917-.78l.038-.189.727-4.597.047-.254c.072-.45.46-.78.917-.78h.577c3.735 0 6.66-1.517 7.512-5.907.357-1.835.172-3.367-.77-4.443z"/></svg>
-                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest group-hover/pay:text-white transition-colors">PayPal</span>
-                        </button>
-
-                        {/* Karta */}
-                        <button type="button" data-method="card" class="pay-method group/pay relative flex flex-col items-center justify-center gap-2 p-4 bg-black/40 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-purple-500/30">
-                            <span class="text-2xl group-hover/pay:scale-110 transition-transform">💳</span>
-                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest group-hover/pay:text-white transition-colors">Card</span>
-                        </button>
-
-                        {/* TurboCoins */}
-                        <button type="button" data-method="turbocoins" class="pay-method group/pay relative flex flex-col items-center justify-center gap-2 p-4 bg-black/40 border border-white/10 rounded-2xl transition-all duration-300 hover:bg-white/5 hover:border-cyan-500/30">
-                            <span class="text-2xl group-hover/pay:scale-110 transition-transform">⚡</span>
-                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest group-hover/pay:text-white transition-colors">TurboCoins</span>
-                        </button>
-                    </div>
-
-                    <p id="selected-method-label" class="text-[9px] font-black text-white/20 uppercase tracking-widest mt-6 text-center">Wybierz metodę płatności</p>
-                </section>
-
-                
                 {/* Stage 3: Summary Success (Hidden by default) */}
-                <section id="success-section" style="--theme-hex: #22c55e; --theme-rgb: 34,197,94;" class="hidden group relative bg-gradient-to-b from-white/[0.05] to-transparent backdrop-blur-2xl rounded-3xl p-10 border border-white/[0.05] shadow-2xl text-center transition-all duration-700">
+                <section id="success-section" style="--theme-hex: #22c55e; --theme-rgb: 34,197,94;" class="hidden group relative bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] p-10 border-[rgba(var(--theme-rgb),0.3)] shadow-[0_0_50px_rgba(var(--theme-rgb),0.2)] text-center transition-all duration-700">
                     <div class="absolute -inset-[40px] rounded-[2.5rem] blur-[60px] -z-10 pointer-events-none opacity-20" style={`background-image: linear-gradient(to bottom right, #22c55e, #10b981);`}></div>
                     
                     <div class="w-20 h-20 mx-auto bg-green-500/20 border border-green-500/50 rounded-full flex items-center justify-center text-4xl mb-6 shadow-[0_0_30px_rgba(34,197,94,0.3)]">
@@ -166,77 +90,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
                     <p class="text-sm text-white/70 font-bold mb-8">Dziękujemy za zakup! Przedmioty wkrótce pojawią się na Twoim koncie. Potwierdzenie wysłano na email.</p>
                     <a href="/" class="inline-block px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl transition-colors border border-white/10">Wróć na stronę główną</a>
                 </section>
-            </div>
+"""
 
-            {/* ===== RIGHT COLUMN: SUMMARY + PAYMENT ===== */}
-            <div id="summary-column" class="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
+content = content.replace("</section>\n            </div>\n\n            {/* ===== RIGHT COLUMN: SUMMARY + PAYMENT ===== */}", "</section>\n" + login_section + "            </div>\n\n            {/* ===== RIGHT COLUMN: SUMMARY + PAYMENT ===== */}")
 
-                
-                {/* Summary */}
-                <section style="--theme-hex: #22d3ee; --theme-rgb: 34,211,238;" class="group relative bg-gradient-to-b from-white/[0.05] to-transparent backdrop-blur-2xl rounded-3xl p-6 md:p-8 border border-white/[0.05] shadow-2xl transition-all duration-700">
-                    
-                    {/* Bloom */}
-                    <div class="absolute -inset-[20px] rounded-3xl blur-[50px] -z-10 pointer-events-none transition-all duration-1000 opacity-5 group-hover:opacity-10" style={`background-image: linear-gradient(to bottom right, #22d3ee, #a855f7);`}></div>
-                    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
-                    
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-sm font-bold text-white uppercase tracking-widest flex items-center gap-3">
-                            <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></span> Podsumowanie
-                        </h3>
-                        <select id="checkout-currency" class="bg-white/5 border border-white/10 rounded-lg text-xs font-bold px-3 py-1.5 focus:outline-none focus:border-cyan-500/50 text-white cursor-pointer hover:bg-white/10 transition-colors">
-                            <option value="PLN">PLN (zł)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="USD">USD ($)</option>
-                        </select>
-                    </div>
-
-                    <div class="space-y-4 mb-6">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-white/50 font-medium">Wartość</span>
-                            <div class="flex flex-col items-end gap-1">
-                                <span id="ck-subtotal-tc" class="text-sm font-bold text-pink-400">0 TC</span>
-                                <span id="ck-subtotal-fiat" class="text-sm font-bold text-amber-300">0.00 zł</span>
-                            </div>
-                        </div>
-                        <div id="discount-row" class="hidden flex justify-between items-center">
-                            <span class="text-xs text-white/50 font-medium">Zniżka</span>
-                            <div class="flex flex-col items-end gap-1">
-                                <span id="ck-discount-tc" class="text-sm font-bold text-green-400">-0 TC</span>
-                                <span id="ck-discount-fiat" class="text-sm font-bold text-green-400">-0.00 zł</span>
-                            </div>
-                        </div>
-                        <div class="h-[1px] bg-white/10"></div>
-                        <div class="flex justify-between items-end pt-2">
-                            <span class="text-base font-black text-white uppercase pb-1">Suma</span>
-                            <div class="flex flex-col items-end gap-1">
-                                <span id="ck-total-tc" class="text-2xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 tracking-tighter">0 TC</span>
-                                <span id="ck-total-fiat" class="text-2xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-400 tracking-tighter">0.00 zł</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Discount code */}
-                    <div class="flex gap-2">
-                        <input type="text" id="discount-code-input" aria-label="Kod zniżkowy" placeholder="Kod zniżkowy" class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-xs font-bold placeholder-white/20 focus:outline-none focus:border-cyan-500/30 transition-colors" />
-                        <button type="button" id="apply-discount-btn" class="px-5 py-3 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black text-white/50 uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all">
-                            OK
-                        </button>
-                    </div>
-                </section>
-
-                {/* Pay button */}
-                <section class="relative p-1 group">
-                    <button id="ck-pay-btn" disabled class="relative overflow-hidden w-full py-5 rounded-[1.5rem] bg-white/5 text-white/20 font-black uppercase tracking-[0.2em] text-[10px] cursor-not-allowed flex items-center justify-center gap-3 transition-all duration-500 border border-white/10">
-                        <span>Wybierz metodę płatności</span>
-                    </button>
-                    <p class="text-[8px] text-white/20 uppercase tracking-widest text-center mt-4 font-bold border-t border-white/5 pt-4">Transakcja zabezpieczona szyfrowaniem end-to-end</p>
-                </section>
-            </div>
-        </div>
-    </div>
-</Layout>
-
-
+js_replacement = """
 <script is:inline>
     const CART_KEY = 'turbo_cart_v1';
     let selectedMethod = null;
@@ -262,9 +120,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
     function updateProgressUI() {
         const line = document.getElementById('progress-line');
         if (line) {
-            line.style.width = (currentStage * 33.333) + '%';
+            if(currentStage === 0) line.style.width = '0%';
+            else if(currentStage === 1) line.style.width = '33%';
+            else if(currentStage === 2) line.style.width = '66%';
+            else if(currentStage === 3) line.style.width = '100%';
         }
-        
         
         document.querySelectorAll('.step-indicator').forEach(ind => {
             const step = parseInt(ind.getAttribute('data-step'));
@@ -273,29 +133,28 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
             
             if (step < currentStage) {
                 // completed
-                circle.className = 'step-circle w-6 h-6 rounded-full bg-fuchsia-500 border-2 border-black flex items-center justify-center text-black transition-all shadow-[0_0_15px_rgba(217,70,239,0.5)] scale-110';
-                circle.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
-                text.className = 'text-[9px] uppercase font-bold tracking-[0.2em] text-white';
+                circle.className = 'step-circle w-8 h-8 rounded-full bg-fuchsia-500 border-2 border-black flex items-center justify-center text-black font-bold text-xs transition-colors shadow-[0_0_15px_rgba(217,70,239,0.5)]';
+                circle.innerHTML = '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
+                text.className = 'text-[10px] uppercase font-black tracking-widest text-white text-center max-w-[80px]';
             } else if (step === currentStage) {
                 // current
-                circle.className = 'step-circle w-6 h-6 rounded-full bg-fuchsia-500 border-2 border-black flex items-center justify-center text-black font-black text-[10px] transition-all shadow-[0_0_15px_rgba(217,70,239,0.5)] scale-110';
+                circle.className = 'step-circle w-8 h-8 rounded-full bg-fuchsia-500 border-2 border-black flex items-center justify-center text-black font-bold text-xs transition-colors shadow-[0_0_15px_rgba(217,70,239,0.5)]';
                 circle.innerHTML = (step + 1);
-                text.className = 'text-[9px] uppercase font-bold tracking-[0.2em] text-white';
+                text.className = 'text-[10px] uppercase font-black tracking-widest text-white text-center max-w-[80px]';
             } else {
                 // future
-                circle.className = 'step-circle w-6 h-6 rounded-full bg-black border-2 border-white/20 flex items-center justify-center text-white/30 text-[10px] font-black transition-all';
+                circle.className = 'step-circle w-8 h-8 rounded-full bg-black border-2 border-white/20 flex items-center justify-center text-white/50 font-bold text-xs transition-colors';
                 circle.innerHTML = (step + 1);
-                text.className = 'text-[9px] uppercase font-bold tracking-[0.2em] text-white/30 text-center';
+                text.className = 'text-[10px] uppercase font-black tracking-widest text-white/50 text-center max-w-[80px]';
             }
         });
-
         
         // Hide/Show sections
-        const cartSec = document.getElementById('cart-section');
+        const cartSec = document.querySelector('.lg\\\\:col-span-7 section:first-of-type');
         const loginSec = document.getElementById('login-section');
         const paySec = document.getElementById('payment-method-section');
         const successSec = document.getElementById('success-section');
-        const summarySec = document.getElementById('summary-column');
+        const summarySec = document.querySelector('.lg\\\\:col-span-5');
         const pageTitle = document.getElementById('page-title');
         
         if (cartSec) cartSec.classList.add('hidden');
@@ -326,12 +185,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
         const cart = getCart();
         const list = document.getElementById('ck-list');
         const countEl = document.getElementById('ck-count');
-        const subtotalTcEl = document.getElementById('ck-subtotal-tc');
-        const subtotalFiatEl = document.getElementById('ck-subtotal-fiat');
-        const totalTcEl = document.getElementById('ck-total-tc');
-        const totalFiatEl = document.getElementById('ck-total-fiat');
-        const discountTcEl = document.getElementById('ck-discount-tc');
-        const discountFiatEl = document.getElementById('ck-discount-fiat');
+        const subtotalEl = document.getElementById('ck-subtotal');
+        const subtotalPlnEl = document.getElementById('ck-subtotal-fiat');
+        const totalEl = document.getElementById('ck-total');
+        const totalPlnEl = document.getElementById('ck-total-fiat');
+        const discountAmountEl = document.getElementById('ck-discount-amount');
         if (!list) return;
 
         const parseTc = (item) => {
@@ -363,14 +221,10 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
 
         if (n === 0) {
             list.innerHTML = '<div class="flex flex-col items-center justify-center text-center opacity-40 py-12"><span class="text-5xl mb-4 grayscale">🛒</span><p class="text-white italic uppercase text-[10px] font-black tracking-widest">Twój koszyk jest pusty</p><a href="/shop" class="mt-4 text-[9px] font-black text-cyan-400 uppercase tracking-widest hover:text-white transition-colors">Przejdź do sklepu →</a></div>';
-            if (subtotalTcEl) subtotalTcEl.innerText = '0 TC';
-            if (totalTcEl) totalTcEl.innerText = '0 TC';
-            if (subtotalFiatEl) subtotalFiatEl.innerText = '0.00 ' + sym;
-            if (totalFiatEl) totalFiatEl.innerText = '0.00 ' + sym;
-            if (subtotalTcEl) subtotalTcEl.style.display = '';
-            if (subtotalFiatEl) subtotalFiatEl.style.display = 'none';
-            if (totalTcEl) totalTcEl.style.display = '';
-            if (totalFiatEl) totalFiatEl.style.display = 'none';
+            if (subtotalEl) subtotalEl.innerText = '0 TC';
+            if (totalEl) totalEl.innerText = '0 TC';
+            if (subtotalPlnEl) subtotalPlnEl.innerText = '0.00 ' + sym;
+            if (totalPlnEl) totalPlnEl.innerText = '0.00 ' + sym;
             updatePayBtn();
             return;
         }
@@ -388,7 +242,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
             
             if (priceFiat === 0 && isCoinPack) {
                  const normalized = String(item.cashPrice || '').replace(',', '.');
-                 const matched = normalized.match(/[0-9]+(\.[0-9]+)?/);
+                 const matched = normalized.match(/[0-9]+(\\.[0-9]+)?/);
                  if (activeCurrency === 'PLN' && matched) priceFiat = parseFloat(matched[0]);
             }
 
@@ -406,16 +260,17 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
                 ? ('<p class="text-[8px] text-cyan-300/90 font-black uppercase tracking-widest mt-1.5 border-l-2 border-cyan-400/30 pl-2">Otrzymujesz ' + amountTc + ' TC</p>')
                 : '';
             const el = document.createElement('div');
-            el.className = 'flex items-center gap-4 py-3 border-b border-white/5 last:border-0 group/item';
-            el.innerHTML = '<div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-xl shrink-0 group-hover/item:scale-105 transition-transform">' + (item.icon||'📦') + '</div>'
+            el.className = 'flex items-center gap-4 bg-black/40 border border-white/5 p-4 rounded-2xl backdrop-blur-md transition-all hover:bg-white/5 hover:border-white/10 group/item';
+            el.innerHTML = '<div class="w-14 h-14 bg-gradient-to-br from-white/10 to-transparent rounded-xl flex items-center justify-center text-2xl border border-white/5 shrink-0 shadow-lg group-hover/item:scale-110 transition-transform">' + (item.icon||'📦') + '</div>'
                 + '<div class="flex-grow overflow-hidden">'
-                + '<p class="text-xs font-bold text-white/90 truncate">' + item.name + '</p>'
-                + '<div class="flex items-center gap-2 mt-1">'
+                + '<p class="text-[11px] sm:text-xs font-black text-white uppercase italic tracking-tighter truncate">' + item.name + '</p>'
+                + '<div class="flex items-center gap-2 mt-1.5">'
                 + tcPill
                 + fiatPill
+                + '<span class="text-[8px] text-white/30 font-bold uppercase tracking-widest">' + (item.rarity||'') + '</span>'
                 + '</div>' + amountLabel + '</div>'
-                + '<button type="button" aria-label="Remove item from checkout" onclick="ckRemove(' + index + ')" class="w-8 h-8 rounded-lg flex items-center justify-center text-white/20 hover:text-red-400 hover:bg-red-400/10 transition-all shrink-0">'
-                + '<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>';
+                + '<button type="button" aria-label="Remove item from checkout" onclick="ckRemove(' + index + ')" class="w-10 h-10 rounded-xl flex items-center justify-center text-white/20 bg-white/5 border border-white/5 hover:text-red-400 hover:bg-red-400/10 hover:border-red-400/20 transition-all shrink-0">'
+                + '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>';
             list.appendChild(el);
         });
 
@@ -428,30 +283,20 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
             totalFiat -= fiatDiscount;
             
             if (discountRow) discountRow.classList.remove('hidden');
-            if (discountTcEl) discountTcEl.innerText = `-${tcDiscount} TC`;
-            if (discountFiatEl) discountFiatEl.innerText = `-${fiatDiscount.toFixed(2)} ${sym}`;
-            if (discountTcEl) discountTcEl.style.display = tcDiscount > 0 ? '' : 'none';
-            if (discountFiatEl) discountFiatEl.style.display = fiatDiscount > 0 ? '' : 'none';
+            if (discountAmountEl) {
+                discountAmountEl.innerText = `-${activeDiscountPercent}% (-${tcDiscount} TC / -${fiatDiscount.toFixed(2)} ${sym})`;
+            }
         } else {
             if (discountRow) discountRow.classList.add('hidden');
+            if (discountAmountEl) {
+                discountAmountEl.innerText = '-0 TC';
+            }
         }
 
-        if (subtotalTcEl) {
-            subtotalTcEl.innerText = totalTc + ' TC';
-            subtotalTcEl.style.display = totalTc > 0 ? '' : 'none';
-        }
-        if (totalTcEl) {
-            totalTcEl.innerText = totalTc + ' TC';
-            totalTcEl.style.display = totalTc > 0 ? '' : 'none';
-        }
-        if (subtotalFiatEl) {
-            subtotalFiatEl.innerText = totalFiat.toFixed(2) + ' ' + sym;
-            subtotalFiatEl.style.display = totalFiat > 0 ? '' : 'none';
-        }
-        if (totalFiatEl) {
-            totalFiatEl.innerText = totalFiat.toFixed(2) + ' ' + sym;
-            totalFiatEl.style.display = totalFiat > 0 ? '' : 'none';
-        }
+        if (subtotalEl) subtotalEl.innerText = totalTc + ' TC';
+        if (totalEl) totalEl.innerText = totalTc + ' TC';
+        if (subtotalPlnEl) subtotalPlnEl.innerText = totalFiat.toFixed(2) + ' ' + sym;
+        if (totalPlnEl) totalPlnEl.innerText = totalFiat.toFixed(2) + ' ' + sym;
         
         updatePayBtn();
     }
@@ -660,4 +505,11 @@ const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
         });
     }
 </script>
+"""
 
+content = re.sub(r'<script is:inline>.*?</script>', js_replacement, content, flags=re.DOTALL)
+
+with open(FILE_PATH, "w", encoding="utf-8") as f:
+    f.write(content)
+
+print("Checkout modified.")
